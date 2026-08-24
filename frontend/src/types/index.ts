@@ -51,6 +51,7 @@ export interface SomaEdgeData {
 
 export interface BeliefStateSnapshot {
   version:            number
+  world_model_version?: number   // actual key sent by backend snapshot()
   prediction_error_map: number[][]   // [16][16]
   global_mean_error:  number
   regional_errors:    Record<string, number>  // exactly 6 keys

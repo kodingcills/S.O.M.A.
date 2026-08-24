@@ -18,3 +18,10 @@ body {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.35; }
 }
+
+@keyframes heatmapFlash {
+  0%   { background: rgba(255,255,255,0.8); }
+  20%  { background: rgba(255,214,0,0.6); }
+  100% { background: rgba(255,214,0,0); }
+}
+.heatmap-flash { animation: heatmapFlash 600ms ease-out forwards; }

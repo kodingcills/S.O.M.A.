@@ -27,10 +27,16 @@ export default function App() {
   const [view, setView]         = useState<View>('canvas')
   const [activeNode, setActiveNode] = useState<string | null>(null)
 
-  // Derive active sim_id from active node
+  // Derive active sim_id from active node.
+  // Agent nodes (exp_/cap_/wm_/sim_) execute on primary-anatomy envs; the
+  // backend registry only exposes 'primary'/'comparison', so polling
+  // /detail/{exp_x} would 404 forever — map them to 'primary'.
   const activeSimId = useMemo(() => {
     if (!activeNode || view !== 'detail') return null
-    return activeNode === 'root' ? 'primary' : activeNode
+    if (activeNode === 'root' || /^(exp_|cap_|wm_|sim_)/.test(activeNode)) {
+      return 'primary'
+    }
+    return activeNode
   }, [activeNode, view])
 
   const detail = useDetail(activeSimId)
