@@ -1,0 +1,27 @@
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+
+# Data + models (regenerable / large)
+backend/data/
+backend/models/
+logs/
+vendor/
+
+# OS / editor
+.DS_Store
+
+# Build-tool state (not committed per project convention)
+.opencode/
+.omo/

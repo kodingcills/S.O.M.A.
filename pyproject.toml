@@ -1,0 +1,37 @@
+[project]
+name = "soma"
+version = "0.1.0"
+description = "SOMA — Self-Organizing Model Architecture for surgical robotics"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    # API layer
+    "fastapi==0.109.*",
+    "uvicorn[standard]>=0.27",
+    "websockets>=12.0",
+    "python-multipart>=0.0.6",
+    # World model / ML
+    "numpy>=1.26,<2.0",
+    "torch>=2.2",
+    # Orchestration + agents
+    "langgraph>=0.2",
+    "langgraph-checkpoint>=1.0",
+    "anthropic>=0.40",
+    # Simulation (pybullet installed separately — see Findings; SurRoL editable)
+    "pillow>=10.0",
+    # Data + observability
+    "polars>=1.0",
+    "python-dotenv>=1.0",
+    "wandb>=0.16",
+    # Testing
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.26",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = ["ignore::DeprecationWarning"]
