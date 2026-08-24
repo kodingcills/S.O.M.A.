@@ -53,7 +53,13 @@ from fastapi import FastAPI
 
 try:
     from backend.agents.reactive import ReactiveAgent
-    from backend.api import STATE, app as api_app, manager, set_world_model
+    from backend.api import (
+        STATE,
+        app as api_app,
+        manager,
+        set_env_registry,
+        set_world_model,
+    )
     from backend.data_collector import collect_training_data
     from backend.event_log import init_db, set_broadcast_callback, write_event
     from backend.mpc_agent import MPCAgent
@@ -63,7 +69,13 @@ try:
     from backend.world_model import WorldModel
 except ImportError:  # cwd=backend direct-run mode (uvicorn main:app)
     from agents.reactive import ReactiveAgent  # type: ignore[no-redef]
-    from api import STATE, app as api_app, manager, set_world_model  # type: ignore[no-redef]
+    from api import (  # type: ignore[no-redef]
+        STATE,
+        app as api_app,
+        manager,
+        set_env_registry,
+        set_world_model,
+    )
     from data_collector import collect_training_data  # type: ignore[no-redef]
     from event_log import init_db, set_broadcast_callback, write_event  # type: ignore[no-redef]
     from mpc_agent import MPCAgent  # type: ignore[no-redef]
@@ -208,6 +220,10 @@ async def _soma_lifespan(_: FastAPI):
         # ── Step 5: THE WorldModel singleton ───────────────────────────────
         world_model = WorldModel()
         set_world_model(world_model)
+        set_env_registry({
+            "primary": primary_sim,
+            "comparison": comparison_sim,
+        })
 
         # ── Step 6: MPC + Reactive agents ──────────────────────────────────
         mpc = MPCAgent(world_model, primary_sim)
@@ -231,6 +247,18 @@ async def _soma_lifespan(_: FastAPI):
         ]
 
         ready["system"] = True
+        try:
+            import wandb
+
+            if wandb.run is None:
+                wandb.init(
+                    project="soma-surgical",
+                    name=f"demo-{int(time.time())}",
+                    mode=os.environ.get("WANDB_MODE", "offline"),
+                )
+            print(f"[main] W&B dashboard: {wandb.run.url}", flush=True)
+        except Exception as exc:
+            print(f"[main] wandb unavailable ({exc}) — continuing without", flush=True)
         write_event("system_ready")
         print("[main] SOMA system ready "
               f"(wandb optional — {'absent' if _wandb_missing() else 'available'})",

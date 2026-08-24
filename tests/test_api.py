@@ -8,6 +8,7 @@ Named tests per ARCHITECTURE.md TESTING PROTOCOL:
   test_mjpeg_stream_stub_404       — intentional stub until Task 2.x
 """
 
+import asyncio
 import time
 
 from backend import event_log
@@ -186,3 +187,49 @@ def test_debug_endpoints_require_world_model():
 def test_mjpeg_stream_stub_returns_404():
     with TestClient(app) as client:
         assert client.get("/sim/primary/stream").status_code == 404
+
+
+# ---------------------------------------------------------------------------
+# test:api:mjpeg_stream — real PyBullet MJPEG endpoint (Task 2.3)
+# ---------------------------------------------------------------------------
+
+async def test_mjpeg_generator_real_env_frames():
+    """Direct generator probe: real PyBullet camera produces JPEG frames."""
+    from backend.api import pybullet_frame_generator
+    from backend.simulation import SimConfig, create_env
+
+    env = await create_env(SimConfig(seed=42, dof=1, n_vessels=2))
+    try:
+        frames = []
+        async for chunk in pybullet_frame_generator(env, max_frames=2):
+            frames.append(chunk)
+        assert len(frames) == 2
+        for chunk in frames:
+            assert chunk.startswith(b"--frame\r\nContent-Type: image/jpeg\r\n\r\n")
+            payload = chunk.split(b"\r\n\r\n", 1)[1]
+            assert payload[:2] == b"\xff\xd8", "JPEG SOI marker missing"
+    finally:
+        await asyncio.to_thread(env.close)
+
+
+def test_mjpeg_stream_endpoint_wiring(monkeypatch):
+    """HTTP contract via canned generator — routing/headers/termination."""
+    from backend import api as api_module
+    from backend.api import set_env_registry
+
+    async def canned(env, max_frames: int = 0):
+        yield b"--frame\r\nContent-Type: image/jpeg\r\n\r\n\xff\xd8stub\r\n"
+
+    monkeypatch.setattr(api_module, "pybullet_frame_generator", canned)
+    set_env_registry({"primary": object()})
+    try:
+        with TestClient(app) as client:
+            with client.stream("GET", "/sim/primary/stream") as response:
+                assert response.status_code == 200
+                assert response.headers["content-type"].startswith(
+                    "multipart/x-mixed-replace"
+                )
+                body = b"".join(response.iter_bytes())
+                assert b"--frame" in body and b"\xff\xd8" in body
+    finally:
+        api_module._env_registry.clear()

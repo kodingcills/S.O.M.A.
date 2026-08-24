@@ -23,6 +23,7 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import StreamingResponse
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 
 try:
@@ -171,10 +172,61 @@ async def debug_trigger_agent() -> dict[str, Any]:
     return {"ok": True, "boosted": "upper_left=0.8"}
 
 
+_env_registry: dict[str, Any] = {}
+
+
+def set_env_registry(envs: dict[str, Any]) -> None:
+    """main.py registers live sims here so MJPEG can find them by id."""
+    _env_registry.clear()
+    _env_registry.update(envs)
+
+
+async def pybullet_frame_generator(env: Any, max_frames: int = 0):
+    # max_frames=0 -> unlimited (production); N>0 -> bounded (tests).
+    # RISKS S-4: p.getCameraImage blocks 20-100ms — must run in to_thread and
+    # yield between frames or WS heartbeats die during streaming.
+    import io
+
+    import numpy as np
+    import pybullet as p
+    from PIL import Image
+
+    cid = getattr(env, "cid", 0)
+    view = getattr(env, "_view_matrix", None)
+    proj = getattr(env, "_proj_matrix", None)
+
+    frames_sent = 0
+    while max_frames == 0 or frames_sent < max_frames:
+        width, height, rgba, _depth, _seg = await asyncio.to_thread(
+            p.getCameraImage,
+            320,
+            240,
+            viewMatrix=view,
+            projectionMatrix=proj,
+            physicsClientId=cid,
+        )
+        frame = np.asarray(rgba, dtype=np.uint8).reshape(height, width, 4)[..., :3]
+        buf = io.BytesIO()
+        Image.fromarray(frame).save(buf, format="JPEG", quality=85)
+        yield (
+            b"--frame\r\nContent-Type: image/jpeg\r\n\r\n"
+            + buf.getvalue()
+            + b"\r\n"
+        )
+        frames_sent += 1
+        await asyncio.sleep(1 / 15)
+
+
 @app.get("/sim/{sim_id}/stream")
-async def sim_stream(sim_id: str) -> None:
-    # MJPEG stub — real stream arrives with the frontend (Task 2.x).
-    raise HTTPException(status_code=404, detail="MJPEG stream not implemented yet")
+async def sim_stream(sim_id: str):
+    env = _env_registry.get(sim_id)
+    if env is None:
+        raise HTTPException(status_code=404, detail=f"unknown sim_id '{sim_id}'")
+    return StreamingResponse(
+        pybullet_frame_generator(env),
+        media_type="multipart/x-mixed-replace; boundary=frame",
+        headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+    )
 
 
 @app.websocket("/ws/events")
