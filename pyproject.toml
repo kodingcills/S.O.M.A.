@@ -25,7 +25,7 @@ dependencies = [
     # Testing
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
-    "httpx>=0.26",
+    "httpx>=0.26,<0.28",
 ]
 
 [tool.uv]

@@ -233,14 +233,33 @@ class ExplorationAgent:
             f"Call select_action with your chosen action and one-sentence reasoning."
         )
 
-    async def run_episode(self, n_steps: int = EXPLORE_N_STEPS) -> tuple[list[Sample], int]:
+    async def run_episode(self, n_steps: int | None = None) -> tuple[list[Sample], int]:
+        """Runs one exploration episode, collecting (state, action, next_state).
+
+        Calls Claude every CLAUDE_CALL_EVERY_N steps; repeats the last action
+        in between. On API failure (or no API key) falls back to random
+        focused actions — data collection continues.
+
+        SPEC DEVIATION: n_steps defaults to None and reads EXPLORE_N_STEPS at
+        call time — a literal default freezes the value at import, making
+        monkeypatched test overrides silent no-ops. Same call-time-read
+        pattern as AGENT_TIMEOUT_SECONDS in agents/capability.py.
+        """
+        steps = EXPLORE_N_STEPS if n_steps is None else n_steps
         samples: list[Sample] = []
         total_tokens = 0
-        last_action = _random_focused_action(self._rng)
+        last_action = np.zeros(12, dtype=np.float32)
+        last_action[7] = 1.0  # default: MOVE
 
         await asyncio.to_thread(self.env.reset)
 
-        for step in range(n_steps):
+        # LOOP: exploration_episode
+        # Pre-condition:  env.reset() completed; world model weights loaded.
+        # Invariant:      each (state, action, next_state) triple is consistent
+        #                 with the environment's actual physics.
+        # Termination:    step count reaches n_steps.
+        # Yield:          asyncio.to_thread() yields for every env.step() call.
+        for step in range(steps):
             state_vec = self.env.get_state_vector()
 
             if step % CLAUDE_CALL_EVERY_N == 0:
@@ -263,7 +282,9 @@ class ExplorationAgent:
                     last_action = _random_focused_action(self._rng)
                     self._buffer.flush(step)
 
-            _, _, done, _info = await asyncio.to_thread(self.env.step, last_action)
+            _, _, done, _info = await asyncio.to_thread(
+                self.env.step, action_to_surrol(last_action, self.env.config.dof)
+            )
             next_state_vec = self.env.get_state_vector()
             samples.append((state_vec.copy(), last_action.copy(), next_state_vec.copy()))
 
@@ -301,7 +322,10 @@ class ExplorationAgent:
             dof = int(self._world_model.belief.active_dof)
             # SEED INVARIANT: seed 42 == primary sim anatomy. Data collected on
             # any other seed would teach the model tissue that does not exist.
-            self.env = await create_env(SimConfig(seed=42, dof=dof, n_vessels=2))
+            config_source = self.primary_sim_config or SimConfig()
+            self.env = await create_env(SimConfig(
+                seed=42, dof=dof, n_vessels=config_source.n_vessels,
+            ))
 
             try:
                 async with asyncio.timeout(AGENT_TIMEOUT_SECONDS):
