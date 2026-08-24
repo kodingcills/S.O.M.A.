@@ -40,6 +40,8 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import contextvars
+import functools
 import os
 import pkgutil
 import types
@@ -94,6 +96,88 @@ MODE_WAIT = 3
 # S-2: PyBullet keeps a global physics-server registry; concurrent env
 # construction corrupts world IDs. All construction must go through
 # create_env(), which serializes on this lock.
+# ---------------------------------------------------------------------------
+# PYBULLET CID SHIM (root fix for RISKS S-2 / KNOWN ISSUE #1)
+#
+# Vendored SurRoL calls p.* WITHOUT physicsClientId everywhere; pybullet then
+# routes them to client 0 no matter which env they belong to. Consequences:
+# closing ANY env disconnects client 0 and severs every other env's un-scoped
+# path, and secondary-env construction/action application silently poisons
+# primary's physics server. We wrap the dangerous module functions so an
+# un-scoped call resolves to the ContextVar-bound cid; our public env methods
+# bind that var around every delegation. asyncio.to_thread copies contextvars,
+# so the binding survives worker-thread hops.
+# ---------------------------------------------------------------------------
+
+_CURRENT_CID: contextvars.ContextVar[int] = contextvars.ContextVar(
+    "soma_pybullet_cid", default=0)
+
+_CID_PATCHED_NAMES = (
+    "getLinkState", "getLinkStates", "getContactPoints", "stepSimulation",
+    "performCollisionDetection", "getBasePositionAndOrientation",
+    "resetBasePositionAndOrientation", "getBaseVelocity", "getJointState",
+    "getJointStates", "resetJointState", "setJointMotorControlArray",
+    "changeDynamics", "getDynamicsInfo", "loadURDF", "createMultiBody",
+    "createCollisionShape", "removeBody", "resetBasePositionAndOrientation",
+    "applyExternalForce", "resetSimulation", "disconnect", "connect",
+)
+
+
+def _make_cid_wrapper(name: str, original):
+    if name == "connect":
+        # p.connect has no physicsClientId kwarg — it RETURNS the id. Capture
+        # it so loads inside super().__init__ target the constructing env.
+        def connect_call(*args, **kwargs):
+            result = original(*args, **kwargs)
+            if isinstance(result, int):
+                _CURRENT_CID.set(result)
+            return result
+        connect_call._soma_cid_aware = True  # type: ignore[attr-defined]
+        return connect_call
+
+    def call(*args, **kwargs):
+        kwargs.setdefault("physicsClientId", _CURRENT_CID.get())
+        return original(*args, **kwargs)
+    call._soma_cid_aware = True  # type: ignore[attr-defined]
+    return call
+
+
+def _install_cid_shim() -> None:
+    for name in _CID_PATCHED_NAMES:
+        original = getattr(p, name, None)
+        if original is None:
+            continue
+        if getattr(original, "_soma_cid_aware", False):
+            continue
+        setattr(p, name, _make_cid_wrapper(name, original))
+
+
+_install_cid_shim()
+
+
+class _bound_cid:
+    """Binds the calling scope's pybullet target; restores on exit."""
+
+    def __init__(self, cid: int) -> None:
+        self._token = _CURRENT_CID.set(cid)
+
+    def __enter__(self) -> None:
+        return None
+
+    def __exit__(self, *exc) -> None:
+        _CURRENT_CID.reset(self._token)
+
+
+
+def _cid_bound(method):
+    """Route every pybullet touch inside this public method to self.cid."""
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        with _bound_cid(self.cid):
+            return method(self, *args, **kwargs)
+    return wrapper
+
+
 _pybullet_init_lock = asyncio.Lock()
 
 
@@ -222,12 +306,14 @@ class SurROLTissueEnv(PsmEnv):
 
     # -- lifecycle ---------------------------------------------------------
 
+    @_cid_bound
     def reset(self):
         # S-5: _env_setup rebuilds tissue on every reset, so the RNG must be
         # re-seeded here or episode 2 would get different anatomy.
         self._rng = np.random.RandomState(self.config.seed)
         return super().reset()
 
+    @_cid_bound
     def close(self) -> None:
         try:
             super().close()
@@ -432,6 +518,7 @@ class SurROLTissueEnv(PsmEnv):
 
     # -- gym loop -------------------------------------------------------------
 
+    @_cid_bound
     def step(self, action: np.ndarray):
         """Advance one episode step.
 
@@ -608,6 +695,7 @@ class SurROLTissueEnv(PsmEnv):
 
     # -- observation ----------------------------------------------------------
 
+    @_cid_bound
     def get_state_vector(self) -> np.ndarray:
         """Locked 806-float32 state vector (QUICK_REFERENCE index table)."""
         vec = np.zeros(806, dtype=np.float32)

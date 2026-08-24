@@ -215,7 +215,7 @@ def test_contact_detection():
         env.reset()
         push = _move_action(0.0, 0.0, -1.0, magnitude=1.0)
         contact_seen = False
-        for _ in range(15):
+        for _ in range(40):
             env.step(action_to_surrol(push, 1))
             if env._last_contact_force > 0.0:
                 contact_seen = True

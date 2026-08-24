@@ -23,6 +23,7 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 
@@ -112,6 +113,15 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="SOMA", lifespan=lifespan)
+
+# Vite dev origin must reach REST directly (WS is exempt from CORS;
+# without this, useHealth/useDetail polling silently fails cross-origin).
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/health")

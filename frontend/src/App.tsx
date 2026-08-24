@@ -24,7 +24,11 @@ const MONO = "'JetBrains Mono', ui-monospace, Menlo, monospace"
 export default function App() {
   const events  = useEventLog()
   const health  = useHealth()
-  const [view, setView]         = useState<View>('canvas')
+  const [view, setView]         = useState<View>(() => {
+    // QA hook: ?view=detail|compare deep-links a view for screenshot runs.
+    const v = new URLSearchParams(window.location.search).get('view')
+    return v === 'detail' || v === 'compare' ? v : 'canvas'
+  })
   const [activeNode, setActiveNode] = useState<string | null>(null)
 
   // Derive active sim_id from active node.
@@ -32,7 +36,9 @@ export default function App() {
   // backend registry only exposes 'primary'/'comparison', so polling
   // /detail/{exp_x} would 404 forever — map them to 'primary'.
   const activeSimId = useMemo(() => {
-    if (!activeNode || view !== 'detail') return null
+    if (view !== 'detail') return null
+    // Deep-linked detail (?view=detail) has no node yet — stream primary.
+    if (!activeNode) return 'primary'
     if (activeNode === 'root' || /^(exp_|cap_|wm_|sim_)/.test(activeNode)) {
       return 'primary'
     }
