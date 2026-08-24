@@ -1,0 +1,179 @@
+"""FastAPI layer — SOMA Task 1.1.
+
+REST endpoints + WebSocket event stream with full-history replay.
+
+Invariants enforced here:
+  - WEBSOCKET REPLAY INVARIANT (C6): on connect, replay ALL events from
+    get_events_since(0) BEFORE adding the client to the broadcast set.
+    Known race (RISKS D-7): events written between replay completion and
+    broadcast-set append are missed by that client — accepted per spec.
+  - /health schema is the contract consumed by the frontend top bar.
+  - api.py never imports world_model — dependencies arrive via params in
+    later tasks (FILE OWNERSHIP MAP).
+
+Dual-import shim: this module must run BOTH as `uvicorn api:app`
+(cwd=backend) and as `backend.api` (repo root). Same shim as main.py.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import time
+from contextlib import asynccontextmanager
+from typing import Any
+
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.websockets import WebSocket, WebSocketDisconnect
+
+try:
+    from backend.event_log import (
+        get_events_for_agent,
+        get_events_since,
+        init_db,
+        set_broadcast_callback,
+    )
+except ImportError:  # cwd=backend direct-run mode (uvicorn api:app)
+    from event_log import (  # type: ignore[no-redef]
+        get_events_for_agent,
+        get_events_since,
+        init_db,
+        set_broadcast_callback,
+    )
+
+PING_INTERVAL_S = 5.0
+PONG_TIMEOUT_S = 15.0
+
+# Module-level runtime state. Later tasks (orchestrator, world model)
+# mutate this dict in place; /health always reads the live values.
+STATE: dict[str, Any] = {
+    "status": "starting",
+    "world_model_version": 0,
+    "global_error": 0.0,
+    "active_agents": 0,
+    "primary_sim_step": 0,
+    "training_progress": None,
+}
+
+
+class ConnectionManager:
+    """WebSocket registry with replay-first connect and silent disconnect."""
+
+    def __init__(self) -> None:
+        self.active_connections: list[WebSocket] = []
+        # Per-connection send lock: ping task + broadcasts must never
+        # interleave frames on the same socket.
+        self._send_locks: dict[WebSocket, asyncio.Lock] = {}
+
+    async def connect(self, websocket: WebSocket) -> None:
+        await websocket.accept()
+        # C6: replay ALL history BEFORE joining the broadcast set.
+        for event in get_events_since(0.0):
+            await self._send(websocket, {"type": "event", "data": event})
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket) -> None:
+        # Silent removal — a dying client must never raise upstream.
+        if websocket in self.active_connections:
+            self.active_connections.remove(websocket)
+        self._send_locks.pop(websocket, None)
+
+    async def _send(self, websocket: WebSocket, message: dict[str, Any]) -> None:
+        lock = self._send_locks.setdefault(websocket, asyncio.Lock())
+        async with lock:
+            await websocket.send_json(message)
+
+    async def broadcast(self, message: dict[str, Any]) -> None:
+        for websocket in list(self.active_connections):
+            try:
+                await self._send(websocket, message)
+            except Exception:
+                self.disconnect(websocket)
+
+
+manager = ConnectionManager()
+
+
+async def _ping_loop(websocket: WebSocket) -> None:
+    try:
+        while True:
+            await asyncio.sleep(PING_INTERVAL_S)
+            await manager._send(websocket, {"type": "ping"})
+    except Exception:
+        return  # socket died; endpoint's finally handles cleanup
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    init_db()
+    set_broadcast_callback(manager.broadcast)
+    yield
+    set_broadcast_callback(None)
+
+
+app = FastAPI(title="SOMA", lifespan=lifespan)
+
+
+@app.get("/health")
+async def health() -> dict[str, Any]:
+    return dict(STATE)
+
+
+@app.get("/events")
+async def events_since(since: float = Query(default=0.0)) -> list[dict[str, Any]]:
+    return get_events_since(since)
+
+
+@app.get("/events/{agent_id}")
+async def events_for_agent(agent_id: str) -> list[dict[str, Any]]:
+    return get_events_for_agent(agent_id)
+
+
+@app.get("/detail/{sim_id}")
+async def detail(sim_id: str) -> dict[str, Any]:
+    # Placeholder until SimulationState + BeliefState exist (Task 1.9+).
+    # Real impl reads both back-to-back with NO await between (atomicity).
+    return {"simulation_state": None, "belief_state": None}
+
+
+@app.post("/simulation/{sim_id}/reset")
+async def reset_simulation(sim_id: str) -> dict[str, Any]:
+    return {"ok": True}
+
+
+@app.get("/debug/reset_belief")
+async def debug_reset_belief() -> dict[str, Any]:
+    return {"ok": True}
+
+
+@app.get("/debug/trigger_agent")
+async def debug_trigger_agent() -> dict[str, Any]:
+    return {"ok": True}
+
+
+@app.get("/sim/{sim_id}/stream")
+async def sim_stream(sim_id: str) -> None:
+    # MJPEG stub — real stream arrives with the frontend (Task 2.x).
+    raise HTTPException(status_code=404, detail="MJPEG stream not implemented yet")
+
+
+@app.websocket("/ws/events")
+async def ws_events(websocket: WebSocket) -> None:
+    await manager.connect(websocket)
+    ping_task = asyncio.create_task(_ping_loop(websocket))
+    last_pong = time.monotonic()
+    try:
+        while True:
+            try:
+                message = await asyncio.wait_for(
+                    websocket.receive_text(), timeout=PONG_TIMEOUT_S
+                )
+                if message == "pong":
+                    last_pong = time.monotonic()
+            except asyncio.TimeoutError:
+                if time.monotonic() - last_pong >= PONG_TIMEOUT_S:
+                    break  # no pong within 15s — drop client
+    except WebSocketDisconnect:
+        pass
+    finally:
+        ping_task.cancel()
+        manager.disconnect(websocket)
