@@ -157,7 +157,7 @@ export function WorldModelPanel({
           <YAxis
             type="category"
             dataKey="name"
-            width={110}
+            width={128}
             tick={{ fill: TEXT_SECONDARY, fontSize: 9 }}
           />
           <Bar dataKey="confidence" radius={3}>
