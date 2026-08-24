@@ -202,7 +202,9 @@ async def test_runner_marks_failure_without_module(monkeypatch):
 
 async def test_runner_completes_with_stub_module(monkeypatch):
     class StubAgent:
-        def __init__(self, agent_id: str, region: str, error_before: float) -> None:
+        def __init__(
+            self, agent_id: str, world_model, region: str, error_before: float
+        ) -> None:
             self.agent_id = agent_id
 
         async def run(self) -> dict:

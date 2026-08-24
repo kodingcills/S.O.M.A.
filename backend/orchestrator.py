@@ -111,6 +111,7 @@ class ExplorationSpawn(TypedDict):
 # MemorySaver drops graph state on process death anyway.
 _AGENT_REGIONS: dict[str, str] = {}
 _PROCESSED_OUTCOMES: set[str] = set()
+_WORLD_MODEL_REF: list[Any] = []
 
 
 def initial_state() -> SomaOrchestratorState:
@@ -230,8 +231,13 @@ async def exploration_agent_runner(payload: ExplorationSpawn) -> dict[str, list[
         return {"failed_agents": [agent_id]}
 
     try:
+        if not _WORLD_MODEL_REF:
+            raise RuntimeError("graph built without world_model reference")
         agent = ExplorationAgent(
-            agent_id=agent_id, region=region, error_before=payload["error_before"]
+            agent_id=agent_id,
+            world_model=_WORLD_MODEL_REF[0],
+            region=region,
+            error_before=payload["error_before"],
         )
         result = await agent.run()
     except Exception as exc:
@@ -297,6 +303,8 @@ def build_soma_graph(
     sim_manager: Any = None,
 ) -> CompiledStateGraph:
     """Compiles the SOMA graph; sim_manager needs .primary/.comparison envs."""
+    _WORLD_MODEL_REF.clear()
+    _WORLD_MODEL_REF.append(world_model)
 
     async def orchestrator_node(state: SomaOrchestratorState) -> dict:
         regional = dict(world_model.belief.get_regional_errors())

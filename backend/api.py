@@ -140,14 +140,35 @@ async def reset_simulation(sim_id: str) -> dict[str, Any]:
     return {"ok": True}
 
 
+_world_model_ref: list[Any] = []
+
+
+def set_world_model(world_model: Any) -> None:
+    """main.py registers the singleton here for debug endpoints."""
+    _world_model_ref.clear()
+    _world_model_ref.append(world_model)
+
+
 @app.get("/debug/reset_belief")
 async def debug_reset_belief() -> dict[str, Any]:
-    return {"ok": True}
+    # P-1 (RISKS.md): converged system shows no agent activity during demo.
+    # Reset the error map to 0.5 everywhere -> orchestrator re-spawns within
+    # one 2s cycle. Demo-prep only.
+    wm = _world_model_ref[0] if _world_model_ref else None
+    if wm is None:
+        raise HTTPException(status_code=503, detail="world model not ready")
+    wm.belief.prediction_error_map[:] = 0.5
+    wm.belief.confidence_map[:] = 0.5
+    return {"ok": True, "reset": "prediction_error_map=0.5"}
 
 
 @app.get("/debug/trigger_agent")
 async def debug_trigger_agent() -> dict[str, Any]:
-    return {"ok": True}
+    wm = _world_model_ref[0] if _world_model_ref else None
+    if wm is None:
+        raise HTTPException(status_code=503, detail="world model not ready")
+    wm.belief.prediction_error_map[0:8, 0:8] = 0.8  # upper_left region
+    return {"ok": True, "boosted": "upper_left=0.8"}
 
 
 @app.get("/sim/{sim_id}/stream")

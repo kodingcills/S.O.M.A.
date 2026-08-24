@@ -107,12 +107,14 @@ def test_health_reflects_state_mutation():
 
 def test_events_endpoint_since_filter():
     init_db()
-    # 2ms gaps guarantee distinct timestamps (same-tick writes would make
-    # any midpoint boundary ambiguous).
+    # Asymmetric gaps keep the midpoint far from BOTH neighbors: the filter
+    # is strict `>`, so `second` must land in the LATER half (first gap
+    # longer). Equal 2ms gaps made that a coin flip on scheduler jitter
+    # (observed ~1/5 failures in isolation).
     write_event("system_ready", marker="first")
-    time.sleep(0.002)
+    time.sleep(0.050)
     write_event("system_ready", marker="second")
-    time.sleep(0.002)
+    time.sleep(0.005)
     write_event("system_ready", marker="third")
 
     all_events = event_log.get_events_since(0.0)
@@ -151,8 +153,34 @@ def test_stub_endpoints():
             "belief_state": None,
         }
         assert client.post("/simulation/primary/reset").json() == {"ok": True}
-        assert client.get("/debug/reset_belief").json() == {"ok": True}
-        assert client.get("/debug/trigger_agent").json() == {"ok": True}
+
+
+def test_debug_endpoints_require_world_model():
+    from types import SimpleNamespace
+
+    import pytest
+
+    from backend.api import set_world_model
+    from backend.belief_state import BeliefState
+
+    with TestClient(app) as client:
+        r = client.get("/debug/reset_belief")
+        assert r.status_code == 503
+
+        wm = SimpleNamespace(belief=BeliefState())
+        set_world_model(wm)
+        try:
+            r = client.get("/debug/reset_belief")
+            assert r.status_code == 200
+            assert wm.belief.prediction_error_map.mean() == pytest.approx(0.5)
+
+            r = client.get("/debug/trigger_agent")
+            assert r.status_code == 200
+            assert wm.belief.prediction_error_map[0:8, 0:8].mean() == pytest.approx(0.8)
+        finally:
+            from backend import api as api_module
+
+            api_module._world_model_ref.clear()
 
 
 def test_mjpeg_stream_stub_returns_404():
