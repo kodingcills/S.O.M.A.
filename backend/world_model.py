@@ -22,6 +22,7 @@ Imports: event_log, belief_state, prediction_net per MODULE IMPORT RULES.
 from __future__ import annotations
 
 import asyncio
+import threading
 import random
 from pathlib import Path
 
@@ -61,13 +62,22 @@ class WorldModel:
     would silently operate on garbage.
     """
 
-    def __init__(self, model_path: str | Path = "models/prediction_network.pt") -> None:
-        self.model_path = Path(model_path)
+    def __init__(self, model_path: str | Path | None = None) -> None:
+        # Anchor to module dir — CWD differs between `uvicorn backend.main:app`
+        # (repo root) and `uvicorn main:app` (backend/). Silent wrong-cwd load
+        # would boot on random weights with no error.
+        self.model_path = (
+            Path(model_path) if model_path is not None
+            else Path(__file__).resolve().parent / "models" / "prediction_network.pt"
+        )
         self.network = PredictionNetwork()
         self.belief = BeliefState()
 
         self._predict_lock = asyncio.Lock()    # held ~ms per predict call
         self._finetune_lock = asyncio.Lock()   # held for entire fine_tune()
+        # threading mirror of _predict_lock: update() runs sync (MPC thread),
+        # asyncio.Lock cannot be acquired from sync context.
+        self._training_guard = threading.Lock()
 
         # (state_806, action_12, next_806) tuples, FIFO eviction at REPLAY_MAX
         self._replay_buffer: list[tuple[np.ndarray, np.ndarray, np.ndarray]] = []
@@ -113,7 +123,12 @@ class WorldModel:
         from predicted-vs-actual tissue, folds the observation into the
         belief, and files the transition into the replay buffer.
         """
-        predicted = self.network.predict(state_vec, action_vec)
+        if not self._training_guard.acquire(blocking=False):
+            return  # fine-tune in flight: predict would flip train->eval mid-loop
+        try:
+            predicted = self.network.predict(state_vec, action_vec)
+        finally:
+            self._training_guard.release()
         actual_integrity = next_state_vec[0:256].reshape(16, 16)
         self.belief.update_prediction_error(predicted.tissue, actual_integrity)
         self.belief.update_from_observation(next_state_vec)
@@ -137,7 +152,12 @@ class WorldModel:
         """
         async with self._finetune_lock:
             async with self._predict_lock:
-                loss = await asyncio.to_thread(self._fine_tune_sync, new_samples, epochs)
+                # threading.Lock is fine across await (same-task release);
+                # update() checks it non-blocking from the MPC path.
+                with self._training_guard:
+                    loss = await asyncio.to_thread(
+                        self._fine_tune_sync, new_samples, epochs
+                    )
 
             self.belief.world_model_version += 1
 
