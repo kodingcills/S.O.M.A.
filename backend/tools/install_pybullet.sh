@@ -5,6 +5,8 @@
 # colliding with SDK _stdio.h fdopen declaration -> "error: expected identifier".
 # Patch: add !defined(__APPLE__) guard. Verified working: pybullet 3.2.5, arm64, Xcode 16.
 set -euo pipefail
+REPO="$(cd "$(dirname "$0")/../.." && pwd)"
+PY="$REPO/.venv/bin/python"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 uv pip download pybullet==3.2.5 --no-deps -d "$WORK" 2>/dev/null \
@@ -16,6 +18,6 @@ sed -i '' 's/#ifndef fdopen$/#if !defined(fdopen) \&\& !defined(__APPLE__)/' \
   examples/ThirdPartyLibs/zlib/zutil.h
 grep -q "!defined(__APPLE__)" examples/ThirdPartyLibs/zlib/zutil.h
 cd "$WORK"
-uv pip install "setuptools<66" wheel
-uv pip install --no-build-isolation ./pybullet-3.2.5
-uv run python -c "import pybullet; print('PYBULLET OK api', pybullet.getAPIVersion())"
+uv pip install --python "$PY" "setuptools<66" wheel
+uv pip install --python "$PY" --no-build-isolation ./pybullet-3.2.5
+"$PY" -c "import pybullet; print('PYBULLET OK api', pybullet.getAPIVersion())"
