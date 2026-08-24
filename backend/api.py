@@ -131,9 +131,45 @@ async def events_for_agent(agent_id: str) -> list[dict[str, Any]]:
 
 @app.get("/detail/{sim_id}")
 async def detail(sim_id: str) -> dict[str, Any]:
-    # Placeholder until SimulationState + BeliefState exist (Task 1.9+).
-    # Real impl reads both back-to-back with NO await between (atomicity).
-    return {"simulation_state": None, "belief_state": None}
+    env = _env_registry.get(sim_id)
+    wm = _world_model_ref[0] if _world_model_ref else None
+    if env is None or wm is None:
+        raise HTTPException(status_code=404, detail=f"unknown sim_id '{sim_id}'")
+
+    # ATOMICITY (ARCHITECTURE.md): both reads are in-memory; NO await between
+    # them so the panel's heatmap and sim view reflect one logical timestep.
+    vec = env.get_state_vector()
+    belief_snapshot = wm.belief.snapshot()
+
+    n = float(vec[778]) > 0.5
+    vessels = [
+        {
+            "col": float(getattr(v, "col", 0.0)),
+            "row": float(getattr(v, "row", 0.0)),
+            "radius": float(getattr(v, "radius_workspace", 0.0)) / 0.2 * 15.0,
+            "damaged": bool(getattr(v, "damaged", False)),
+        }
+        for v in getattr(env, "vessels", [])
+    ]
+    simulation_state = {
+        "step_id": int(getattr(env, "_step_count", 0)),
+        "simulation_id": sim_id,
+        "tissue_integrity": vec[0:256].reshape(16, 16).tolist(),
+        "tissue_vascularity": vec[256:512].reshape(16, 16).tolist(),
+        "bleeding_mask": vec[512:768].reshape(16, 16).astype(bool).tolist(),
+        "vessels": vessels,
+        "ee_position": vec[768:771].tolist(),
+        "gripper_state": float(vec[775]),
+        "surgical_target": {
+            "position": vec[776:778].tolist(),
+            "reached": n,
+        },
+        "active_dof": int(wm.belief.active_dof),
+        "task_complete": bool(n),
+        "task_failed": bool(getattr(env, "_task_failed", False)),
+        "reward": float(getattr(env, "_last_reward", 0.0)),
+    }
+    return {"simulation_state": simulation_state, "belief_state": belief_snapshot}
 
 
 @app.post("/simulation/{sim_id}/reset")

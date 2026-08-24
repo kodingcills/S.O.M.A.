@@ -149,11 +149,54 @@ def test_events_agent_endpoint_subtree():
 
 def test_stub_endpoints():
     with TestClient(app) as client:
-        assert client.get("/detail/primary").json() == {
-            "simulation_state": None,
-            "belief_state": None,
-        }
         assert client.post("/simulation/primary/reset").json() == {"ok": True}
+
+
+def test_detail_unknown_sim_returns_404():
+    with TestClient(app) as client:
+        assert client.get("/detail/primary").status_code == 404
+
+
+def test_detail_atomic_shape_with_registered_sim():
+    import asyncio
+    from types import SimpleNamespace
+
+    from backend.api import set_env_registry, set_world_model
+    from backend.belief_state import BeliefState
+    from backend.simulation import SimConfig, create_env
+
+    async def _setup():
+        env = await create_env(SimConfig(seed=42, dof=1, n_vessels=2))
+        env.reset()
+        return env
+
+    env = asyncio.run(_setup())
+    belief = BeliefState()
+    belief.update_from_observation(env.get_state_vector())
+    set_env_registry({"primary": env})
+    set_world_model(SimpleNamespace(belief=belief))
+    try:
+        with TestClient(app) as client:
+            r = client.get("/detail/primary")
+            assert r.status_code == 200
+            body = r.json()
+            sim = body["simulation_state"]
+            bel = body["belief_state"]
+            assert len(sim["tissue_integrity"]) == 16
+            assert len(sim["tissue_integrity"][0]) == 16
+            assert isinstance(sim["bleeding_mask"][0][0], bool)
+            assert len(sim["vessels"]) == len(env.vessels)
+            assert sim["surgical_target"]["position"] is not None
+            assert set(bel.keys()) >= {
+                "global_mean_error", "regional_errors",
+                "world_model_version", "error_map",
+            }
+    finally:
+        from backend import api as api_module
+
+        api_module._env_registry.clear()
+        api_module._world_model_ref.clear()
+        asyncio.run(asyncio.to_thread(env.close))
 
 
 def test_debug_endpoints_require_world_model():
