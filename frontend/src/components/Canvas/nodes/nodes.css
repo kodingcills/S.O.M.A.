@@ -1,0 +1,43 @@
+/* SOMA canvas node styles — Task 2.2 (INTERFACE.md "NODE COMPONENTS").
+   Keyframes/classes only; layout values stay inline in components.
+   NO @xyflow/react CSS here — that import lives exactly once in App.tsx. */
+
+@keyframes nodeSpawn {
+  0%   { transform: scale(0);    opacity: 0; }
+  70%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1.0);  opacity: 1; }
+}
+.node-spawn { animation: nodeSpawn 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+@keyframes nodePulse {
+  0%, 100% { box-shadow: none; }
+  50%      { box-shadow: 0 0 8px var(--node-color); }
+}
+.node-active { animation: nodePulse 2000ms ease-in-out infinite; }
+
+/* Completion flash: border white → status color over 400ms */
+.node-completing { border-color: #FFFFFF !important; transition: none; }
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+.status-dot-pulsing { animation: dotPulse 1000ms ease-in-out infinite; }
+
+/* Particle burst: 8 divs radiate from node center, fade over 400ms */
+@keyframes particleFly {
+  0%   { transform: translate(-50%, -50%) translate(0, 0) scale(1);
+         opacity: 1; }
+  100% { transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.4);
+         opacity: 0; }
+}
+.particle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particleFly 400ms ease-out forwards;
+}
