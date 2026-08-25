@@ -37,6 +37,7 @@ class FakeDriver:
         self.seed = seed
         self.step_count = 0
         self.episode_generation = 1
+        self.instrumented = SimpleNamespace(name="instrumented")
         self._observation = {
             "map": np.zeros((99, 4), dtype=np.int32),
             "stats": np.zeros(47, dtype=np.float32),
@@ -99,6 +100,8 @@ def test_lifespan_registers_seeded_independent_craftax_drivers(monkeypatch) -> N
     load_calls: list[None] = []
     events: list[str] = []
     graph_inputs: list[tuple[FakeWorldModel, SimpleNamespace]] = []
+    runner_calls: list[tuple[FakeDriver, SimpleNamespace, SimpleNamespace]] = []
+    state_machines: list[SimpleNamespace] = []
 
     def load_once() -> tuple[SimpleNamespace, None, None]:
         load_calls.append(None)
@@ -110,10 +113,20 @@ def test_lifespan_registers_seeded_independent_craftax_drivers(monkeypatch) -> N
         graph_inputs.append((world_model, drivers))
         return SimpleNamespace()
 
+    async def capture_runner(driver, instrumented, state_machine, n_audit_every=10):
+        runner_calls.append((driver, instrumented, state_machine))
+
+    def make_state_machine() -> SimpleNamespace:
+        machine = SimpleNamespace(name="state-machine")
+        state_machines.append(machine)
+        return machine
+
     monkeypatch.setattr(main, "load_simulus_agent", load_once)
     monkeypatch.setattr(main, "CraftaxDriver", FakeDriver)
     monkeypatch.setattr(main, "WorldModel", FakeWorldModel)
     monkeypatch.setattr(main, "build_soma_graph", capture_graph)
+    monkeypatch.setattr(main, "run_craftax_loop", capture_runner)
+    monkeypatch.setattr(main, "SomaStateMachine", make_state_machine)
     monkeypatch.setattr(main, "init_rerun", lambda: None)
     monkeypatch.setattr(main, "write_event", lambda event_type, **_: events.append(event_type))
 
@@ -140,3 +153,8 @@ def test_lifespan_registers_seeded_independent_craftax_drivers(monkeypatch) -> N
             (registered_world_model, SimpleNamespace(primary=primary, comparison=comparison))
         ]
         assert "system_ready" in events
+        assert len(runner_calls) == 1
+        runner_driver, runner_instrumented, runner_machine = runner_calls[0]
+        assert runner_driver is primary
+        assert runner_instrumented is primary.instrumented
+        assert runner_machine in state_machines

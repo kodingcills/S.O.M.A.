@@ -20,6 +20,8 @@ from backend.event_log import init_db, set_broadcast_callback, write_event
 from backend.orchestrator import build_soma_graph
 from backend.rerun_logger import init as init_rerun
 from backend.simulus.runtime import load_simulus_agent
+from backend.soma.craftax_runner import run_craftax_loop
+from backend.soma.state_machine import SomaStateMachine
 from backend.world_model import WorldModel
 
 
@@ -47,6 +49,7 @@ async def _soma_lifespan(_: FastAPI):
     set_broadcast_callback(manager.broadcast)
     init_rerun()
 
+    runner_task: asyncio.Task[None] | None = None
     belief_task: asyncio.Task[None] | None = None
     try:
         agent, _config, _device = await asyncio.to_thread(load_simulus_agent)
@@ -83,11 +86,20 @@ async def _soma_lifespan(_: FastAPI):
         )
         belief_task = asyncio.create_task(_belief_snapshot_task(world_model))
         write_event("system_ready")
+        # CRAFTAX RUNNER: the only place the continuous episode loop starts.
+        runner_task = asyncio.create_task(
+            run_craftax_loop(
+                primary_driver,
+                primary_driver.instrumented,
+                SomaStateMachine(),
+            )
+        )
         yield
     finally:
-        if belief_task is not None:
-            belief_task.cancel()
-            await asyncio.gather(belief_task, return_exceptions=True)
+        for task in (runner_task, belief_task):
+            if task is not None:
+                task.cancel()
+        await asyncio.gather(runner_task, belief_task, return_exceptions=True)
         set_broadcast_callback(None)
         STATE.update(
             {
