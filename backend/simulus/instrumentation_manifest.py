@@ -19,6 +19,11 @@ from backend.simulus import (
     VENDORED_COMMIT,
 )
 from backend.simulus.instrumentation import InstrumentedActionOutput
+from backend.soma.audit import REGRET_THRESHOLD
+
+
+class CalibrationBlock(TypedDict):
+    regret_threshold: float
 
 
 class InstrumentationManifest(TypedDict):
@@ -29,6 +34,7 @@ class InstrumentationManifest(TypedDict):
     symbolic_preprocessing: list[dict[str, str | list[int]]]
     artifacts: dict[str, str | bool]
     world_model: dict[str, int | dict[str, int]]
+    calibration: CalibrationBlock
 
 
 @dataclass(frozen=True, slots=True)
@@ -128,6 +134,9 @@ def build_instrumentation_manifest(
             "context_length": int(wm.context_length),
             "action_count": int(output.controller_probs.shape[-1]),
             "embedding_dim": int(output.b_ua.shape[-1]),
+        },
+        "calibration": {
+            "regret_threshold": REGRET_THRESHOLD,
         },
     }
 

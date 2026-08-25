@@ -411,7 +411,6 @@ def test_t10_manifest_records_live_instrumentation_contract(simulus, tmp_path):
         assert tensor_shapes[f"curiosity_member_probs.{modality}"] == list(
             probabilities.shape
         )
-
     assert decoded["action_conditioning"]["output_field"] == "b_ua"
     assert decoded["action_conditioning"]["prediction_field"] == "g_ua"
     assert decoded["jsd_pooling"] == {
@@ -441,6 +440,33 @@ def test_t10_manifest_records_live_instrumentation_contract(simulus, tmp_path):
     assert decoded["world_model"]["embedding_dim"] == output.b_ua.shape[-1]
     assert destination.read_bytes() == first_bytes
     assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_manifest_has_calibration_block(simulus, tmp_path):
+    import json
+
+    from backend.soma.audit import REGRET_THRESHOLD
+    from backend.simulus.instrumentation_manifest import (
+        PreprocessingEvidence,
+        build_instrumentation_manifest,
+        write_instrumentation_manifest,
+    )
+
+    output = simulus["inst"].evaluate_action(
+        simulus["model_obs"], simulus["prior_context"],
+        simulus["recurrent_state"], 3,
+    )
+    manifest = build_instrumentation_manifest(
+        simulus["agent"],
+        output,
+        PreprocessingEvidence(simulus["env"].observation(), simulus["model_obs"]),
+    )
+    destination = tmp_path / "instrumentation_manifest.json"
+    write_instrumentation_manifest(destination, manifest)
+
+    decoded = json.loads(destination.read_text())
+    assert decoded["calibration"]["regret_threshold"] == pytest.approx(0.05)
+    assert decoded["calibration"]["regret_threshold"] == pytest.approx(REGRET_THRESHOLD)
 
 
 def test_t11_instrumented_indices_are_exact_craftax_action_indices(simulus):
