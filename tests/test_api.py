@@ -1,58 +1,112 @@
-"""Tests for backend/api.py — SOMA Task 1.1.
+from __future__ import annotations
 
-Named tests per ARCHITECTURE.md TESTING PROTOCOL:
-  test_ws_replay_connect           — WEBSOCKET REPLAY INVARIANT (C6) — MUST PASS
-  test_health_schema               — /health response contract
-  test_events_endpoint_since_filter — REST fallback polling contract
-  test_events_agent_endpoint_subtree — node-click drill-down contract
-  test_mjpeg_stream_stub_404       — intentional stub until Task 2.x
-"""
-
-import asyncio
 import time
+from types import SimpleNamespace
 
-from backend import event_log
-from backend.api import STATE, ConnectionManager, app
-from backend.event_log import init_db, write_event
+import numpy as np
+import pytest
 from fastapi.testclient import TestClient
 
+from backend import api as api_module
+from backend import event_log
+from backend.api import (
+    STATE,
+    ConnectionManager,
+    app,
+    set_env_registry,
+    set_world_model,
+)
+from backend.belief_state import BeliefState
+from backend.event_log import init_db, write_event
 
-# ---------------------------------------------------------------------------
-# test:api:ws_replay — WEBSOCKET REPLAY INVARIANT (C6)
-# ---------------------------------------------------------------------------
 
-def test_ws_replay_connect():
-    # Seed history BEFORE connecting: a late-joining client must receive the
-    # full replay burst (type=event dicts) before any live traffic.
+class DeadSocketError(RuntimeError):
+    pass
+
+
+class FakeCraftaxEnv:
+    def __init__(self) -> None:
+        self.done = True
+        self.last_reward = 1.25
+        self.reset_calls = 0
+
+    def observation(self) -> dict[str, np.ndarray]:
+        return {
+            "token_2d": np.arange(396, dtype=np.int32).reshape(99, 4),
+            "vector": np.arange(47, dtype=np.float32),
+            "token": np.array([3], dtype=np.int32),
+        }
+
+    def raw_observation(self) -> np.ndarray:
+        return np.arange(8268, dtype=np.float32)
+
+    def achievements(self) -> np.ndarray:
+        values = np.zeros(67, dtype=bool)
+        values[[0, 2, 5]] = True
+        return values
+
+    def game_stats(self) -> dict[str, float]:
+        return {
+            "health": 7.0,
+            "drink": 6.0,
+            "food": 5.0,
+            "energy": 4.0,
+            "light_level": 3.0,
+            "is_sleeping": 0.0,
+            "is_resting": 1.0,
+        }
+
+
+class FakeCraftaxDriver:
+    def __init__(self, step_count: int = 17) -> None:
+        self.env = FakeCraftaxEnv()
+        self.step_count = step_count
+
+    def reset(self) -> None:
+        self.env.reset_calls += 1
+        self.step_count = 0
+        self.env.done = False
+        self.env.last_reward = 0.0
+
+
+@pytest.fixture
+def registered_runtime() -> tuple[FakeCraftaxDriver, FakeCraftaxDriver, BeliefState]:
+    primary = FakeCraftaxDriver()
+    comparison = FakeCraftaxDriver(step_count=9)
+    belief = BeliefState(active_dof=4)
+    belief.set_jsd_error_map(np.full((16, 16), 0.2, dtype=np.float32))
+    set_env_registry({"primary": primary, "comparison": comparison})
+    set_world_model(SimpleNamespace(belief=belief))
+    yield primary, comparison, belief
+    api_module._env_registry.clear()
+    api_module._world_model_ref.clear()
+
+
+def test_ws_replay_connect() -> None:
     init_db()
-    for i in range(6):
-        write_event("system_ready", seq=i)
+    for index in range(6):
+        write_event("system_ready", seq=index)
 
-    with TestClient(app) as client:
-        with client.websocket_connect("/ws/events") as ws:
-            messages = [ws.receive_json() for _ in range(6)]
+    with TestClient(app) as client, client.websocket_connect("/ws/events") as ws:
+        messages = [ws.receive_json() for _ in range(6)]
 
-    assert all(m["type"] == "event" for m in messages)
-    assert [m["data"]["payload"]["seq"] for m in messages] == [0, 1, 2, 3, 4, 5]
-    assert all(m["data"]["event_type"] == "system_ready" for m in messages)
+    assert [message["data"]["payload"]["seq"] for message in messages] == list(range(6))
+    assert all(message["type"] == "event" for message in messages)
 
 
-async def test_connection_manager_broadcast_removes_dead_clients():
-    # Live delivery requires write_event to run inside the app's event loop
-    # (true for every runtime component; a sync test thread has no loop, so
-    # an end-to-end live test can't drive it). Test the manager directly.
-    manager = ConnectionManager()
-    sent: list[dict] = []
+async def test_connection_manager_broadcast_removes_dead_clients() -> None:
+    sent: list[dict[str, str]] = []
 
     class FakeWebSocket:
-        def __init__(self, sink: list[dict] | None):
+        def __init__(self, sink: list[dict[str, str]] | None) -> None:
             self._sink = sink
 
-        async def send_json(self, message: dict) -> None:
+        async def send_json(self, message: dict[str, str]) -> None:
             if self._sink is None:
-                raise RuntimeError("socket is dead")
+                raise DeadSocketError
             self._sink.append(message)
 
+    manager = ConnectionManager()
     healthy = FakeWebSocket(sent)
     dead = FakeWebSocket(None)
     manager.active_connections = [healthy, dead]
@@ -63,74 +117,58 @@ async def test_connection_manager_broadcast_removes_dead_clients():
     assert manager.active_connections == [healthy]
 
 
-# ---------------------------------------------------------------------------
-# test:api:health_schema
-# ---------------------------------------------------------------------------
-
-def test_health_schema():
-    with TestClient(app) as client:
-        response = client.get("/health")
+def test_health_schema_is_byte_compatible() -> None:
+    original = dict(STATE)
+    STATE.update(
+        status="starting",
+        world_model_version=0,
+        global_error=0.0,
+        active_agents=0,
+        primary_sim_step=0,
+        training_progress=None,
+    )
+    try:
+        with TestClient(app) as client:
+            response = client.get("/health")
+    finally:
+        STATE.clear()
+        STATE.update(original)
 
     assert response.status_code == 200
-    body = response.json()
-    assert set(body.keys()) == {
-        "status",
-        "world_model_version",
-        "global_error",
-        "active_agents",
-        "primary_sim_step",
-        "training_progress",
-    }
-    assert body["status"] == "starting"
-    assert body["world_model_version"] == 0
-    assert body["global_error"] == 0.0
-    assert body["active_agents"] == 0
-    assert body["primary_sim_step"] == 0
-    assert body["training_progress"] is None
+    assert response.content == (
+        b'{"status":"starting","world_model_version":0,"global_error":0.0,'
+        b'"active_agents":0,"primary_sim_step":0,"training_progress":null}'
+    )
 
 
-def test_health_reflects_state_mutation():
-    # Later tasks mutate the module-level STATE dict; /health must follow.
+def test_health_reflects_state_mutation() -> None:
     original = dict(STATE)
     try:
         STATE["active_agents"] = 2
         with TestClient(app) as client:
-            body = client.get("/health").json()
-        assert body["active_agents"] == 2
+            assert client.get("/health").json()["active_agents"] == 2
     finally:
         STATE.clear()
         STATE.update(original)
 
 
-# ---------------------------------------------------------------------------
-# test:api:events_since_filter
-# ---------------------------------------------------------------------------
-
-def test_events_endpoint_since_filter():
+def test_events_endpoint_since_filter() -> None:
     init_db()
-    # Asymmetric gaps keep the midpoint far from BOTH neighbors: the filter
-    # is strict `>`, so `second` must land in the LATER half (first gap
-    # longer). Equal 2ms gaps made that a coin flip on scheduler jitter
-    # (observed ~1/5 failures in isolation).
     write_event("system_ready", marker="first")
     time.sleep(0.050)
     write_event("system_ready", marker="second")
     time.sleep(0.005)
     write_event("system_ready", marker="third")
-
     all_events = event_log.get_events_since(0.0)
-    assert len(all_events) == 3
     midpoint = (all_events[0]["timestamp"] + all_events[2]["timestamp"]) / 2
 
     with TestClient(app) as client:
         response = client.get("/events", params={"since": midpoint})
 
-    assert response.status_code == 200
-    markers = [e["payload"]["marker"] for e in response.json()]
-    assert markers == ["second", "third"]
+    assert [event["payload"]["marker"] for event in response.json()] == ["second", "third"]
 
 
-def test_events_agent_endpoint_subtree():
+def test_events_agent_endpoint_subtree() -> None:
     init_db()
     write_event("agent_spawned", agent_id="exp_x", parent_id="orchestrator")
     write_event("agent_step", agent_id="exp_y", parent_id="exp_x", step=1)
@@ -138,141 +176,78 @@ def test_events_agent_endpoint_subtree():
     with TestClient(app) as client:
         response = client.get("/events/exp_x")
 
+    assert {event["agent_id"] for event in response.json()} == {"exp_x", "exp_y"}
+
+
+@pytest.mark.parametrize("sim_id", ["primary", "comparison"])
+def test_detail_exposes_only_observed_craftax_values(
+    registered_runtime: tuple[FakeCraftaxDriver, FakeCraftaxDriver, BeliefState],
+    sim_id: str,
+) -> None:
+    _, _, belief = registered_runtime
+
+    with TestClient(app) as client:
+        response = client.get(f"/detail/{sim_id}")
+
     assert response.status_code == 200
-    agent_ids = {e["agent_id"] for e in response.json()}
-    assert agent_ids == {"exp_x", "exp_y"}
+    body = response.json()
+    simulation = body["simulation_state"]
+    assert set(simulation) == {
+        "simulation_id", "token_2d", "vector", "direction", "raw_observation",
+        "achievements_count", "stats", "step", "done", "reward", "active_dof",
+    }
+    assert len(simulation["token_2d"]) == 99
+    assert len(simulation["token_2d"][0]) == 4
+    assert len(simulation["vector"]) == 47
+    assert len(simulation["raw_observation"]) == 8268
+    assert simulation["direction"] == [3]
+    assert simulation["achievements_count"] == 3
+    assert simulation["active_dof"] == belief.active_dof
+    assert set(simulation["stats"]) == {
+        "health", "drink", "food", "energy", "light", "is_sleeping", "is_resting",
+    }
+    assert body["belief_state"] == belief.snapshot()
+    assert not {"tissue_integrity", "tissue_vascularity", "bleeding_mask", "vessels"} & set(simulation)
 
 
-# ---------------------------------------------------------------------------
-# Stubs: real implementations arrive in later tasks
-# ---------------------------------------------------------------------------
-
-def test_stub_endpoints():
+def test_detail_unknown_sim_returns_404() -> None:
     with TestClient(app) as client:
-        assert client.post("/simulation/primary/reset").json() == {"ok": True}
+        assert client.get("/detail/unknown").status_code == 404
 
 
-def test_detail_unknown_sim_returns_404():
-    with TestClient(app) as client:
-        assert client.get("/detail/primary").status_code == 404
-
-
-def test_detail_atomic_shape_with_registered_sim():
-    import asyncio
-    from types import SimpleNamespace
-
-    from backend.api import set_env_registry, set_world_model
-    from backend.belief_state import BeliefState
-    from backend.simulation import SimConfig, create_env
-
-    async def _setup():
-        env = await create_env(SimConfig(seed=42, dof=1, n_vessels=2))
-        env.reset()
-        return env
-
-    env = asyncio.run(_setup())
-    belief = BeliefState()
-    belief.update_from_observation(env.get_state_vector())
-    set_env_registry({"primary": env})
-    set_world_model(SimpleNamespace(belief=belief))
-    try:
-        with TestClient(app) as client:
-            r = client.get("/detail/primary")
-            assert r.status_code == 200
-            body = r.json()
-            sim = body["simulation_state"]
-            bel = body["belief_state"]
-            assert len(sim["tissue_integrity"]) == 16
-            assert len(sim["tissue_integrity"][0]) == 16
-            assert isinstance(sim["bleeding_mask"][0][0], bool)
-            assert len(sim["vessels"]) == len(env.vessels)
-            assert sim["surgical_target"]["position"] is not None
-            assert set(bel.keys()) >= {
-                "global_mean_error", "regional_errors",
-                "world_model_version", "error_map",
-            }
-    finally:
-        from backend import api as api_module
-
-        api_module._env_registry.clear()
-        api_module._world_model_ref.clear()
-        asyncio.run(asyncio.to_thread(env.close))
-
-
-def test_debug_endpoints_require_world_model():
-    from types import SimpleNamespace
-
-    import pytest
-
-    from backend.api import set_world_model
-    from backend.belief_state import BeliefState
+def test_reset_operates_on_registered_driver(
+    registered_runtime: tuple[FakeCraftaxDriver, FakeCraftaxDriver, BeliefState],
+) -> None:
+    primary, _, _ = registered_runtime
 
     with TestClient(app) as client:
-        r = client.get("/debug/reset_belief")
-        assert r.status_code == 503
+        response = client.post("/simulation/primary/reset")
 
-        wm = SimpleNamespace(belief=BeliefState())
-        set_world_model(wm)
-        try:
-            r = client.get("/debug/reset_belief")
-            assert r.status_code == 200
-            assert wm.belief.prediction_error_map.mean() == pytest.approx(0.5)
-
-            r = client.get("/debug/trigger_agent")
-            assert r.status_code == 200
-            assert wm.belief.prediction_error_map[0:8, 0:8].mean() == pytest.approx(0.8)
-        finally:
-            from backend import api as api_module
-
-            api_module._world_model_ref.clear()
+    assert response.json() == {"ok": True}
+    assert primary.env.reset_calls == 1
+    assert primary.step_count == 0
 
 
-def test_mjpeg_stream_stub_returns_404():
+def test_debug_endpoints_override_real_jsd_map(
+    registered_runtime: tuple[FakeCraftaxDriver, FakeCraftaxDriver, BeliefState],
+) -> None:
+    _, _, belief = registered_runtime
+    belief.regional_override = {name: 0.1 for name in belief.get_regional_errors()}
+
     with TestClient(app) as client:
-        assert client.get("/sim/primary/stream").status_code == 404
+        assert client.get("/debug/reset_belief").status_code == 200
+        assert belief.prediction_error_map.mean() == pytest.approx(0.5)
+        assert belief.regional_override is None
+        assert client.get("/debug/trigger_agent").status_code == 200
+
+    assert belief.prediction_error_map[0:8, 0:8].mean() == pytest.approx(0.8)
 
 
-# ---------------------------------------------------------------------------
-# test:api:mjpeg_stream — real PyBullet MJPEG endpoint (Task 2.3)
-# ---------------------------------------------------------------------------
+def test_craftax_stream_is_documented_404(
+    registered_runtime: tuple[FakeCraftaxDriver, FakeCraftaxDriver, BeliefState],
+) -> None:
+    with TestClient(app) as client:
+        response = client.get("/sim/primary/stream")
 
-async def test_mjpeg_generator_real_env_frames():
-    """Direct generator probe: real PyBullet camera produces JPEG frames."""
-    from backend.api import pybullet_frame_generator
-    from backend.simulation import SimConfig, create_env
-
-    env = await create_env(SimConfig(seed=42, dof=1, n_vessels=2))
-    try:
-        frames = []
-        async for chunk in pybullet_frame_generator(env, max_frames=2):
-            frames.append(chunk)
-        assert len(frames) == 2
-        for chunk in frames:
-            assert chunk.startswith(b"--frame\r\nContent-Type: image/jpeg\r\n\r\n")
-            payload = chunk.split(b"\r\n\r\n", 1)[1]
-            assert payload[:2] == b"\xff\xd8", "JPEG SOI marker missing"
-    finally:
-        await asyncio.to_thread(env.close)
-
-
-def test_mjpeg_stream_endpoint_wiring(monkeypatch):
-    """HTTP contract via canned generator — routing/headers/termination."""
-    from backend import api as api_module
-    from backend.api import set_env_registry
-
-    async def canned(env, max_frames: int = 0):
-        yield b"--frame\r\nContent-Type: image/jpeg\r\n\r\n\xff\xd8stub\r\n"
-
-    monkeypatch.setattr(api_module, "pybullet_frame_generator", canned)
-    set_env_registry({"primary": object()})
-    try:
-        with TestClient(app) as client:
-            with client.stream("GET", "/sim/primary/stream") as response:
-                assert response.status_code == 200
-                assert response.headers["content-type"].startswith(
-                    "multipart/x-mixed-replace"
-                )
-                body = b"".join(response.iter_bytes())
-                assert b"--frame" in body and b"\xff\xd8" in body
-    finally:
-        api_module._env_registry.clear()
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Craftax MJPEG stream is unavailable"

@@ -1,104 +1,109 @@
-"""ReactiveAgent — SOMA Task 1.7b.
-
-Greedy surgical policy for the comparison simulation. Spec:
-docs/specs/ORCHESTRATION.md "REACTIVE AGENT" (near-verbatim transcription).
-
-REACTIVE_AGENT_ISOLATION INVARIANT (ARCHITECTURE.md): zero imports from
-world_model, prediction_net, belief_state, orchestrator, anthropic —
-grep-enforced by tests/test_agents_capability_reactive.py. This agent must
-have no access to the world model to be a valid comparison baseline.
-"""
-
 from __future__ import annotations
 
 import asyncio
+from typing import Final
 
 import numpy as np
 
 from backend.event_log import write_event
-from backend.simulation import SurROLTissueEnv, action_to_surrol
+
+NOOP: Final = 0
+LEFT: Final = 1
+RIGHT: Final = 2
+UP: Final = 3
+DOWN: Final = 4
+DO: Final = 5
+SLEEP: Final = 6
+MAKE_WOOD_PICKAXE: Final = 11
+
+MAP_ROWS: Final = 9
+MAP_COLS: Final = 11
+PLAYER_ROW: Final = 4
+PLAYER_COL: Final = 5
+LOW_STAT: Final = 0.25
+WATER_BLOCKS: Final = frozenset({3, 24})
+FOOD_BLOCKS: Final = frozenset({16})
+TABLE_BLOCKS: Final = frozenset({11})
+RESOURCE_BLOCKS: Final = frozenset({3, 4, 5, 8, 9, 10, 16, 21, 22, 23, 24})
 
 
 class ReactiveAgent:
-    """Greedy surgical policy for the comparison simulation.
+    def __init__(self, driver) -> None:
+        self._driver = driver
 
-    Moves directly toward the surgical target. Cauterizes when bleeding.
-    Has no model of vessel locations relative to its approach path.
-    This agent will damage vessels — that is the intended behavior.
+    @staticmethod
+    def _nearest(
+        observation: dict[str, np.ndarray], blocks: frozenset[int]
+    ) -> tuple[int, int, int] | None:
+        map_tokens = observation["token_2d"].reshape(MAP_ROWS, MAP_COLS, 4)
+        positions = np.argwhere(np.isin(map_tokens[:, :, 0], tuple(blocks)))
+        if positions.size == 0:
+            return None
+        distances = np.abs(positions[:, 0] - PLAYER_ROW) + np.abs(
+            positions[:, 1] - PLAYER_COL
+        )
+        row, col = positions[int(np.argmin(distances))]
+        return int(row), int(col), int(distances.min())
 
-    Attributes:
-        _env: The comparison SurRoL environment. Never the primary sim.
-    """
+    @staticmethod
+    def _move(row: int, col: int, distance: int) -> int:
+        if distance <= 1:
+            return DO
+        row_delta = row - PLAYER_ROW
+        col_delta = col - PLAYER_COL
+        if abs(col_delta) >= abs(row_delta):
+            return RIGHT if col_delta > 0 else LEFT
+        return DOWN if row_delta > 0 else UP
 
-    def __init__(self, env: SurROLTissueEnv) -> None:
-        self._env = env  # comparison_sim only. No world_model parameter.
+    def _toward(
+        self, observation: dict[str, np.ndarray], blocks: frozenset[int]
+    ) -> int:
+        nearest = self._nearest(observation, blocks)
+        if nearest is None:
+            return NOOP
+        return self._move(*nearest)
+
+    def _select_action(
+        self,
+        observation: dict[str, np.ndarray],
+        stats: dict[str, float],
+    ) -> int:
+        if stats["energy"] < LOW_STAT:
+            return SLEEP
+        if stats["drink"] < LOW_STAT:
+            return self._toward(observation, WATER_BLOCKS)
+        if stats["food"] < LOW_STAT:
+            return self._toward(observation, FOOD_BLOCKS)
+        vector = observation["vector"]
+        table = self._nearest(observation, TABLE_BLOCKS)
+        if float(vector[0]) >= 1.0 and table is not None:
+            if table[2] <= 1:
+                return MAKE_WOOD_PICKAXE
+            return self._move(*table)
+        return self._toward(observation, RESOURCE_BLOCKS)
+
+    async def run_step(self) -> None:
+        observation = self._driver.current_obs_tokens()
+        stats = self._driver.env.game_stats()
+        action = self._select_action(observation, stats)
+        step = await asyncio.to_thread(self._driver.step_with_action, action)
+        achievements = self._driver.env.achievements()
+        write_event(
+            "simulation_step",
+            sim_id="comparison",
+            step=int(step.step),
+            action=int(step.action),
+            reward=float(step.reward),
+            done=bool(step.done),
+            stats=dict(step.stats),
+            achievements=np.asarray(achievements, dtype=bool).tolist(),
+            n_achievements=int(np.asarray(achievements, dtype=bool).sum()),
+        )
+        if step.done:
+            await asyncio.to_thread(self._driver.reset, 42)
 
     async def run(self) -> None:
-        """Runs the reactive policy indefinitely until task cancellation.
-
-        # LOOP: reactive_policy
-        # Pre-condition:  comparison_sim environment initialized and reset.
-        # Invariant:      simulation_step event written after every env.step().
-        # Termination:    cancelled via task.cancel() on application shutdown.
-        # Yield:          await asyncio.sleep(0.05) releases event loop each step.
-        """
-        await asyncio.to_thread(self._env.reset)
-        step = 0
-
+        await asyncio.to_thread(self._driver.reset, 42)
         while True:
-            state_vec = self._env.get_state_vector()
-            action_vec = self._select_action(state_vec)
-            surrol_action = action_to_surrol(action_vec, self._env.config.dof)
-
-            _, reward, done, _ = await asyncio.to_thread(
-                self._env.step, surrol_action
-            )
-            write_event(
-                "simulation_step",
-                sim_id="comparison",
-                step=step,
-                reward=float(reward),
-                tissue_mean=float(state_vec[0:256].mean()),
-                vessel_damaged=bool(state_vec[779 + 3 :: 4].max() > 0.5),
-                target_reached=bool(state_vec[778] > 0.5),
-                task_failed=bool(getattr(self._env, "_task_failed", False)),
-                active_dof=int(self._env.config.dof),
-                ee_pos=state_vec[768:771].tolist(),
-            )
-            step += 1
-
-            if done:
-                await asyncio.to_thread(self._env.reset)
-                step = 0
-
-            await asyncio.sleep(0.05)  # yield event loop — see LOOP comment
-
-    def _select_action(self, state_vec: np.ndarray) -> np.ndarray:
-        """Greedy action: move toward target; cauterize if bleeding.
-
-        Args:
-            state_vec: Current environment state vector, shape (806,).
-
-        Returns:
-            Action vector shape (12,) with one-hot action mode set.
-        """
-        ee = state_vec[768:770]    # normalized EE x, y
-        tgt = state_vec[776:778]   # normalized target col, row
-        bleed = state_vec[512:768].sum()
-
-        vec = np.zeros(12, dtype=np.float32)
-
-        if bleed > 0:
-            # Cauterize at current position when bleeding is active.
-            vec[9] = 1.0   # CAUTERIZE mode
-            vec[11] = 1.0
-        else:
-            direction = tgt - ee
-            dist = float(np.linalg.norm(direction)) + 1e-8
-            unit = direction / dist
-            speed = 0.1 if dist > 0.1 else 0.05  # slow near target
-            vec[0:2] = unit * speed
-            vec[7] = 1.0   # MOVE mode
-            vec[11] = 0.7 if dist > 0.1 else 0.4
-
-        return vec
+            await self.run_step()
+            await asyncio.sleep(0.05)

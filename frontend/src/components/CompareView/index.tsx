@@ -1,176 +1,91 @@
-import { useEffect, useRef, useState } from 'react'
-import type { SimulationState } from '../../types'
 import { useDetail } from '../../hooks/useDetail'
-import {
-  PANEL_BORDER,
-  STATUS_COMPLETED,
-  SURFACE_BG,
-  TEXT_ERROR,
-  TEXT_SECONDARY,
-} from '../../utils/colors'
-import { betterOf, detectNewDamage, integrityMean } from '../../utils/compareStats'
+import type { EventLogEntry, HealthResponse, SimulationState } from '../../types'
+import { CraftaxMap } from '../DetailView/CraftaxMap'
 
-const MONO = "'JetBrains Mono', ui-monospace, Menlo, monospace"
-const API = import.meta.env.VITE_API_URL as string
-
-interface SideProps {
-  simId: string
-  title: string
-  accent: string
+interface CompareViewProps {
+  events: EventLogEntry[]
+  health: HealthResponse | null
+  active: boolean
 }
 
-function StreamSide({ simId, title, accent }: SideProps) {
-  const [broken, setBroken] = useState(false)
+function StreamSide({ sim, title, mechanism }: { readonly sim: SimulationState | null; readonly title: string; readonly mechanism: string }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px',
-        fontFamily: MONO, fontSize: 11, color: TEXT_SECONDARY,
-        borderLeft: `3px solid ${accent}`, background: SURFACE_BG,
-      }}>
-        {title}
-        <span style={{ marginLeft: 'auto' }}>{simId}</span>
+    <div className="stream-side">
+      <div className="stream-header"><span className="status-dot running" aria-hidden="true" />{title}<span>{mechanism}</span></div>
+      <div className="stream-frame">
+        {sim ? <CraftaxMap tokenGrid={sim.token_2d} direction={sim.direction} /> : <span>Craftax observation unavailable.</span>}
       </div>
-      <div style={{ position: 'relative', flex: 1, minHeight: 0 }}>
-        {!broken ? (
-          <img
-            src={`${API}/sim/${simId}/stream`}
-            alt={`${title} live stream`}
-            onError={() => setBroken(true)}
-            style={{
-              width: '100%', height: '100%', objectFit: 'contain',
-              imageRendering: 'pixelated', display: 'block',
-            }}
-          />
-        ) : (
-          <div style={{
-            height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: TEXT_SECONDARY, fontFamily: MONO, fontSize: 11,
-          }}>
-            stream offline
-          </div>
-        )}
-      </div>
+      {sim && <div className="stream-stats mono"><span>HP {sim.stats.health.toFixed(1)}</span><span>ACH {sim.achievements_count}</span><span>STEP {sim.step}</span></div>}
     </div>
   )
 }
 
-interface ToastState {
-  text: string
-  seq: number
+function signed(value: number, digits = 0): string {
+  const rendered = value.toFixed(digits)
+  return value > 0 ? `+${rendered}` : rendered
 }
 
-export function CompareView() {
-  const primary = useDetail('primary')
-  const comparison = useDetail('comparison')
-  const [toast, setToast] = useState<ToastState | null>(null)
-  const prevVessels = useRef<Record<string, boolean[]>>({})
-
-  useEffect(() => {
-    for (const simId of ['primary', 'comparison'] as const) {
-      const sim: SimulationState | null =
-        simId === 'primary'
-          ? (primary?.simulation_state ?? null)
-          : (comparison?.simulation_state ?? null)
-      if (!sim?.vessels) continue
-      const nextFlags = sim.vessels.map((v) => v.damaged)
-      const prev = prevVessels.current[simId]
-      if (prev && detectNewDamage(prev, nextFlags)) {
-        setToast({
-          text:
-            simId === 'primary'
-              ? 'SOMA: vessel damaged'
-              : 'Reactive agent: vessel damaged',
-          seq: Date.now(),
-        })
-      }
-      prevVessels.current[simId] = nextFlags
-    }
-  }, [primary, comparison])
-
-  useEffect(() => {
-    if (!toast) return
-    const id = setTimeout(() => setToast(null), 3000)
-    return () => clearTimeout(id)
-  }, [toast])
-
+export function CompareView({ events, health, active }: CompareViewProps) {
+  const primary = useDetail(active ? 'primary' : null)
+  const comparison = useDetail(active ? 'comparison' : null)
   const pSim = primary?.simulation_state ?? null
   const cSim = comparison?.simulation_state ?? null
-  const pTissue = pSim ? integrityMean(pSim.tissue_integrity) : 0
-  const cTissue = cSim ? integrityMean(cSim.tissue_integrity) : 0
-  const pDamage = pSim ? pSim.vessels.filter((v) => v.damaged).length : 0
-  const cDamage = cSim ? cSim.vessels.filter((v) => v.damaged).length : 0
 
-  interface StatSpec {
-    label: string
-    a: number
-    b: number
-    mode: 'min' | 'max'
-    fmt: (v: number) => string
-  }
-  const stats: StatSpec[] = [
-    {
-      label: 'STEPS', a: pSim?.step_id ?? 0, b: cSim?.step_id ?? 0,
-      mode: 'min', fmt: (v) => String(v),
-    },
-    {
-      label: 'TISSUE', a: pTissue, b: cTissue, mode: 'max',
-      fmt: (v) => `${v.toFixed(1)}%`,
-    },
-    {
-      label: 'VESSELS', a: pDamage, b: cDamage, mode: 'min',
-      fmt: (v) => (v === 0 ? `${v} ✓` : `${v} ✗`),
-    },
+  const measurements = [
+    { label: 'Achievements', soma: pSim?.achievements_count ?? '—', baseline: cSim?.achievements_count ?? '—', delta: pSim && cSim ? signed(pSim.achievements_count - cSim.achievements_count) : '—' },
+    { label: 'Health', soma: pSim ? pSim.stats.health.toFixed(1) : '—', baseline: cSim ? cSim.stats.health.toFixed(1) : '—', delta: pSim && cSim ? signed(pSim.stats.health - cSim.stats.health, 1) : '—' },
+    { label: 'Reward', soma: pSim ? pSim.reward.toFixed(3) : '—', baseline: cSim ? cSim.reward.toFixed(3) : '—', delta: pSim && cSim ? signed(pSim.reward - cSim.reward, 3) : '—' },
+    { label: 'Steps', soma: pSim?.step ?? '—', baseline: cSim?.step ?? '—', delta: pSim && cSim ? signed(pSim.step - cSim.step) : '—' },
+    { label: 'Model error', soma: health ? health.global_error.toFixed(3) : '—', baseline: 'not applicable', delta: '—' },
   ]
 
+  const timelineEvents = events.filter(event => event.event_type === 'simulation_step').slice(-400)
+  const timelineMarkers = timelineEvents.filter((_, index) => index === 0 || index === timelineEvents.length - 1 || index % 10 === 0)
+  const timelineStart = timelineEvents[0]?.timestamp ?? 0
+  const timelineEnd = timelineEvents[timelineEvents.length - 1]?.timestamp ?? timelineStart
+  const timelineSpan = Math.max(0.001, timelineEnd - timelineStart)
+
   return (
-    <div style={{
-      display: 'flex', flexDirection: 'column', height: '100%',
-      padding: 12, boxSizing: 'border-box', gap: 10, position: 'relative',
-    }}>
-      <div style={{ display: 'flex', gap: 12, flex: 1, minHeight: 0 }}>
-        <StreamSide simId="primary" title="SOMA (MPC + WORLD MODEL)" accent="#34C759" />
-        <StreamSide simId="comparison" title="REACTIVE AGENT (NO WM)" accent={TEXT_ERROR} />
+    <div className="compare-layout">
+      <div className="page-heading"><h1>Compare runs</h1><p>Same Craftax world; different decision mechanisms.</p></div>
+
+      <table className="compare-metrics">
+        <thead><tr><th>Measurement</th><th>SOMA / primary</th><th>Reactive / comparison</th><th>Observed Δ</th></tr></thead>
+        <tbody>{measurements.map(row => (
+          <tr key={row.label}>
+            <td style={{ fontFamily: 'inherit', color: 'var(--text)' }}>{row.label}</td>
+            <td>{row.soma}</td><td>{row.baseline}</td>
+            <td className={row.delta !== '—' && !String(row.delta).startsWith('-') ? 'delta-positive' : ''}>{row.delta}</td>
+          </tr>
+        ))}</tbody>
+      </table>
+
+      <div className="analysis-panel-header" style={{ maxWidth: 880, border: '1px solid var(--border)', borderBottom: 0, borderRadius: '8px 8px 0 0', background: 'var(--panel)' }}>
+        <h2>Aligned live observation</h2><span>primary and comparison environments</span>
+      </div>
+      <div className="streams" style={{ maxWidth: 1180 }}>
+        <StreamSide sim={pSim} title="SOMA" mechanism="MPC + world model" />
+        <StreamSide sim={cSim} title="Reactive baseline" mechanism="greedy · no world model" />
       </div>
 
-      <div style={{
-        display: 'flex', justifyContent: 'center', gap: 28,
-        fontFamily: MONO, fontSize: 11, padding: '8px 0',
-        borderTop: `1px solid ${PANEL_BORDER}`,
-      }}>
-        {stats.map((s) => {
-          const winner = betterOf(s.a, s.b, s.mode)
-          return (
-            <span key={s.label} style={{ color: TEXT_SECONDARY }}>
-              {s.label}:{' '}
-              <span style={{
-                fontWeight: winner === 'a' && s.a !== s.b ? 700 : 400,
-                color: winner === 'a' && s.a !== s.b ? STATUS_COMPLETED : TEXT_SECONDARY,
-              }}>
-                {s.fmt(s.a)}
-              </span>
-              {' vs '}
-              <span style={{
-                fontWeight: winner === 'b' && s.a !== s.b ? 700 : 400,
-                color: winner === 'b' && s.a !== s.b ? STATUS_COMPLETED : TEXT_SECONDARY,
-              }}>
-                {s.fmt(s.b)}
-              </span>
-            </span>
-          )
-        })}
-      </div>
-
-      {toast && (
-        <div style={{
-          position: 'absolute', bottom: 64, left: '50%', transform: 'translateX(-50%)',
-          background: 'rgba(255,59,48,0.1)', border: `1px solid ${TEXT_ERROR}`,
-          color: TEXT_ERROR, fontFamily: MONO, fontSize: 11,
-          padding: '6px 14px', borderRadius: 6,
-        }} data-testid="damage-toast">
-          {toast.text}
+      <section className="timeline" style={{ maxWidth: 1180 }} aria-label="Shared run timeline">
+        <div className="analysis-panel-header" style={{ padding: 0, border: 0 }}><h2>Shared event timeline</h2><span>{timelineEvents.length} recent simulation steps</span></div>
+        <div className="timeline-track">
+          {timelineMarkers.map(event => (
+            <i
+              key={event.id}
+              className="timeline-marker"
+              style={{ left: `${((event.timestamp - timelineStart) / timelineSpan) * 100}%` }}
+              title={`${event.sim_id ?? 'simulation'} step at ${new Date(event.timestamp * 1000).toLocaleTimeString()}`}
+            />
+          ))}
         </div>
-      )}
+        <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--tertiary)', fontSize: 9 }}>
+          <span className="mono">{timelineEvents.length ? new Date(timelineStart * 1000).toLocaleTimeString() : 'No timeline events'}</span>
+          <span>{timelineEvents.length ? `${timelineEvents.length} recorded Craftax steps` : 'No recorded steps in this window'}</span>
+          <span className="mono">{timelineEvents.length ? new Date(timelineEnd * 1000).toLocaleTimeString() : '—'}</span>
+        </div>
+      </section>
     </div>
   )
 }

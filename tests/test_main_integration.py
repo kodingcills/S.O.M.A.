@@ -31,12 +31,13 @@ GOLDEN_SCRIPT = REPO_ROOT / "scripts" / "golden_signal.py"
 @pytest.fixture
 def fast_boot(monkeypatch):
     """Stub the long CPU phases referenced from backend.main's namespace."""
-    monkeypatch.setattr(soma_main, "_count_training_samples", lambda: 999_999)
-    monkeypatch.setattr(
-        soma_main, "train_prediction_network",
-        lambda *a, **k: {"epochs_run": 1, "val_tissue_mse": 0.5},
-    )
-    monkeypatch.setattr(soma_main, "collect_training_data", lambda *a, **k: 0)
+    for _name, _stub in [
+        ("_count_training_samples", lambda: 999_999),
+        ("train_prediction_network", lambda *a, **k: {"epochs_run": 1, "val_tissue_mse": 0.5}),
+        ("collect_training_data", lambda *a, **k: 0),
+    ]:
+        if hasattr(soma_main, _name):
+            monkeypatch.setattr(soma_main, _name, _stub)
 
 
 def _wait_until(predicate, timeout_s: float, poll_s: float = 0.25) -> bool:
@@ -63,10 +64,10 @@ def test_health_lifecycle(fast_boot):
             lambda: client.get("/health").json()["status"] == "ok", 30
         ), f"health never reached 'ok': {client.get('/health').json()}"
 
-        # MPC/reactive loops write simulation_step within seconds of boot.
+        # Craftax substrate writes system_ready immediately and belief_snapshot on interval.
         assert _wait_until(
-            lambda: bool(_events_of_types({"simulation_step"})), 15
-        ), "no simulation_step events within 15s"
+            lambda: bool(_events_of_types({"system_ready"})), 10
+        ), "no system_ready event within 10s"
 
         # belief_snapshot_loop writes its first snapshot immediately.
         assert _wait_until(

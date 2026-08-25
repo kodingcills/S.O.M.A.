@@ -1,303 +1,268 @@
-"""WorldModel — SOMA Task 1.5.
-
-Singleton wrapper owning the PredictionNetwork weights, the BeliefState,
-the replay buffer, and the two asyncio locks that make fine-tuning safe on
-a single event loop.
-
-Spec: docs/specs/WORLD_MODEL.md "WORLD MODEL CLASS", "fine_tune",
-"_fine_tune_sync", "Replay Buffer".
-Invariants:
-  - WORLD MODEL SINGLETON INVARIANT (ARCHITECTURE.md): constructed exactly
-    once, in main.py. No other module may build one.
-  - EVENT LOOP NON-BLOCKING INVARIANT (ARCHITECTURE.md): every CPU-heavy
-    step runs via asyncio.to_thread; _fine_tune_sync is a REGULAR def and
-    must never contain an await ("no running event loop" pitfall).
-  - Lock order contract: fine_tune acquires _finetune_lock THEN
-    _predict_lock. No other path holds both locks, so no deadlock is
-    possible; predict paths take _predict_lock only.
-
-Imports: event_log, belief_state, prediction_net per MODULE IMPORT RULES.
-"""
-
 from __future__ import annotations
 
 import asyncio
-import threading
-import random
-from pathlib import Path
+import math
+import time
+from dataclasses import dataclass
+from typing import Final
 
 import numpy as np
 import torch
-import torch.nn.functional as F
-
-try:
-    import wandb
-except ImportError:  # W&B optional — system operates correctly without it
-    wandb = None
 
 from backend.belief_state import BeliefState
+from backend.craftax_driver import CraftaxDriver, DriverStep, PreActionPrediction
 from backend.event_log import write_event
-from backend.prediction_net import PredictedState, PredictionNetwork
+from backend.simulus import CHECKPOINT_SHA256, MODEL_REVISION
+from backend.simulus.soma_bridge import (
+    achievements_to_dof,
+    jsd_to_error_map,
+    jsd_to_regional_errors,
+)
+from backend.world_model_types import (
+    ActionPrediction,
+    DecisionPoint,
+    DuplicateIngestError,
+    FineTuneSamples,
+    IngestResult,
+    InvalidInstrumentationError,
+    ModelIdentity,
+    OutOfOrderIngestError,
+    PredictionResult,
+    ReadOnlyWorldModelError,
+    RegionError,
+    RegionName,
+    StalePredictionError,
+    SymbolicObservation,
+    TransitionResult,
+)
 
-# Constants (QUICK_REFERENCE.md thresholds table)
-FINE_TUNE_EPOCHS = 5        # targeted update, not full retraining
-FINE_TUNE_BATCH_SIZE = 64   # smaller than initial-training batches
-FINE_TUNE_LR = 1e-4         # 10x smaller than initial lr — avoid overwriting
-REPLAY_MAX = 100_000        # FIFO eviction beyond this
+_ACTION_COUNT: Final = 43
+_REGION_ORDER: Final[tuple[RegionName, ...]] = (
+    "upper_left",
+    "upper_right",
+    "lower_left",
+    "lower_right",
+    "tool_tissue_boundary",
+    "surgical_target_vicinity",
+)
 
-# Loss weights (WORLD_MODEL.md): tissue drives error map + MPC value fn;
-# damage is the safety signal with asymmetric cost.
-LOSS_W_TISSUE = 0.6
-LOSS_W_DAMAGE = 0.3
 
-REPLAY_RATIO_NEW_TO_OLD = 4  # n_old = len(new) * 4 -> 80% old / 20% new mix
+@dataclass(frozen=True, slots=True)
+class _CapturedStep:
+    step: DriverStep
+    probabilities: np.ndarray
+    observation: dict[str, np.ndarray]
+    achievements: np.ndarray
+
+
+def _symbolic(observation: dict[str, np.ndarray]) -> SymbolicObservation:
+    token_2d = np.asarray(observation["token_2d"])
+    vector = np.asarray(observation["vector"])
+    token = np.asarray(observation["token"])
+    return SymbolicObservation(
+        token_2d=tuple(tuple(int(value) for value in row) for row in token_2d),
+        vector=tuple(float(value) for value in vector.reshape(-1)),
+        token=tuple(int(value) for value in token.reshape(-1)),
+    )
+
+
+def _finite_vector(
+    value: np.ndarray | torch.Tensor | None, field: str
+) -> tuple[float, ...]:
+    if value is None:
+        raise InvalidInstrumentationError(field, "missing")
+    result = tuple(float(item) for item in np.asarray(value).reshape(-1))
+    if len(result) != _ACTION_COUNT or not all(math.isfinite(item) for item in result):
+        raise InvalidInstrumentationError(field, "expected 43 finite values")
+    return result
+
+
+def _validate_probabilities(
+    value: np.ndarray | torch.Tensor | None, field: str
+) -> tuple[float, ...]:
+    result = _finite_vector(value, field)
+    if any(item < 0.0 for item in result) or not math.isclose(
+        sum(result), 1.0, rel_tol=1e-5, abs_tol=1e-6
+    ):
+        raise InvalidInstrumentationError(field, "expected a normalized distribution")
+    return result
+
+
+def _finite_scalar(value: float | None, field: str) -> float:
+    if value is None or not math.isfinite(value):
+        raise InvalidInstrumentationError(field, "expected a finite value")
+    return value
+
+
+def _capture_step(driver: CraftaxDriver) -> _CapturedStep:
+    step, probabilities = driver.step_controller()
+    return _CapturedStep(
+        step=step,
+        probabilities=np.asarray(probabilities),
+        observation=driver.current_obs_tokens(),
+        achievements=driver.env.achievements(),
+    )
 
 
 class WorldModel:
-    """Owns network + belief + replay buffer for the whole process.
+    def __init__(self, driver: CraftaxDriver, belief: BeliefState | None = None) -> None:
+        self._driver = driver
+        self.belief = belief if belief is not None else BeliefState()
+        if self.belief.world_model_version != 0:
+            raise InvalidInstrumentationError(
+                "belief.world_model_version", "released checkpoint generation must be zero"
+            )
+        self._driver_lock = asyncio.Lock()
+        self._ingest_lock = asyncio.Lock()
+        self._last_ingested: DecisionPoint | None = None
 
-    Constructed exactly once in main.py and passed as a parameter everywhere
-    else (SINGLETON INVARIANT). A second instance would carry untrained
-    weights and a blank error map — MPC planning and orchestrator spawning
-    would silently operate on garbage.
-    """
-
-    def __init__(self, model_path: str | Path | None = None) -> None:
-        # Anchor to module dir — CWD differs between `uvicorn backend.main:app`
-        # (repo root) and `uvicorn main:app` (backend/). Silent wrong-cwd load
-        # would boot on random weights with no error.
-        self.model_path = (
-            Path(model_path) if model_path is not None
-            else Path(__file__).resolve().parent / "models" / "prediction_network.pt"
-        )
-        self.network = PredictionNetwork()
-        self.belief = BeliefState()
-
-        self._predict_lock = asyncio.Lock()    # held ~ms per predict call
-        self._finetune_lock = asyncio.Lock()   # held for entire fine_tune()
-        # threading mirror of _predict_lock: update() runs sync (MPC thread),
-        # asyncio.Lock cannot be acquired from sync context.
-        self._training_guard = threading.Lock()
-
-        # (state_806, action_12, next_806) tuples, FIFO eviction at REPLAY_MAX
-        self._replay_buffer: list[tuple[np.ndarray, np.ndarray, np.ndarray]] = []
-
-        # Adam persisted across calls: momentum/adaptive-lr state encodes which
-        # parameters move often vs rarely — discarding it between fine-tunes
-        # throws away accumulated gradient statistics (WORLD_MODEL.md).
-        self._optimizer = torch.optim.Adam(self.network.parameters(), lr=FINE_TUNE_LR)
-
-        self.load(self.model_path)
-
-    # -- inference -----------------------------------------------------------
-
-    def predict(
-        self, state_vec: np.ndarray, action_vec: np.ndarray
-    ) -> PredictedState:
-        """Synchronous single-sample inference.
-
-        CONTRACT: the caller owns _predict_lock acquisition (MPC path wraps
-        its candidate loop in `async with wm._predict_lock` and offloads this
-        call via asyncio.to_thread). This method never locks or awaits.
-        """
-        return self.network.predict(state_vec, action_vec)
-
-    async def predict_locked(
-        self, state_vec: np.ndarray, action_vec: np.ndarray
-    ) -> PredictedState:
-        """Convenience locked inference for callers without an open lock scope."""
-        async with self._predict_lock:
-            return await asyncio.to_thread(self.network.predict, state_vec, action_vec)
-
-    # -- online update (MPC loop, sync thread context) ------------------------
-
-    def update(
-        self,
-        state_vec: np.ndarray,
-        action_vec: np.ndarray,
-        next_state_vec: np.ndarray,
-    ) -> None:
-        """One-step bookkeeping after an executed action. Synchronous.
-
-        Called by MPCAgent right after env.step(): refreshes the error map
-        from predicted-vs-actual tissue, folds the observation into the
-        belief, and files the transition into the replay buffer.
-        """
-        if not self._training_guard.acquire(blocking=False):
-            return  # fine-tune in flight: predict would flip train->eval mid-loop
-        try:
-            predicted = self.network.predict(state_vec, action_vec)
-        finally:
-            self._training_guard.release()
-        actual_integrity = next_state_vec[0:256].reshape(16, 16)
-        self.belief.update_prediction_error(predicted.tissue, actual_integrity)
-        self.belief.update_from_observation(next_state_vec)
-        self._add_to_replay([state_vec], [action_vec], [next_state_vec])
-
-    # -- fine-tuning -----------------------------------------------------------
-
-    async def fine_tune(
-        self, new_samples: list[tuple], epochs: int = FINE_TUNE_EPOCHS
-    ) -> float:
-        """Train on new_samples mixed with replay; returns mean step loss.
-
-        Lock choreography (see class docstring for ordering rationale):
-          1. _finetune_lock serializes concurrent fine-tunes for their full
-             duration.
-          2. _predict_lock is held ONLY around the weight-update window so
-             MPC predictions pause just for the swap, not the whole training.
-          3. Version bump happens AFTER releasing _predict_lock but INSIDE
-             _finetune_lock — predictions resume immediately on the new
-             weights while version bookkeeping stays race-free.
-        """
-        async with self._finetune_lock:
-            async with self._predict_lock:
-                # threading.Lock is fine across await (same-task release);
-                # update() checks it non-blocking from the MPC path.
-                with self._training_guard:
-                    loss = await asyncio.to_thread(
-                        self._fine_tune_sync, new_samples, epochs
-                    )
-
-            self.belief.world_model_version += 1
-
-            try:
-                if wandb is not None and wandb.run is not None:
-                    wandb.log({
-                        "fine_tune_loss": loss,
-                        "world_model_version": self.belief.world_model_version,
-                        "global_error": float(self.belief.prediction_error_map.mean()),
-                    })
-            except Exception:
-                pass  # W&B optional — never break fine-tuning over it
-
-            try:
-                write_event(
-                    "world_model_updated",
-                    payload_version=self.belief.world_model_version,
-                    payload_loss=loss,
-                )
-            except Exception:
-                pass
-
-            try:
-                self._save()
-            except Exception:
-                pass
-
-        return loss
-
-    def _fine_tune_sync(self, new_samples: list[tuple], epochs: int) -> float:
-        """Training loop. REGULAR def — runs in a worker thread via
-        asyncio.to_thread. Any await here raises 'no running event loop'
-        (RISKS pitfall); all side effects happen in the async caller.
-        """
-        n_new = len(new_samples)
-        n_old = min(n_new * REPLAY_RATIO_NEW_TO_OLD, len(self._replay_buffer))
-        old_samples = random.sample(self._replay_buffer, n_old)
-        batch = list(new_samples) + old_samples
-        random.shuffle(batch)
-
-        self.network.train()
-        total_loss = 0.0
-        steps = 0
-
-        for _epoch in range(epochs):
-            for i in range(0, len(batch), FINE_TUNE_BATCH_SIZE):
-                chunk = batch[i : i + FINE_TUNE_BATCH_SIZE]
-                states, actions, nexts = zip(*chunk)
-
-                x = (
-                    torch.from_numpy(
-                        np.column_stack([np.stack(states), np.stack(actions)])
-                    )
-                    .float()
-                    .to(self.network.device)
-                )
-                y_tissue = (
-                    torch.from_numpy(np.stack([n[0:256] for n in nexts]))
-                    .float()
-                    .to(self.network.device)
-                )
-                # damaged flag lives at index [779 + slot*4 + 3] of each next-state
-                y_damage = torch.tensor(
-                    [
-                        float(any(n[779 + j * 4 + 3] > 0.5 for j in range(5)))
-                        for n in nexts
-                    ],
-                    dtype=torch.float32,
-                ).unsqueeze(1).to(self.network.device)
-
-                tissue_pred, damage_pred, _vessel_pred, _instrument_pred = self.network(x)
-                loss = (
-                    LOSS_W_TISSUE * F.mse_loss(tissue_pred, y_tissue)
-                    + LOSS_W_DAMAGE
-                    * F.binary_cross_entropy(
-                        damage_pred.clamp(1e-7, 1 - 1e-7), y_damage
-                    )
-                )
-                self._optimizer.zero_grad()
-                loss.backward()
-                self._optimizer.step()
-                total_loss += float(loss.item())
-                steps += 1
-
-        self.network.eval()
-        if new_samples:
-            states, actions, nexts = zip(*new_samples)
-            self._add_to_replay(states, actions, nexts)
-        return total_loss / max(1, steps)  # mean step loss across epochs*batches
-
-    # -- persistence -----------------------------------------------------------
-
-    def load(self, path: str | Path | None = None) -> None:
-        """Restore weights + optimizer state from checkpoint, if present.
-
-        Missing checkpoint keeps random-initialized weights and
-        world_model_version == 0; initial training (train.py / main.py
-        startup) fills the gap before any consumer relies on predictions.
-        """
-        p = Path(path) if path is not None else self.model_path
-        if p.exists():
-            checkpoint = torch.load(str(p), map_location=self.network.device)
-            self.network.load_state_dict(checkpoint["model_state_dict"])
-            if "optimizer_state_dict" in checkpoint:
-                self._optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
-            self.network.eval()
-        else:
-            try:
-                write_event("system_ready", warning="No saved model found")
-            except Exception:
-                pass
-            self.network.eval()
-
-    def _save(self) -> None:
-        self.model_path.parent.mkdir(parents=True, exist_ok=True)
-        torch.save(
-            {
-                "model_state_dict": self.network.state_dict(),
-                "optimizer_state_dict": self._optimizer.state_dict(),
-                "world_model_version": self.belief.world_model_version,
-            },
-            str(self.model_path),
+    @property
+    def identity(self) -> ModelIdentity:
+        return ModelIdentity(
+            model_revision=MODEL_REVISION,
+            checkpoint_sha256=CHECKPOINT_SHA256,
+            adaptation_generation=self.belief.world_model_version,
         )
 
-    # -- replay buffer -----------------------------------------------------------
+    async def predict(self) -> PredictionResult:
+        async with self._driver_lock:
+            stamped = await asyncio.to_thread(self._driver.evaluate_stamped_candidates)
+            observation = _symbolic(self._driver.current_obs_tokens())
+        return self._parse_prediction(stamped, observation)
 
-    def _add_to_replay(
+    def _parse_prediction(
         self,
-        state_vecs,
-        action_vecs,
-        next_vecs,
-    ) -> None:
-        """Append transitions as defensive copies; FIFO-evict past REPLAY_MAX."""
-        for s, a, n in zip(state_vecs, action_vecs, next_vecs):
-            self._replay_buffer.append(
-                (
-                    np.asarray(s, dtype=np.float32).copy(),
-                    np.asarray(a, dtype=np.float32).copy(),
-                    np.asarray(n, dtype=np.float32).copy(),
+        stamped: list[PreActionPrediction],
+        observation: SymbolicObservation,
+    ) -> PredictionResult:
+        if len(stamped) != _ACTION_COUNT:
+            raise InvalidInstrumentationError("actions", "expected indices 0..42")
+        indices = tuple(item.output.action_idx for item in stamped)
+        if indices != tuple(range(_ACTION_COUNT)):
+            raise InvalidInstrumentationError("action_idx", "expected ordered indices 0..42")
+        provenance = {(item.episode_generation, item.prediction_step) for item in stamped}
+        if len(provenance) != 1:
+            raise InvalidInstrumentationError("provenance", "candidates disagree")
+
+        outputs = [item.output for item in stamped]
+        first = outputs[0]
+        logits = _finite_vector(first.controller_logits, "controller_logits")
+        probabilities = _validate_probabilities(
+            first.controller_probs, "controller_probabilities"
+        )
+        actions: list[ActionPrediction] = []
+        for output in outputs:
+            jsd = _finite_scalar(output.J_ua, "jsd")
+            reward = _finite_scalar(output.reward_expectation, "reward_expectation")
+            termination = _finite_scalar(
+                output.termination_prob, "termination_probability"
+            )
+            if not 0.0 <= termination <= 1.0:
+                raise InvalidInstrumentationError("termination_probability", "outside [0, 1]")
+            if _finite_vector(output.controller_logits, "controller_logits") != logits:
+                raise InvalidInstrumentationError("controller_logits", "candidates disagree")
+            if _validate_probabilities(output.controller_probs, "controller_probabilities") != probabilities:
+                raise InvalidInstrumentationError("controller_probabilities", "candidates disagree")
+            actions.append(
+                ActionPrediction(
+                    action_idx=output.action_idx,
+                    jsd=jsd,
+                    reward_expectation=reward,
+                    termination_probability=termination,
                 )
             )
-        if len(self._replay_buffer) > REPLAY_MAX:
-            del self._replay_buffer[: len(self._replay_buffer) - REPLAY_MAX]
+        episode_generation, prediction_step = next(iter(provenance))
+        regions = jsd_to_regional_errors(outputs)
+        error_map = jsd_to_error_map(outputs)
+        return PredictionResult(
+            decision_point=DecisionPoint(episode_generation, prediction_step),
+            observation=observation,
+            actions=tuple(actions),
+            controller_logits=logits,
+            controller_probabilities=probabilities,
+            regional_errors=tuple((region, regions[region]) for region in _REGION_ORDER),
+            error_map=tuple(tuple(float(value) for value in row) for row in error_map),
+        )
+
+    async def update(self, prediction: PredictionResult) -> TransitionResult:
+        async with self._driver_lock:
+            self._reject_stale(prediction)
+            captured = await asyncio.to_thread(_capture_step, self._driver)
+        probabilities = _validate_probabilities(
+            captured.probabilities, "actual_controller_probabilities"
+        )
+        action = captured.step.action
+        if action not in range(_ACTION_COUNT):
+            raise InvalidInstrumentationError("selected_action", str(action))
+        return TransitionResult(
+            prediction=prediction,
+            selected_prediction=prediction.actions[action],
+            action=action,
+            controller_probabilities=probabilities,
+            reward=captured.step.reward,
+            done=captured.step.done,
+            reward_step=captured.step.step,
+            achievements=tuple(bool(value) for value in captured.achievements.reshape(-1)),
+            stats=tuple(sorted((name, float(value)) for name, value in captured.step.stats.items())),
+            next_observation=_symbolic(captured.observation),
+        )
+
+    def _reject_stale(self, prediction: PredictionResult) -> None:
+        point = prediction.decision_point
+        checks = (
+            ("episode_generation", self._driver.episode_generation, point.episode_generation),
+            ("prediction_step", self._driver.step_count, point.prediction_step),
+            ("symbolic_observation", _symbolic(self._driver.current_obs_tokens()), prediction.observation),
+        )
+        for field, expected, actual in checks:
+            if actual != expected:
+                raise StalePredictionError(field, str(expected), str(actual))
+
+    async def ingest(self, transition: TransitionResult) -> IngestResult:
+        async with self._ingest_lock:
+            point = transition.prediction.decision_point
+            if point == self._last_ingested:
+                raise DuplicateIngestError(point)
+            if self._last_ingested is not None and point < self._last_ingested:
+                raise OutOfOrderIngestError(self._last_ingested, point)
+            incoming_map = np.asarray(transition.prediction.error_map, dtype=np.float32)
+            self.belief.set_jsd_error_map(incoming_map)
+            self.belief.regional_override = dict(transition.prediction.regional_errors)
+            self.belief.active_dof = achievements_to_dof(np.asarray(transition.achievements))
+            self.belief.episode_count += 1
+            self.belief.last_updated = time.time()
+            updated_map = tuple(
+                tuple(float(value) for value in row)
+                for row in self.belief.prediction_error_map
+            )
+            regions: tuple[RegionError, ...] = transition.prediction.regional_errors
+            event_id = write_event(
+                "belief_snapshot",
+                global_mean_error=float(self.belief.prediction_error_map.mean()),
+                regional_errors=dict(regions),
+                world_model_version=self.belief.world_model_version,
+                active_dof=self.belief.active_dof,
+                episode_count=self.belief.episode_count,
+                error_map=updated_map,
+                decision_episode=point.episode_generation,
+                decision_step=point.prediction_step,
+                action=transition.action,
+                reward=transition.reward,
+            )
+            self._last_ingested = point
+            return IngestResult(
+                world_model_version=self.belief.world_model_version,
+                global_error=float(self.belief.prediction_error_map.mean()),
+                regional_errors=regions,
+                error_map=updated_map,
+                active_dof=self.belief.active_dof,
+                episode_count=self.belief.episode_count,
+                timestamp=self.belief.last_updated,
+                event_id=event_id,
+            )
+
+    async def fine_tune(
+        self, new_samples: FineTuneSamples, epochs: int | None = None
+    ) -> None:
+        del new_samples, epochs
+        raise ReadOnlyWorldModelError()

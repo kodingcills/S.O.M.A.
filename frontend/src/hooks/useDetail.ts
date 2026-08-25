@@ -8,14 +8,22 @@ export function useDetail(simId: string | null): DetailResponse | null {
   const [detail, setDetail] = useState<DetailResponse | null>(null)
 
   useEffect(() => {
-    if (!simId) return
-    const id = setInterval(async () => {
+    if (!simId) {
+      setDetail(null)
+      return
+    }
+    let cancelled = false
+    const poll = async () => {
       try {
         const r = await fetch(`${import.meta.env.VITE_API_URL}/detail/${simId}`)
-        setDetail(await r.json())
+        if (!r.ok) return
+        const next = await r.json() as DetailResponse
+        if (!cancelled) setDetail(next)
       } catch { /* backend starting or offline — keep previous value */ }
-    }, 300)
-    return () => clearInterval(id)
+    }
+    void poll()
+    const id = setInterval(poll, 300)
+    return () => { cancelled = true; clearInterval(id) }
   }, [simId])
 
   return detail

@@ -4,7 +4,7 @@
 import { describe, it, expect } from 'vitest'
 import { buildCanvasState } from '../buildCanvasState'
 import { FIXTURE_EVENTS } from '../../dev/fixtures'
-import { STATUS_COMPLETED, STATUS_FAILED } from '../colors'
+import { PANEL_BORDER, STATUS_FAILED } from '../colors'
 
 describe('buildCanvasState', () => {
   // test:purity:same_input_deep_equal_output
@@ -43,20 +43,20 @@ describe('buildCanvasState', () => {
       expect(['exp_a', 'exp_b', 'cap_1']).toContain(e.target)
     }
 
-    // Completed edge: STATUS_COMPLETED stroke, opacity .6, not animated
+    // Completed edge settles into the neutral lineage system.
     const edgeA = edges.find(e => e.target === 'exp_a')!
     expect(edgeA.animated).toBe(false)
-    expect(edgeA.style?.stroke).toBe(STATUS_COMPLETED)
-    expect(edgeA.style?.opacity).toBe(0.6)
+    expect(edgeA.style?.stroke).toBe(PANEL_BORDER)
+    expect(edgeA.style?.opacity).toBe(1)
 
     // Failed edge: STATUS_FAILED stroke, not animated
     const edgeB = edges.find(e => e.target === 'exp_b')!
     expect(edgeB.animated).toBe(false)
     expect(edgeB.style?.stroke).toBe(STATUS_FAILED)
 
-    // Spawned-but-unresolved edge stays animated/active
+    // Spawned-but-unresolved edges remain active without perpetual animation.
     const edgeC = edges.find(e => e.target === 'cap_1')!
-    expect(edgeC.animated).toBe(true)
+    expect(edgeC.animated).toBe(false)
   })
 
   // test:capability:unlock_sets_dof
@@ -65,5 +65,25 @@ describe('buildCanvasState', () => {
     const cap = nodes.find(n => n.id === 'cap_1')!
     expect(cap.data.dof_level).toBe(2)
     expect(cap.data.status).toBe('completed')
+  })
+
+  it('normalizes the runtime-only orchestrator parent to the visible seed', () => {
+    const spawned = {
+      ...FIXTURE_EVENTS[0], id: 99, agent_id: 'exp_orch', parent_id: 'orchestrator',
+    }
+    const { nodes, edges } = buildCanvasState([spawned])
+    expect(edges[0].source).toBe('root')
+    expect(nodes[1].position.x).toBeGreaterThan(nodes[0].position.x)
+  })
+
+  it('advances visual generations left-to-right as history grows', () => {
+    const spawned = Array.from({ length: 5 }, (_, index) => ({
+      ...FIXTURE_EVENTS[0], id: index + 20, timestamp: 1756000100 + index,
+      agent_id: `exp_${index}`, parent_id: 'root',
+    }))
+    const { nodes } = buildCanvasState(spawned)
+    expect(nodes[4].data.generation).toBe(1)
+    expect(nodes[5].data.generation).toBe(2)
+    expect(nodes[5].position.x).toBeGreaterThan(nodes[4].position.x)
   })
 })

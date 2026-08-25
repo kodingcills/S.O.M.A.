@@ -2,14 +2,14 @@
 
 Spec: docs/specs/ORCHESTRATION.md "LANGGRAPH GRAPH" (near-verbatim) +
 AGENTS.md "CONSTANTS". Reads WorldModel.belief every cycle (Architecture Law
-Exception #2), decides unlock vs explore vs wait, fans out ExplorationAgents
-via Send, and tracks circuit-breaker state across cycles in graph state.
+Exception #2), reads Craftax achievement progression, decides unlock vs explore
+vs wait, fans out ExplorationAgents via Send, and tracks circuit-breaker state.
 
 Task 1.9 invocation (validated by tests/test_orchestrator.py wiring smokes):
 the graph NEVER reaches END — collect_status loops back to orchestrator by
 design. Drive it in bounded bursts from main.py:
 
-    graph = build_soma_graph(world_model, sim_manager)
+    graph = build_soma_graph(world_model, primary_driver)
     config = {"recursion_limit": 100, "configurable": {"thread_id": "soma"}}
     while True:
         try:
@@ -65,6 +65,7 @@ from langgraph.graph.state import CompiledStateGraph
 from langgraph.types import Command, Send
 
 from backend.event_log import write_event
+from backend.simulus.soma_bridge import achievements_to_dof
 
 # ---------------------------------------------------------------------------
 # Constants (QUICK_REFERENCE.md — change one, update both)
@@ -112,6 +113,7 @@ class ExplorationSpawn(TypedDict):
 _AGENT_REGIONS: dict[str, str] = {}
 _PROCESSED_OUTCOMES: set[str] = set()
 _WORLD_MODEL_REF: list[Any] = []
+_PRIMARY_DRIVER_REF: list[Any] = []
 
 
 def initial_state() -> SomaOrchestratorState:
@@ -138,10 +140,10 @@ def initial_state() -> SomaOrchestratorState:
 
 def route_orchestrator(state: SomaOrchestratorState) -> str:
     """Priority 1: DOF unlock. Priority 2: exploration. Default: wait."""
-    unlock_thresh = DOF_THRESHOLDS.get(state["active_dof"], 1.0)
     already_unlocking = any(a.startswith("cap_") for a in state["active_agents"])
     if (
-        state["global_mean_error"] < unlock_thresh
+        state["unlock_requested"]
+        and state["target_dof"] > state["active_dof"]
         and state["active_dof"] < 6
         and not already_unlocking
     ):
@@ -200,6 +202,7 @@ async def spawn_exploration_node(
             parent_id="orchestrator",
             region=region,
             error_before=error,
+            error_level=error,
             planned_steps=EXPLORE_N_STEPS,
         )
         sends.append(
@@ -231,11 +234,12 @@ async def exploration_agent_runner(payload: ExplorationSpawn) -> dict[str, list[
         return {"failed_agents": [agent_id]}
 
     try:
-        if not _WORLD_MODEL_REF:
-            raise RuntimeError("graph built without world_model reference")
+        if not _WORLD_MODEL_REF or not _PRIMARY_DRIVER_REF:
+            raise RuntimeError("graph built without injected dependencies")
         agent = ExplorationAgent(
             agent_id=agent_id,
             world_model=_WORLD_MODEL_REF[0],
+            driver=_PRIMARY_DRIVER_REF[0],
             region=region,
             error_before=payload["error_before"],
         )
@@ -300,15 +304,21 @@ async def collect_status_node(
 
 def build_soma_graph(
     world_model: Any,
-    sim_manager: Any = None,
+    primary_driver: Any,
 ) -> CompiledStateGraph:
-    """Compiles the SOMA graph; sim_manager needs .primary/.comparison envs."""
+    """Compile the SOMA graph with its singleton model and primary driver."""
+    driver = getattr(primary_driver, "primary", primary_driver)
     _WORLD_MODEL_REF.clear()
     _WORLD_MODEL_REF.append(world_model)
+    _PRIMARY_DRIVER_REF.clear()
+    _PRIMARY_DRIVER_REF.append(driver)
 
     async def orchestrator_node(state: SomaOrchestratorState) -> dict:
         regional = dict(world_model.belief.get_regional_errors())
         global_e = float(world_model.belief.prediction_error_map.mean())
+        active_dof = int(world_model.belief.active_dof)
+        achievement_dof = achievements_to_dof(driver.env.achievements())
+        target_dof = min(achievement_dof, active_dof + 1)
 
         done = set(state["completed_agents"]) | set(state["failed_agents"])
         still_active = [aid for aid in state["active_agents"] if aid not in done]
@@ -322,14 +332,16 @@ def build_soma_graph(
         return {
             "regional_errors": regional,
             "global_mean_error": global_e,
-            "active_dof": int(world_model.belief.active_dof),
+            "active_dof": active_dof,
             "active_agents": still_active,
             "cycle_count": state["cycle_count"] + 1,
+            "unlock_requested": target_dof > active_dof,
+            "target_dof": target_dof,
             "agent_region": {**state["agent_region"], **_AGENT_REGIONS},
         }
 
     async def unlock_dof_node(state: SomaOrchestratorState) -> dict:
-        new_dof = state["active_dof"] + 1
+        new_dof = state["target_dof"]
         cap_id = f"cap_{new_dof}"
         _AGENT_REGIONS.setdefault(cap_id, "")  # no region → breaker skips caps
         write_event(
@@ -338,6 +350,15 @@ def build_soma_graph(
             parent_id="orchestrator",
             reason="dof_unlock",
         )
+        write_event(
+            "capability_unlocked",
+            agent_id=cap_id,
+            new_dof=new_dof,
+            previous_dof=state["active_dof"],
+            trigger_error=float(world_model.belief.prediction_error_map.mean()),
+            threshold=DOF_THRESHOLDS[state["active_dof"]],
+        )
+        world_model.belief.active_dof = new_dof
         update: dict[str, Any] = {"unlock_requested": True, "target_dof": new_dof}
 
         try:
@@ -345,14 +366,13 @@ def build_soma_graph(
         except ImportError:
             return {**update, "failed_agents": [cap_id]}
 
-        primary = getattr(sim_manager, "primary", None) if sim_manager else None
-        comparison = getattr(sim_manager, "comparison", None) if sim_manager else None
         try:
-            if primary is None or comparison is None:
-                raise RuntimeError(
-                    "sim_manager must expose .primary/.comparison SurRoL envs"
-                )
-            agent = CapabilityAgent(cap_id, world_model, primary, comparison)
+            agent = CapabilityAgent(
+                agent_id=cap_id,
+                world_model=world_model,
+                driver=driver,
+                target_dof=new_dof,
+            )
             result = await agent.run()
         except Exception as exc:
             # Boundary catch: unlock intent stays recorded; the next cycle's

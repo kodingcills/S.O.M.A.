@@ -1,251 +1,294 @@
-"""Tests for backend/world_model.py — SOMA Task 1.5.
+from __future__ import annotations
 
-Named tests per WORLD_MODEL.md TESTING PROTOCOL + ARCHITECTURE.md invariants:
-  test_singleton_grep                  — WORLD MODEL SINGLETON INVARIANT — MUST PASS
-  test_nonblocking                     — EVENT LOOP NON-BLOCKING INVARIANT — MUST PASS
-  test_fine_tune_updates_version_and_saves — version bump + checkpoint round-trip
-  test_replay_ratio                    — n_old == min(len(new)*4, len(buffer))
-  test_update_updates_error_map        — update() wires predict → error map → belief
-  test_predict_returns_predicted_state — sync + locked inference contract
-
-Suite budget < 60s: small sample counts, CPU-forced devices where timing matters.
-"""
-
-import asyncio
-import random
-import subprocess
+import dataclasses
+import hashlib
 import time
-from pathlib import Path
+from collections.abc import Iterator
 
+import anyio
 import numpy as np
+import pytest
 import torch
 
-from backend.prediction_net import PredictionNetwork, PredictedState
+from backend.belief_state import BeliefState
+from backend.craftax_driver import CraftaxDriver
+from backend.simulus import CHECKPOINT_SHA256, MODEL_REVISION
+from backend.simulus.soma_bridge import (
+    achievements_to_dof,
+    jsd_to_error_map,
+    jsd_to_regional_errors,
+)
 from backend.world_model import WorldModel
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
-
-
-# ---------------------------------------------------------------------------
-# Synthetic fixtures — same pattern as test_belief_state.make_state_vec
-# ---------------------------------------------------------------------------
-
-def make_state_vec(seed: int = 0) -> np.ndarray:
-    """Synthetic (806,) float32 vector matching the SIMULATION.md index table."""
-    rng = np.random.RandomState(seed)
-    v = np.zeros(806, dtype=np.float32)
-    v[0:256] = rng.uniform(0.3, 1.0, 256).astype(np.float32)            # integrity
-    v[256:512] = rng.uniform(0.0, 1.0, 256).astype(np.float32)          # vascularity
-    v[512:768] = (rng.uniform(0, 1, 256) > 0.8).astype(np.float32)      # bleeding
-    v[768:771] = rng.uniform(0.05, 0.95, 3).astype(np.float32)          # EE x,y,z
-    v[771:775] = rng.uniform(-1.0, 1.0, 4).astype(np.float32)           # quaternion
-    v[775] = 0.25                                                        # gripper
-    v[776] = 0.4                                                         # target col/15
-    v[777] = 0.6                                                         # target row/15
-    v[778] = 0.0                                                         # not reached
-    # vessel slots: damaged flag at [779 + i*4 + 3] varies so BCE sees both classes
-    for i in range(5):
-        v[779 + i * 4 : 782 + i * 4] = rng.uniform(0.0, 1.0, 3).astype(np.float32)
-        v[782 + i * 4] = float(rng.uniform() > 0.5)
-    v[799] = 1.0                                                         # DOF 1 active
-    return v
+from backend.world_model_types import (
+    DuplicateIngestError,
+    OutOfOrderIngestError,
+    ReadOnlyWorldModelError,
+    StalePredictionError,
+)
 
 
-def make_action(rng: np.random.RandomState) -> np.ndarray:
-    a = np.zeros(12, dtype=np.float32)
-    a[0:3] = rng.uniform(-1.0, 1.0, 3).astype(np.float32)
-    a[7 + int(rng.randint(0, 4))] = 1.0                                  # mode one-hot
-    a[11] = rng.uniform(0.2, 1.0)                                        # magnitude
-    return a
+@pytest.fixture(scope="module")
+def released_agent():
+    from backend.simulus.runtime import load_simulus_agent
+
+    agent, _config, _device = load_simulus_agent("cpu")
+    return agent
 
 
-def make_sample(seed: int = 0) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    rng = np.random.RandomState(seed + 500_000)
-    return (make_state_vec(seed), make_action(rng), make_state_vec(seed + 9_000))
+@pytest.fixture
+def driver(released_agent) -> Iterator[CraftaxDriver]:
+    value = CraftaxDriver(released_agent, seed=42)
+    yield value
 
 
-def make_world_model(tmp_path: Path, name: str = "wm.pt") -> WorldModel:
-    return WorldModel(model_path=tmp_path / name)
+def _state_digest(value) -> bytes:
+    digest = hashlib.sha256()
+
+    def feed(item) -> None:
+        if item is None:
+            digest.update(b"none")
+        elif isinstance(item, torch.Tensor):
+            digest.update(item.detach().cpu().numpy().tobytes())
+        elif isinstance(item, tuple):
+            for child in item:
+                feed(child)
+        else:
+            digest.update(str(getattr(item, "n", "")).encode())
+            feed(getattr(item, "state", None))
+
+    feed(value)
+    return digest.digest()
 
 
-def force_cpu(wm: WorldModel) -> None:
-    """Pin network to CPU so MPS contention never flakes the timing test."""
-    wm.network.device = torch.device("cpu")
-    wm.network.to(wm.network.device)
+def _parameter_digest(agent) -> bytes:
+    digest = hashlib.sha256()
+    for parameter in agent.parameters():
+        if not parameter.is_meta:
+            digest.update(parameter.detach().cpu().numpy().tobytes())
+    return digest.digest()
 
 
-def seed_replay(wm: WorldModel, n: int = 50, seed: int = 0) -> None:
-    """Populate the replay buffer through the public update() path."""
-    rng = np.random.RandomState(seed)
-    for i in range(n):
-        wm.update(make_state_vec(seed=i), make_action(rng), make_state_vec(seed=10_000 + i))
+async def _cycle(model: WorldModel):
+    prediction = await model.predict()
+    transition = await model.update(prediction)
+    ingestion = await model.ingest(transition)
+    return prediction, transition, ingestion
 
 
-# ---------------------------------------------------------------------------
-# test:world_model:singleton — SINGLETON INVARIANT (ARCHITECTURE.md) — MUST PASS
-# ---------------------------------------------------------------------------
+def test_constructor_uses_injected_driver_without_loading_or_training(driver):
+    belief = BeliefState()
+    model = WorldModel(driver, belief)
 
-def test_singleton_grep():
-    """grep -r 'WorldModel(' backend/ must be empty after excluding main.py,
-    test files, and comment lines. Any hit means a second instantiation site."""
-    result = subprocess.run(
-        ["grep", "-rn", "WorldModel(", "backend/"],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
+    assert model.belief is belief
+    assert model.identity.model_revision == MODEL_REVISION
+    assert model.identity.checkpoint_sha256 == CHECKPOINT_SHA256
+    assert model.identity.adaptation_generation == belief.world_model_version == 0
+
+
+@pytest.mark.anyio
+async def test_predict_returns_43_real_deeply_immutable_actions(driver):
+    result = await WorldModel(driver).predict()
+
+    assert tuple(action.action_idx for action in result.actions) == tuple(range(43))
+    assert len(result.controller_probabilities) == 43
+    assert sum(result.controller_probabilities) == pytest.approx(1.0)
+    assert all(np.isfinite(action.jsd) for action in result.actions)
+    with pytest.raises((dataclasses.FrozenInstanceError, AttributeError)):
+        result.actions[0].jsd = 0.0
+    with pytest.raises(TypeError):
+        result.error_map[0][0] = 0.0
+
+
+@pytest.mark.anyio
+async def test_predict_uses_one_batched_evaluation(driver, monkeypatch):
+    calls = 0
+    original = driver.evaluate_stamped_candidates
+
+    def counted():
+        nonlocal calls
+        calls += 1
+        return original()
+
+    monkeypatch.setattr(driver, "evaluate_stamped_candidates", counted)
+    await WorldModel(driver).predict()
+    assert calls == 1
+
+
+@pytest.mark.anyio
+async def test_predict_preserves_recurrent_and_actor_critic_state(driver):
+    recurrent = _state_digest(driver._rs)
+    actor = _state_digest(driver._agent.actor_critic.actor_state)
+    critic = _state_digest(driver._agent.actor_critic.critic_state)
+
+    await WorldModel(driver).predict()
+
+    assert _state_digest(driver._rs) == recurrent
+    assert _state_digest(driver._agent.actor_critic.actor_state) == actor
+    assert _state_digest(driver._agent.actor_critic.critic_state) == critic
+
+
+@pytest.mark.anyio
+async def test_detection_cycle_leaves_all_parameters_unchanged(driver):
+    before = _parameter_digest(driver._agent)
+    await _cycle(WorldModel(driver))
+    assert _parameter_digest(driver._agent) == before
+
+
+@pytest.mark.anyio
+async def test_update_matches_released_controller(driver):
+    torch.manual_seed(9)
+    expected_step, expected_probs = driver.step_controller()
+    driver.reset(seed=42)
+    torch.manual_seed(9)
+
+    model = WorldModel(driver)
+    transition = await model.update(await model.predict())
+
+    assert transition.action == expected_step.action
+    assert transition.reward == expected_step.reward
+    assert transition.done == expected_step.done
+    assert transition.controller_probabilities == pytest.approx(
+        tuple(np.asarray(expected_probs).reshape(-1))
     )
-    hits = [
-        line
-        for line in result.stdout.splitlines()
-        if "main.py" not in line
-        and "/test_" not in line
-        and not line.split(":", 2)[-1].lstrip().startswith("#")
-    ]
-    assert hits == [], f"SINGLETON INVARIANT violated:\n" + "\n".join(hits)
+    assert transition.selected_prediction is transition.prediction.actions[transition.action]
 
 
-# ---------------------------------------------------------------------------
-# test:world_model:nonblocking — EVENT LOOP NON-BLOCKING INVARIANT — MUST PASS
-# ---------------------------------------------------------------------------
+@pytest.mark.anyio
+async def test_update_rejects_stale_step_and_reset_before_mutation(driver, monkeypatch):
+    model = WorldModel(driver)
+    stale_step = await model.predict()
+    driver.step_with_action(0)
+    step_before = driver.step_count
+    with pytest.raises(StalePredictionError):
+        await model.update(stale_step)
+    assert driver.step_count == step_before
 
-def test_nonblocking(tmp_path, monkeypatch):
-    """PORT of the ARCHITECTURE.md timing test.
+    driver.reset(seed=42)
+    stale_episode = await model.predict()
+    driver.reset(seed=42)
+    with pytest.raises(StalePredictionError):
+        await model.update(stale_episode)
+    assert driver.step_count == 0
 
-    A tick task fires every 100ms on the event loop while fine_tune runs.
-    At least 8/10 ticks must land BEFORE fine_tune returns — proves training
-    was offloaded via asyncio.to_thread instead of blocking the loop.
+    current = driver.current_obs_tokens
+    changed = current()
+    changed["vector"] = changed["vector"].copy()
+    changed["vector"][0] += 1.0
+    monkeypatch.setattr(driver, "current_obs_tokens", lambda: changed)
+    with pytest.raises(StalePredictionError):
+        await model.update(stale_episode)
+    assert driver.step_count == 0
 
-    Determinism: raw CPU training on an M-series machine can finish in well
-    under a second, which would starve even a correct implementation of ticks.
-    We wrap _fine_tune_sync with a fixed 1.2s sleep (executed inside whatever
-    thread to_thread chose) so the race window is deterministic: correct
-    offload keeps the loop free (all 10 ticks fire); a regression that calls
-    _fine_tune_sync directly blocks the loop and lands ~0 ticks.
-    """
-    wm = make_world_model(tmp_path)
-    force_cpu(wm)
-    seed_replay(wm, n=50)
 
-    real_sync = wm._fine_tune_sync
+@pytest.mark.anyio
+async def test_ingest_matches_bridge_and_ema_exactly(driver, monkeypatch):
+    monkeypatch.setattr("backend.world_model.write_event", lambda *_a, **_k: 17)
+    raw = driver.evaluate_stamped_candidates()
+    expected_map = jsd_to_error_map([item.output for item in raw])
+    expected_regions = jsd_to_regional_errors([item.output for item in raw])
+    model = WorldModel(driver)
+    prediction, transition, result = await _cycle(model)
+    expected = 0.3 * expected_map
 
-    def slow_sync(new_samples, epochs):
-        time.sleep(1.2)  # GIL released during sleep — loop stays responsive
-        return real_sync(new_samples, epochs)
+    np.testing.assert_allclose(np.asarray(prediction.error_map), expected_map)
+    assert dict(prediction.regional_errors) == expected_regions
+    np.testing.assert_allclose(model.belief.prediction_error_map, expected)
+    assert result.regional_errors == prediction.regional_errors
+    assert model.belief.get_regional_errors() == dict(prediction.regional_errors)
+    assert result.event_id == 17
+    assert transition.reward_step == prediction.decision_point.prediction_step + 1
 
-    monkeypatch.setattr(wm, "_fine_tune_sync", slow_sync)
 
-    samples = [make_sample(i) for i in range(300)]
-    tick_times: list[float] = []
+@pytest.mark.anyio
+async def test_ingest_uses_real_achievements_for_active_dof(driver, monkeypatch):
+    monkeypatch.setattr("backend.world_model.write_event", lambda *_a, **_k: 1)
+    model = WorldModel(driver)
+    _prediction, transition, result = await _cycle(model)
+    assert result.active_dof == achievements_to_dof(np.asarray(transition.achievements))
 
-    async def count_ticks():
-        for _ in range(10):
-            await asyncio.sleep(0.1)
-            tick_times.append(time.monotonic())
 
-    async def scenario():
-        tick_task = asyncio.create_task(count_ticks())
-        loss = await wm.fine_tune(samples)
-        ft_end = time.monotonic()
-        await tick_task
-        return loss, ft_end
-
-    loss, ft_end = asyncio.run(scenario())
-
-    assert isinstance(loss, float)
-    ticks_during = sum(1 for t in tick_times if t <= ft_end)
-    assert ticks_during >= 8, (
-        f"Event loop blocked during fine_tune: only {ticks_during}/10 ticks "
-        f"received before fine_tune returned"
+@pytest.mark.anyio
+async def test_duplicate_ingest_has_no_second_ema_or_event(driver, monkeypatch):
+    events: list[str] = []
+    monkeypatch.setattr(
+        "backend.world_model.write_event", lambda event, **_kwargs: events.append(event) or 1
     )
+    model = WorldModel(driver)
+    transition = await model.update(await model.predict())
+    await model.ingest(transition)
+    first_map = model.belief.prediction_error_map.copy()
+
+    with pytest.raises(DuplicateIngestError):
+        await model.ingest(transition)
+    np.testing.assert_array_equal(model.belief.prediction_error_map, first_map)
+    assert events == ["belief_snapshot"]
+
+    later = await model.update(await model.predict())
+    await model.ingest(later)
+    second_map = model.belief.prediction_error_map.copy()
+    with pytest.raises(OutOfOrderIngestError):
+        await model.ingest(transition)
+    np.testing.assert_array_equal(model.belief.prediction_error_map, second_map)
+    assert events == ["belief_snapshot", "belief_snapshot"]
 
 
-# ---------------------------------------------------------------------------
-# test:world_model:version_increments (+ checkpoint round-trip)
-# ---------------------------------------------------------------------------
-
-def test_fine_tune_updates_version_and_saves(tmp_path):
-    wm = make_world_model(tmp_path)
-    force_cpu(wm)
-    seed_replay(wm, n=50)
-    assert wm.belief.world_model_version == 0
-
-    loss = asyncio.run(wm.fine_tune([make_sample(i) for i in range(30)], epochs=1))
-
-    assert isinstance(loss, float) and loss >= 0.0
-    assert wm.belief.world_model_version == 1
-
-    ckpt = tmp_path / "wm.pt"
-    assert ckpt.exists()
-    loaded = torch.load(str(ckpt), map_location="cpu")
-    assert "model_state_dict" in loaded
-    assert "optimizer_state_dict" in loaded
-    assert loaded["world_model_version"] == 1
-
-    fresh_net = PredictionNetwork()
-    fresh_net.load_state_dict(loaded["model_state_dict"])  # reloadable
+@pytest.mark.anyio
+async def test_version_remains_zero_across_detection_cycles(driver, monkeypatch):
+    monkeypatch.setattr("backend.world_model.write_event", lambda *_a, **_k: 1)
+    model = WorldModel(driver)
+    await _cycle(model)
+    await _cycle(model)
+    assert model.identity.adaptation_generation == model.belief.world_model_version == 0
 
 
-# ---------------------------------------------------------------------------
-# test:world_model:replay_ratio — 80/20 old/new mix, capped by buffer size
-# ---------------------------------------------------------------------------
-
-def test_replay_ratio(tmp_path, monkeypatch):
-    wm = make_world_model(tmp_path)
-    force_cpu(wm)
-    seed_replay(wm, n=40)
-
-    captured: list[tuple[int, int]] = []
-    real_sample = random.sample
-
-    def spy(population, k):
-        captured.append((len(population), k))
-        return real_sample(population, k)
-
-    monkeypatch.setattr(random, "sample", spy)
-
-    new = [make_sample(1000 + i) for i in range(10)]
-    asyncio.run(wm.fine_tune(new, epochs=1))
-
-    assert captured, "random.sample never called — replay mixing missing"
-    population_len, k = captured[0]
-    assert population_len == 40          # drawn from the replay buffer
-    assert k == min(10 * 4, 40) == 40    # 4:1 old:new ratio, capped by buffer
-
-
-# ---------------------------------------------------------------------------
-# test:world_model:update_wires_error_map
-# ---------------------------------------------------------------------------
-
-def test_update_updates_error_map(tmp_path):
-    wm = make_world_model(tmp_path)
-    s = make_state_vec(seed=1)
-    a = make_action(np.random.RandomState(2))
-    nxt = make_state_vec(seed=3)  # different integrity pattern than prediction
-
-    wm.update(s, a, nxt)
-
-    assert np.any(wm.belief.prediction_error_map > 0)
-    np.testing.assert_allclose(
-        wm.belief.integrity, nxt[0:256].reshape(16, 16), atol=1e-6
+@pytest.mark.anyio
+async def test_fine_tune_rejects_without_side_effects(driver, monkeypatch):
+    events: list[str] = []
+    monkeypatch.setattr(
+        "backend.world_model.write_event", lambda event, **_kwargs: events.append(event) or 1
     )
-    assert len(wm._replay_buffer) == 1
-    assert wm.belief.episode_count == 1
+    model = WorldModel(driver)
+    before = _parameter_digest(driver._agent)
+
+    with pytest.raises(ReadOnlyWorldModelError):
+        await model.fine_tune(())
+    assert _parameter_digest(driver._agent) == before
+    assert model.belief.world_model_version == 0
+    assert events == []
 
 
-# ---------------------------------------------------------------------------
-# Inference contract: sync predict (caller owns lock) + locked convenience
-# ---------------------------------------------------------------------------
+@pytest.mark.anyio
+async def test_predict_and_update_do_not_block_event_loop(driver, monkeypatch):
+    original_predict = driver.evaluate_stamped_candidates
+    original_update = driver.step_controller
+    monkeypatch.setattr(driver, "evaluate_stamped_candidates", lambda: (time.sleep(0.1), original_predict())[1])
+    monkeypatch.setattr(driver, "step_controller", lambda: (time.sleep(0.1), original_update())[1])
+    ticks = 0
 
-def test_predict_returns_predicted_state(tmp_path):
-    wm = make_world_model(tmp_path)
-    s = make_state_vec(seed=5)
-    a = make_action(np.random.RandomState(6))
+    async def ticker() -> None:
+        nonlocal ticks
+        for _ in range(12):
+            await anyio.sleep(0.02)
+            ticks += 1
 
-    pred = wm.predict(s, a)
-    assert isinstance(pred, PredictedState)
-    assert pred.tissue.shape == (16, 16)
-    assert 0.0 <= pred.damage_prob <= 1.0
+    async with anyio.create_task_group() as tasks:
+        tasks.start_soon(ticker)
+        await WorldModel(driver).update(await WorldModel(driver).predict())
+    assert ticks >= 8
 
-    pred_locked = asyncio.run(wm.predict_locked(s, a))
-    assert isinstance(pred_locked, PredictedState)
-    assert pred_locked.tissue.shape == (16, 16)
+
+@pytest.mark.anyio
+async def test_ingest_emits_belief_snapshot_only(driver, monkeypatch):
+    events: list[tuple[str, dict]] = []
+    monkeypatch.setattr(
+        "backend.world_model.write_event", lambda event, **payload: events.append((event, payload)) or 3
+    )
+    await _cycle(WorldModel(driver))
+    assert [event for event, _payload in events] == ["belief_snapshot"]
+    assert events[0][1]["world_model_version"] == 0
+
+
+def test_world_model_has_no_legacy_predictor_optimizer_or_replay(driver):
+    model = WorldModel(driver)
+    forbidden = {"network", "model_path", "predict_locked", "_optimizer", "_replay_buffer", "_finetune_lock"}
+    assert forbidden.isdisjoint(set(dir(model)))

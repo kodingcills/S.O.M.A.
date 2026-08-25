@@ -17,33 +17,70 @@ Dual-import shim: this module must run BOTH as `uvicorn api:app`
 
 from __future__ import annotations
 
-import asyncio
 import time
+from collections.abc import Mapping
 from contextlib import asynccontextmanager
-from typing import Any
+from importlib import import_module
+from typing import Any, Protocol, TypedDict
+
+import anyio
+import numpy as np
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 
-try:
-    from backend.event_log import (
-        get_events_for_agent,
-        get_events_since,
-        init_db,
-        set_broadcast_callback,
-    )
-except ImportError:  # cwd=backend direct-run mode (uvicorn api:app)
-    from event_log import (  # type: ignore[no-redef]
-        get_events_for_agent,
-        get_events_since,
-        init_db,
-        set_broadcast_callback,
-    )
+_event_log = import_module("backend.event_log" if __package__ else "event_log")
+get_events_for_agent = _event_log.get_events_for_agent
+get_events_since = _event_log.get_events_since
+init_db = _event_log.init_db
+set_broadcast_callback = _event_log.set_broadcast_callback
 
 PING_INTERVAL_S = 5.0
 PONG_TIMEOUT_S = 15.0
+
+
+class CraftaxStats(TypedDict):
+    health: float
+    drink: float
+    food: float
+    energy: float
+    light: float
+    is_sleeping: float
+    is_resting: float
+
+
+class CraftaxEnvironment(Protocol):
+    done: bool
+    last_reward: float
+
+    def observation(self) -> dict[str, np.ndarray]: ...
+
+    def raw_observation(self) -> np.ndarray: ...
+
+    def achievements(self) -> np.ndarray: ...
+
+    def game_stats(self) -> dict[str, float]: ...
+
+
+class CraftaxDriverProvider(Protocol):
+    env: CraftaxEnvironment
+    step_count: int
+
+    def reset(self, seed: int | None = None) -> None: ...
+
+
+class BeliefProvider(Protocol):
+    active_dof: int
+    prediction_error_map: np.ndarray
+    confidence_map: np.ndarray
+    regional_override: dict[str, float] | None
+
+    def snapshot(self) -> dict[str, Any]: ...
+
+
+class WorldModelProvider(Protocol):
+    belief: BeliefProvider
 
 # Module-level runtime state. Later tasks (orchestrator, world model)
 # mutate this dict in place; /health always reads the live values.
@@ -64,7 +101,7 @@ class ConnectionManager:
         self.active_connections: list[WebSocket] = []
         # Per-connection send lock: ping task + broadcasts must never
         # interleave frames on the same socket.
-        self._send_locks: dict[WebSocket, asyncio.Lock] = {}
+        self._send_locks: dict[WebSocket, anyio.Lock] = {}
 
     async def connect(self, websocket: WebSocket) -> None:
         await websocket.accept()
@@ -80,7 +117,7 @@ class ConnectionManager:
         self._send_locks.pop(websocket, None)
 
     async def _send(self, websocket: WebSocket, message: dict[str, Any]) -> None:
-        lock = self._send_locks.setdefault(websocket, asyncio.Lock())
+        lock = self._send_locks.setdefault(websocket, anyio.Lock())
         async with lock:
             await websocket.send_json(message)
 
@@ -88,7 +125,7 @@ class ConnectionManager:
         for websocket in list(self.active_connections):
             try:
                 await self._send(websocket, message)
-            except Exception:
+            except (RuntimeError, WebSocketDisconnect):
                 self.disconnect(websocket)
 
 
@@ -98,9 +135,9 @@ manager = ConnectionManager()
 async def _ping_loop(websocket: WebSocket) -> None:
     try:
         while True:
-            await asyncio.sleep(PING_INTERVAL_S)
+            await anyio.sleep(PING_INTERVAL_S)
             await manager._send(websocket, {"type": "ping"})
-    except Exception:
+    except (RuntimeError, WebSocketDisconnect):
         return  # socket died; endpoint's finally handles cleanup
 
 
@@ -140,57 +177,57 @@ async def events_for_agent(agent_id: str) -> list[dict[str, Any]]:
 
 
 @app.get("/detail/{sim_id}")
-async def detail(sim_id: str) -> dict[str, Any]:
-    env = _env_registry.get(sim_id)
+def detail(sim_id: str) -> dict[str, Any]:
+    driver = _env_registry.get(sim_id)
     wm = _world_model_ref[0] if _world_model_ref else None
-    if env is None or wm is None:
+    if driver is None or wm is None:
         raise HTTPException(status_code=404, detail=f"unknown sim_id '{sim_id}'")
 
     # ATOMICITY (ARCHITECTURE.md): both reads are in-memory; NO await between
     # them so the panel's heatmap and sim view reflect one logical timestep.
-    vec = env.get_state_vector()
+    observation = driver.env.observation()
+    raw_observation = driver.env.raw_observation()
+    achievements = driver.env.achievements()
+    game_stats = driver.env.game_stats()
     belief_snapshot = wm.belief.snapshot()
-
-    n = float(vec[778]) > 0.5
-    vessels = [
-        {
-            "col": float(getattr(v, "col", 0.0)),
-            "row": float(getattr(v, "row", 0.0)),
-            "radius": float(getattr(v, "radius_workspace", 0.0)) / 0.2 * 15.0,
-            "damaged": bool(getattr(v, "damaged", False)),
-        }
-        for v in getattr(env, "vessels", [])
-    ]
+    stats: CraftaxStats = {
+        "health": float(game_stats["health"]),
+        "drink": float(game_stats["drink"]),
+        "food": float(game_stats["food"]),
+        "energy": float(game_stats["energy"]),
+        "light": float(game_stats["light_level"]),
+        "is_sleeping": float(game_stats["is_sleeping"]),
+        "is_resting": float(game_stats["is_resting"]),
+    }
     simulation_state = {
-        "step_id": int(getattr(env, "_step_count", 0)),
         "simulation_id": sim_id,
-        "tissue_integrity": vec[0:256].reshape(16, 16).tolist(),
-        "tissue_vascularity": vec[256:512].reshape(16, 16).tolist(),
-        "bleeding_mask": vec[512:768].reshape(16, 16).astype(bool).tolist(),
-        "vessels": vessels,
-        "ee_position": vec[768:771].tolist(),
-        "gripper_state": float(vec[775]),
-        "surgical_target": {
-            "position": vec[776:778].tolist(),
-            "reached": n,
-        },
+        "token_2d": [[int(value) for value in row] for row in observation["token_2d"]],
+        "vector": [float(value) for value in observation["vector"].reshape(-1)],
+        "direction": [int(value) for value in observation["token"].reshape(-1)],
+        "raw_observation": [float(value) for value in raw_observation.reshape(-1)],
+        "achievements_count": int(np.count_nonzero(achievements)),
+        "stats": stats,
+        "step": int(driver.step_count),
+        "done": bool(driver.env.done),
+        "reward": float(driver.env.last_reward),
         "active_dof": int(wm.belief.active_dof),
-        "task_complete": bool(n),
-        "task_failed": bool(getattr(env, "_task_failed", False)),
-        "reward": float(getattr(env, "_last_reward", 0.0)),
     }
     return {"simulation_state": simulation_state, "belief_state": belief_snapshot}
 
 
 @app.post("/simulation/{sim_id}/reset")
-async def reset_simulation(sim_id: str) -> dict[str, Any]:
+def reset_simulation(sim_id: str) -> dict[str, bool]:
+    driver = _env_registry.get(sim_id)
+    if driver is None:
+        raise HTTPException(status_code=404, detail=f"unknown sim_id '{sim_id}'")
+    driver.reset()
     return {"ok": True}
 
 
-_world_model_ref: list[Any] = []
+_world_model_ref: list[WorldModelProvider] = []
 
 
-def set_world_model(world_model: Any) -> None:
+def set_world_model(world_model: WorldModelProvider) -> None:
     """main.py registers the singleton here for debug endpoints."""
     _world_model_ref.clear()
     _world_model_ref.append(world_model)
@@ -206,6 +243,7 @@ async def debug_reset_belief() -> dict[str, Any]:
         raise HTTPException(status_code=503, detail="world model not ready")
     wm.belief.prediction_error_map[:] = 0.5
     wm.belief.confidence_map[:] = 0.5
+    wm.belief.regional_override = None
     return {"ok": True, "reset": "prediction_error_map=0.5"}
 
 
@@ -215,84 +253,43 @@ async def debug_trigger_agent() -> dict[str, Any]:
     if wm is None:
         raise HTTPException(status_code=503, detail="world model not ready")
     wm.belief.prediction_error_map[0:8, 0:8] = 0.8  # upper_left region
+    wm.belief.confidence_map[0:8, 0:8] = 0.2
+    wm.belief.regional_override = None
     return {"ok": True, "boosted": "upper_left=0.8"}
 
 
-_env_registry: dict[str, Any] = {}
+_env_registry: dict[str, CraftaxDriverProvider] = {}
 
 
-def set_env_registry(envs: dict[str, Any]) -> None:
-    """main.py registers live sims here so MJPEG can find them by id."""
+def set_env_registry(envs: Mapping[str, CraftaxDriverProvider]) -> None:
     _env_registry.clear()
     _env_registry.update(envs)
 
 
-async def pybullet_frame_generator(env: Any, max_frames: int = 0):
-    # max_frames=0 -> unlimited (production); N>0 -> bounded (tests).
-    # RISKS S-4: p.getCameraImage blocks 20-100ms — must run in to_thread and
-    # yield between frames or WS heartbeats die during streaming.
-    import io
-
-    import numpy as np
-    import pybullet as p
-    from PIL import Image
-
-    cid = getattr(env, "cid", 0)
-    view = getattr(env, "_view_matrix", None)
-    proj = getattr(env, "_proj_matrix", None)
-
-    frames_sent = 0
-    while max_frames == 0 or frames_sent < max_frames:
-        width, height, rgba, _depth, _seg = await asyncio.to_thread(
-            p.getCameraImage,
-            320,
-            240,
-            viewMatrix=view,
-            projectionMatrix=proj,
-            physicsClientId=cid,
-        )
-        frame = np.asarray(rgba, dtype=np.uint8).reshape(height, width, 4)[..., :3]
-        buf = io.BytesIO()
-        Image.fromarray(frame).save(buf, format="JPEG", quality=85)
-        yield (
-            b"--frame\r\nContent-Type: image/jpeg\r\n\r\n"
-            + buf.getvalue()
-            + b"\r\n"
-        )
-        frames_sent += 1
-        await asyncio.sleep(1 / 15)
-
-
 @app.get("/sim/{sim_id}/stream")
-async def sim_stream(sim_id: str):
-    env = _env_registry.get(sim_id)
-    if env is None:
-        raise HTTPException(status_code=404, detail=f"unknown sim_id '{sim_id}'")
-    return StreamingResponse(
-        pybullet_frame_generator(env),
-        media_type="multipart/x-mixed-replace; boundary=frame",
-        headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+async def sim_stream(sim_id: str) -> None:
+    del sim_id
+    raise HTTPException(
+        status_code=404,
+        detail="Craftax MJPEG stream is unavailable",
     )
 
 
 @app.websocket("/ws/events")
 async def ws_events(websocket: WebSocket) -> None:
     await manager.connect(websocket)
-    ping_task = asyncio.create_task(_ping_loop(websocket))
     last_pong = time.monotonic()
-    try:
-        while True:
-            try:
-                message = await asyncio.wait_for(
-                    websocket.receive_text(), timeout=PONG_TIMEOUT_S
-                )
+    async with anyio.create_task_group() as task_group:
+        task_group.start_soon(_ping_loop, websocket)
+        try:
+            while True:
+                remaining = max(0.0, PONG_TIMEOUT_S - (time.monotonic() - last_pong))
+                with anyio.fail_after(remaining):
+                    message = await websocket.receive_text()
                 if message == "pong":
                     last_pong = time.monotonic()
-            except asyncio.TimeoutError:
-                if time.monotonic() - last_pong >= PONG_TIMEOUT_S:
-                    break  # no pong within 15s — drop client
-    except WebSocketDisconnect:
-        pass
-    finally:
-        ping_task.cancel()
-        manager.disconnect(websocket)
+        except (TimeoutError, WebSocketDisconnect):
+            return
+        finally:
+            task_group.cancel_scope.cancel()
+            manager.disconnect(websocket)

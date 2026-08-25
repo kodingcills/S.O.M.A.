@@ -31,6 +31,7 @@ export type NodeKind =
 
 export interface SomaNodeData {
   label:       string
+  title:       string
   status:      NodeStatus
   agent_id:    string
   kind:        NodeKind
@@ -40,6 +41,12 @@ export interface SomaNodeData {
   dof_level:   number | null
   timestamp:   number
   sim_id:      string | null
+  event_id:    number
+  generation:  number
+  samples_collected: number | null
+  fine_tune_loss: number | null
+  api_tokens_used: number | null
+  error_message: string | null
   // Mutable during lifetime — set by useEffect timer:
   activeMs:    number              // ms since spawned (drives spawning→active)
 }
@@ -62,26 +69,25 @@ export interface BeliefStateSnapshot {
 }
 
 export interface SimulationState {
-  step_id:           number
-  simulation_id:     string
-  tissue_integrity:  number[][]     // [16][16]
-  tissue_vascularity: number[][]    // [16][16]
-  bleeding_mask:     boolean[][]    // [16][16]
-  vessels:           VesselState[]
-  ee_position:       [number, number, number]  // normalized
-  gripper_state:     number
-  surgical_target:   { position: [number, number]; reached: boolean }
-  active_dof:        number
-  task_complete:     boolean
-  task_failed:       boolean
-  reward:            number
-}
-
-export interface VesselState {
-  col:     number
-  row:     number
-  radius:  number
-  damaged: boolean
+  readonly simulation_id: string
+  readonly token_2d: readonly (readonly number[])[]
+  readonly vector: readonly number[]
+  readonly direction: readonly number[]
+  readonly raw_observation: readonly number[]
+  readonly achievements_count: number
+  readonly stats: {
+    readonly health: number
+    readonly drink: number
+    readonly food: number
+    readonly energy: number
+    readonly light: number
+    readonly is_sleeping: number
+    readonly is_resting: number
+  }
+  readonly step: number
+  readonly done: boolean
+  readonly reward: number
+  readonly active_dof: number
 }
 
 export interface DetailResponse {

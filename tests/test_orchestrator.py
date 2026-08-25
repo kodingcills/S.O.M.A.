@@ -28,6 +28,7 @@ from backend import orchestrator
 from backend.event_log import get_events_since, init_db
 from backend.orchestrator import (
     CIRCUIT_BREAKER_THRESHOLD,
+    DOF_THRESHOLDS,
     EXPLORE_THRESHOLD,
     MAX_CONCURRENT_AGENTS,
     build_soma_graph,
@@ -92,12 +93,20 @@ def make_mock_world_model(regional: float = 0.5, active_dof: int = 1):
     )
 
 
+def make_mock_driver(n_achievements: int = 0):
+    achievements = np.zeros(67, dtype=bool)
+    achievements[:n_achievements] = True
+    return SimpleNamespace(
+        env=SimpleNamespace(achievements=lambda: achievements.copy())
+    )
+
+
 # ---------------------------------------------------------------------------
 # test:orchestrator:graph_compiles
 # ---------------------------------------------------------------------------
 
 def test_graph_compiles():
-    graph = build_soma_graph(make_mock_world_model())
+    graph = build_soma_graph(make_mock_world_model(), make_mock_driver())
     assert graph is not None
 
 
@@ -123,9 +132,41 @@ def test_route_returns_valid_strings():
 # ---------------------------------------------------------------------------
 
 def test_route_decision_unlock():
-    # Global error 0.05 < DOF_THRESHOLDS[1]=0.08, dof < 6, no cap_ active.
-    state = make_state(global_mean_error=0.05)
+    state = make_state(unlock_requested=True, target_dof=2)
     assert route_orchestrator(state) == "unlock_dof"
+
+
+async def test_unlock_fires_on_achievement_bucket_increase(monkeypatch):
+    # Given: Craftax has crossed the four-achievement boundary while belief
+    # still exposes DOF 1, and JSD error is too high for the legacy threshold.
+    monkeypatch.setattr(orchestrator, "ORCHESTRATOR_SLEEP_S", 0.0)
+    world_model = make_mock_world_model(regional=0.10, active_dof=1)
+    achievements = np.zeros(67, dtype=bool)
+    achievements[:4] = True
+    driver = SimpleNamespace(
+        env=SimpleNamespace(achievements=lambda: achievements.copy())
+    )
+    graph = build_soma_graph(world_model, driver)
+    config = {
+        "recursion_limit": 12,
+        "configurable": {"thread_id": "t-achievement-unlock"},
+    }
+
+    # When: one bounded orchestration burst observes the real achievement set.
+    with pytest.raises(GraphRecursionError):
+        await graph.ainvoke(initial_state(), config=config)
+
+    # Then: the bucket increase unlocks DOF 2 using the real JSD mean.
+    unlock = next(
+        event
+        for event in get_events_since(0)
+        if event["event_type"] == "capability_unlocked"
+    )
+    assert unlock["payload"]["previous_dof"] == 1
+    assert unlock["payload"]["new_dof"] == 2
+    assert unlock["payload"]["trigger_error"] == pytest.approx(0.10)
+    assert unlock["payload"]["threshold"] == DOF_THRESHOLDS[1]
+    assert world_model.belief.active_dof == 2
 
 
 def test_route_decision_spawn():
@@ -203,7 +244,7 @@ async def test_runner_marks_failure_without_module(monkeypatch):
 async def test_runner_completes_with_stub_module(monkeypatch):
     class StubAgent:
         def __init__(
-            self, agent_id: str, world_model, region: str, error_before: float
+            self, agent_id: str, world_model, driver, region: str, error_before: float
         ) -> None:
             self.agent_id = agent_id
 
@@ -213,6 +254,7 @@ async def test_runner_completes_with_stub_module(monkeypatch):
     stub = ModuleType("backend.agents.exploration")
     stub.ExplorationAgent = StubAgent
     monkeypatch.setitem(sys.modules, "backend.agents.exploration", stub)
+    build_soma_graph(make_mock_world_model(), make_mock_driver())
 
     out = await exploration_agent_runner(
         {"agent_id": "exp_live01", "region": "lower_left", "error_before": 0.4}
@@ -228,7 +270,7 @@ async def test_runner_completes_with_stub_module(monkeypatch):
 # ---------------------------------------------------------------------------
 
 async def _run_bounded(world_model, limit: int, thread_id: str):
-    graph = build_soma_graph(world_model)
+    graph = build_soma_graph(world_model, make_mock_driver())
     config = {"recursion_limit": limit, "configurable": {"thread_id": thread_id}}
     with pytest.raises(GraphRecursionError):
         await graph.ainvoke(initial_state(), config=config)

@@ -1,25 +1,18 @@
-// CapabilityNode — INTERFACE.md "NODE COMPONENTS": `DOF {n} Unlock`
-// + 6 tiny circles showing DOF progress (filled ≤ dof_level).
-import { NodeProps } from '@xyflow/react'
-import { NodeShell } from './NodeShell'
-import { COLOR_CAPABILITY, TEXT_SECONDARY, STATUS_COMPLETED } from '../../../utils/colors'
+import type { NodeProps } from '@xyflow/react'
 import type { SomaNode } from '../../../utils/buildCanvasState'
+import { COLOR_CAPABILITY } from '../../../utils/colors'
+import { NodeShell } from './NodeShell'
 
-export function CapabilityNode({ data }: NodeProps<SomaNode>) {
-  const level = data.dof_level ?? 0
+export function CapabilityNode({ data, selected }: NodeProps<SomaNode>) {
+  const dof = data.dof_level
   return (
-    <NodeShell color={COLOR_CAPABILITY} label={data.label}
-               status={data.status} timestamp={data.timestamp}>
-      <div style={{ fontWeight: 700 }}>DOF {level || '—'} Unlock</div>
-      <div style={{ display: 'flex', gap: 4, marginTop: 3 }}>
-        {[1, 2, 3, 4, 5, 6].map(n => (
-          <span key={n} style={{
-            width: 8, height: 8, borderRadius: '50%', boxSizing: 'border-box',
-            background: n <= level ? STATUS_COMPLETED : 'transparent',
-            border: `1px solid ${n <= level ? STATUS_COMPLETED : TEXT_SECONDARY}`,
-          }} />
-        ))}
+    <NodeShell color={COLOR_CAPABILITY} symbol="◆" label="Capability" agentId={data.agent_id} status={data.status} timestamp={data.timestamp} selected={selected}>
+      <div className="node-title">{data.title}</div>
+      <div className="node-outcome capability-outcome">
+        <span>capability</span>
+        <strong>{dof ? `DOF ${Math.max(1, dof - 1)} → ${dof}` : 'DOF —'}</strong>
       </div>
+      <div className="node-meta"><span>generation {data.generation}</span><span>{data.samples_collected !== null ? `${data.samples_collected} samples` : 'adaptation pending'}</span></div>
     </NodeShell>
   )
 }

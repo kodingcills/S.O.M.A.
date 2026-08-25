@@ -1,43 +1,65 @@
-/* SOMA canvas node styles — Task 2.2 (INTERFACE.md "NODE COMPONENTS").
-   Keyframes/classes only; layout values stay inline in components.
-   NO @xyflow/react CSS here — that import lives exactly once in App.tsx. */
-
-@keyframes nodeSpawn {
-  0%   { transform: scale(0);    opacity: 0; }
-  70%  { transform: scale(1.08); opacity: 1; }
-  100% { transform: scale(1.0);  opacity: 1; }
+.learning-node {
+  width: 220px;
+  height: 124px;
+  display: grid;
+  grid-template-rows: 28px 1fr 24px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #d9d9d5;
+  border-radius: 8px;
+  background: #fff;
+  color: #20201e;
+  box-shadow: 0 1px 1px rgba(20,20,18,.02);
+  transition: border-color 140ms ease, background-color 500ms ease, box-shadow 140ms ease;
 }
-.node-spawn { animation: nodeSpawn 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.learning-node:hover { border-color: #b9b9b4; box-shadow: 0 2px 5px rgba(20,20,18,.04); }
+.learning-node.selected { border-color: #5368a5; box-shadow: 0 0 0 1px #5368a5; }
+.learning-node.updated { background: #f1f6f1; }
+.node-header { display: flex; align-items: center; gap: 6px; padding: 0 10px; border-bottom: 1px solid #ecece8; color: #686863; font-size: 10px; }
+.node-type { display: inline-flex; align-items: center; gap: 6px; font-weight: 580; }
+.node-type b { font-size: 9px; }
+.node-id { margin-left: auto; color: #979791; font-family: var(--mono); font-size: 9px; }
+.node-content { min-height: 0; padding: 9px 10px 5px; }
+.node-title { overflow: hidden; color: #20201e; font-size: 12px; font-weight: 590; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.node-outcome { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; }
+.node-outcome > span { color: #979791; font-size: 9px; }
+.node-outcome strong { color: #3c3c38; font-family: var(--mono); font-size: 11px; font-weight: 500; }
+.node-outcome em { color: #979791; font-style: normal; }
+.node-outcome small { margin-left: auto; color: #557967; font-family: var(--mono); font-size: 9px; }
+.capability-outcome strong { color: #655887; }
+.node-failure { overflow: hidden; margin-top: 7px; color: #a64a44; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.node-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; color: #979791; font-size: 8px; }
+.node-footer { display: flex; align-items: center; padding: 0 10px; border-top: 1px solid #f0f0ed; color: #979791; font-size: 8px; }
+.node-state { display: inline-flex; align-items: center; gap: 5px; }
+.node-state i { width: 5px; height: 5px; border-radius: 50%; }
+.node-state.running i { animation: quietBlink 1.6s ease-in-out infinite; }
+.node-handle { width: 6px !important; height: 6px !important; border: 1px solid #fff !important; background: #b7b7b1 !important; }
+@keyframes quietBlink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 
-@keyframes nodePulse {
-  0%, 100% { box-shadow: none; }
-  50%      { box-shadow: 0 0 8px var(--node-color); }
-}
-.node-active { animation: nodePulse 2000ms ease-in-out infinite; }
+.graph-toolbar { display: flex !important; align-items: center; gap: 8px; margin: 12px !important; padding: 6px; border: 1px solid #e2e2de; border-radius: 7px; background: rgba(255,255,255,.96); box-shadow: 0 3px 10px rgba(24,24,20,.04); }
+.zoom-tools, .filter-tools { display: flex; align-items: center; }
+.zoom-tools { gap: 2px; padding-right: 7px; border-right: 1px solid #ecece8; }
+.zoom-tools button, .filter-tools button { min-height: 26px; padding: 0 7px; border: 0; border-radius: 4px; background: transparent; color: #686863; font-size: 9px; cursor: pointer; }
+.zoom-tools button:hover, .filter-tools button:hover { background: #f2f2ef; color: #20201e; }
+.zoom-tools span { width: 42px; text-align: center; color: #686863; font-size: 9px; }
+.zoom-tools .fit-button { margin-left: 3px; border-left: 1px solid #ecece8; border-radius: 0; }
+.filter-tools { gap: 1px; }
+.filter-tools button.selected { background: #ededE9; color: #20201e; }
+.graph-search { width: 142px; height: 27px; display: flex; align-items: center; gap: 5px; padding: 0 7px; border: 1px solid #e2e2de; border-radius: 5px; color: #979791; }
+.graph-search input { width: 100%; border: 0; outline: 0; background: transparent; color: #20201e; font-size: 9px; }
+.graph-search input::placeholder { color: #a0a09a; }
+.graph-orientation { display: flex !important; align-items: center; gap: 7px; margin: 16px !important; color: #979791 !important; font-size: 9px !important; }
+.graph-orientation i { font-style: normal; }
+.live-indicator { display: flex !important; align-items: center; gap: 8px; margin: 16px !important; padding: 7px 9px !important; border: 1px solid #e2e2de; border-radius: 6px; background: rgba(255,255,255,.96); color: #686863; box-shadow: 0 3px 10px rgba(24,24,20,.05); font-size: 9px; }
+.live-indicator button { border: 0; background: transparent; color: #5368a5; padding: 0; cursor: pointer; font-size: 9px; }
+.graph-empty { width: 330px; margin-bottom: 32px !important; padding: 14px 16px !important; border: 1px solid #e2e2de; border-radius: 7px; background: rgba(255,255,255,.94); color: #686863; text-align: center; font-size: 10px; line-height: 1.5; }
+.graph-empty strong, .graph-empty span { display: block; }
+.graph-empty strong { color: #20201e; font-size: 11px; margin-bottom: 3px; }
+.graph-empty span { color: #979791; margin-top: 5px; }
+.react-flow__edge-text { font-weight: 500; }
+.react-flow__minimap { box-shadow: none !important; }
 
-/* Completion flash: border white → status color over 400ms */
-.node-completing { border-color: #FFFFFF !important; transition: none; }
-
-@keyframes dotPulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.35; }
-}
-.status-dot-pulsing { animation: dotPulse 1000ms ease-in-out infinite; }
-
-/* Particle burst: 8 divs radiate from node center, fade over 400ms */
-@keyframes particleFly {
-  0%   { transform: translate(-50%, -50%) translate(0, 0) scale(1);
-         opacity: 1; }
-  100% { transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0.4);
-         opacity: 0; }
-}
-.particle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: particleFly 400ms ease-out forwards;
+@media (max-width: 1080px) {
+  .filter-tools button:nth-child(2), .filter-tools button:nth-child(3) { display: none; }
+  .graph-search { width: 120px; }
 }

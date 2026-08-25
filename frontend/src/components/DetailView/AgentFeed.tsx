@@ -1,135 +1,104 @@
+import { useMemo, useState } from 'react'
 import type { EventLogEntry } from '../../types'
-import {
-  STATUS_COMPLETED,
-  STATUS_FAILED,
-  STATUS_SPAWNING,
-  TEXT_ERROR,
-  TEXT_SECONDARY,
-} from '../../utils/colors'
+import { REGION_LABELS } from '../../utils/colors'
 
 export interface AgentFeedProps {
   events: EventLogEntry[]
   activeNode: string
 }
 
-const MONO = "'JetBrains Mono', ui-monospace, Menlo, monospace"
-const MAX_ENTRIES = 500
-
-function timeOf(ts: number): string {
-  return new Date(ts * 1000).toLocaleTimeString('en-GB', { hour12: false })
+function eventTitle(event: EventLogEntry): string {
+  switch (event.event_type) {
+    case 'agent_spawned': return 'Agent spawned'
+    case 'agent_step': return 'Exploration step'
+    case 'agent_completed': return 'Evaluation complete'
+    case 'agent_failed': return 'Execution failed'
+    case 'capability_unlocked': return 'Capability unlocked'
+    default: return event.event_type.replace(/_/g, ' ')
+  }
 }
 
-interface Entry {
-  id: number
-  time: string
-  label: string
-  color: string
-  body: string
-  reasoning?: string
-}
-
-function buildEntry(e: EventLogEntry): Entry | null {
-  const time = timeOf(e.timestamp)
-  const who = e.agent_id ?? ''
-  const delta =
-    e.error_before != null && e.error_after != null
-      ? e.error_before - e.error_after
-      : null
-
-  switch (e.event_type) {
+function eventSummary(event: EventLogEntry): string {
+  const region = event.region ? REGION_LABELS[event.region] ?? event.region : null
+  switch (event.event_type) {
     case 'agent_spawned':
-      return {
-        id: e.id, time, label: 'SPAWN', color: STATUS_SPAWNING,
-        body: `${who} region:${REGION_NAME(e.region)} | err:${(e.error_before ?? 0).toFixed(2)}`,
-      }
-    case 'agent_completed':
-      return {
-        id: e.id, time, label: 'RESULT',
-        color: delta != null && delta > 0 ? STATUS_COMPLETED : STATUS_FAILED,
-        body: `${who} ${(e.error_before ?? 0).toFixed(2)} → ${(e.error_after ?? 0).toFixed(2)} ${delta != null && delta > 0 ? '✓' : '·'}`,
-      }
-    case 'agent_failed':
-      return {
-        id: e.id, time, label: 'FAILED', color: TEXT_ERROR,
-        body: `${who} ${String(e.payload?.error ?? 'unknown')}`,
-      }
+      return event.error_before !== null
+        ? `Evaluating ${region ?? 'the selected region'} at prediction error ${event.error_before.toFixed(3)}.`
+        : `Execution initialized${region ? ` for ${region}` : ''}.`
     case 'agent_step': {
-      const step = typeof e.payload?.step === 'number' ? e.payload.step : '?'
-      const reasoning =
-        typeof e.payload?.reasoning === 'string' && e.payload.reasoning.trim()
-          ? e.payload.reasoning.trim()
-          : undefined
-      return {
-        id: e.id, time, label: 'STEP', color: TEXT_SECONDARY,
-        body: `${who} step:${step}`, reasoning,
-      }
+      const reasoning = event.payload.reasoning
+      if (typeof reasoning === 'string' && reasoning.trim()) return reasoning.trim()
+      const step = event.payload.step
+      return `Simulation step ${typeof step === 'number' ? step : '—'} completed.`
     }
-    case 'capability_unlocked':
-      return {
-        id: e.id, time, label: 'UNLOCK', color: '#AF52DE',
-        body: `${who} DOF ${String(e.payload?.new_dof ?? '?')}`,
+    case 'agent_completed': {
+      const samples = typeof event.payload.samples_collected === 'number' ? event.payload.samples_collected : null
+      if (event.error_before !== null && event.error_after !== null) {
+        return `Prediction error changed ${event.error_before.toFixed(3)} → ${event.error_after.toFixed(3)}${samples !== null ? ` after ${samples} samples` : ''}.`
       }
+      return samples !== null ? `Adaptation completed with ${samples} samples.` : 'Execution completed.'
+    }
+    case 'agent_failed':
+      return String(event.payload.error ?? 'No failure message was recorded.')
+    case 'capability_unlocked':
+      return `DOF ${String(event.payload.previous_dof ?? '—')} → ${String(event.payload.new_dof ?? '—')}.`
     default:
-      return null
+      return 'Event recorded.'
   }
 }
 
-function REGION_NAME(region: string | null): string {
-  const known: Record<string, string> = {
-    upper_left: 'Upper Left', upper_right: 'Upper Right',
-    lower_left: 'Lower Left', lower_right: 'Lower Right',
-    tool_tissue_boundary: 'Tool Zone', surgical_target_vicinity: 'Target Zone',
-  }
-  return (region && known[region]) || region || '—'
+function markerClass(event: EventLogEntry): string {
+  if (event.event_type === 'agent_failed') return 'failed'
+  if (event.event_type === 'agent_completed' || event.event_type === 'capability_unlocked') return 'completed'
+  if (event.event_type === 'agent_spawned' || event.event_type === 'agent_step') return 'active'
+  return ''
 }
 
-export function AgentFeed({ events, activeNode }: AgentFeedProps) {
-  const relevant = events.filter(
-    (e) => e.agent_id === activeNode || e.parent_id === activeNode,
-  )
-  const entries = relevant
-    .slice(-MAX_ENTRIES)
-    .reverse()
-    .map(buildEntry)
-    .filter((e): e is Entry => e !== null)
+export function AgentTrace({ events, activeNode }: AgentFeedProps) {
+  const [expanded, setExpanded] = useState<number | null>(null)
+  const relevant = useMemo(() => events
+    .filter(event => event.agent_id === activeNode || event.parent_id === activeNode)
+    .slice(-120), [events, activeNode])
+
+  if (relevant.length === 0) {
+    return <div className="empty-state" style={{ minHeight: 90 }}><span>No trace events recorded for this node.</span></div>
+  }
 
   return (
-    <div style={{
-      height: '100%', overflowY: 'auto', padding: '8px 10px',
-      boxSizing: 'border-box', fontFamily: MONO, fontSize: 10,
-    }}>
-      <div style={{ color: TEXT_SECONDARY, letterSpacing: '0.1em', marginBottom: 4 }}>
-        AGENT FEED · {activeNode || '—'}
-      </div>
-      {entries.length === 0 && (
-        <div style={{ color: TEXT_SECONDARY }}>no events for this node yet…</div>
-      )}
-      {entries.map((entry) => (
-        <div key={entry.id}>
-          <div style={{ display: 'flex', gap: 10, lineHeight: '20px', whiteSpace: 'nowrap' }}>
-            <span style={{ color: TEXT_SECONDARY }}>{entry.time}</span>
-            <span style={{ color: entry.color, width: 52 }}>{entry.label}</span>
-            <span style={{ color: TEXT_SECONDARY, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {entry.body}
-            </span>
+    <div className="trace">
+      {relevant.map((event, index) => {
+        const previous = relevant[index - 1]
+        const elapsedMs = previous ? Math.max(0, (event.timestamp - previous.timestamp) * 1000) : 0
+        const duration = elapsedMs >= 1000 ? `+${(elapsedMs / 1000).toFixed(2)} s` : elapsedMs > 0 ? `+${Math.round(elapsedMs)} ms` : ''
+        const isExpanded = expanded === event.id
+        return (
+          <div className="trace-row" key={event.id}>
+            <i className={`trace-marker ${markerClass(event)}`} aria-hidden="true" />
+            <button className="trace-button" onClick={() => setExpanded(isExpanded ? null : event.id)} aria-expanded={isExpanded}>
+              <time className="trace-time">{new Date(event.timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</time>
+              <span className="trace-title">{eventTitle(event)}</span>
+              <span className="trace-meta">{duration}</span>
+            </button>
+            <p className="trace-summary">{eventSummary(event)}</p>
+            {isExpanded && (
+              <div className="trace-detail">
+                <strong>Recorded event</strong>
+                <pre>{JSON.stringify({
+                  event_type: event.event_type,
+                  agent_id: event.agent_id,
+                  region: event.region,
+                  error_before: event.error_before,
+                  error_after: event.error_after,
+                  payload: event.payload,
+                }, null, 2)}</pre>
+              </div>
+            )}
           </div>
-          {entry.reasoning && (
-            <div style={{
-              marginLeft: 96, color: '#5AC8FA', fontStyle: 'italic',
-              overflow: 'hidden', display: '-webkit-box',
-              WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
-              lineHeight: '16px', paddingBottom: 2,
-            }}>
-              “{entry.reasoning}”
-            </div>
-          )}
-        </div>
-      ))}
-      {relevant.length > MAX_ENTRIES && (
-        <div style={{ color: TEXT_SECONDARY, paddingTop: 4 }}>
-          +{relevant.length - MAX_ENTRIES} earlier events hidden
-        </div>
-      )}
+        )
+      })}
     </div>
   )
 }
+
+// Compatibility export for existing imports.
+export const AgentFeed = AgentTrace

@@ -1,19 +1,14 @@
-// RootNode — INTERFACE.md "NODE COMPONENTS": SEED label, DOF level + status.
-import { NodeProps } from '@xyflow/react'
-import { NodeShell } from './NodeShell'
-import { COLOR_ROOT, TEXT_SECONDARY } from '../../../utils/colors'
+import type { NodeProps } from '@xyflow/react'
 import type { SomaNode } from '../../../utils/buildCanvasState'
+import { COLOR_ROOT } from '../../../utils/colors'
+import { NodeShell } from './NodeShell'
 
-export function RootNode({ data }: NodeProps<SomaNode>) {
-  const statusText =
-    data.status === 'failed' ? 'FAILED' : 'RUNNING'
+export function RootNode({ data, selected }: NodeProps<SomaNode>) {
   return (
-    <NodeShell color={COLOR_ROOT} label={data.label}
-               status={data.status} timestamp={data.timestamp}>
-      <div style={{ fontWeight: 700 }}>DOF {data.dof_level ?? 1}</div>
-      <div style={{ fontSize: 9, letterSpacing: '0.08em', color: TEXT_SECONDARY }}>
-        {statusText}
-      </div>
+    <NodeShell color={COLOR_ROOT} symbol="○" label="Seed" agentId="root" status={data.status} timestamp={data.timestamp} selected={selected}>
+      <div className="node-title">Initial system state</div>
+      <div className="node-outcome"><span>capability</span><strong>DOF {data.dof_level ?? 1}</strong></div>
+      <div className="node-meta"><span>learning origin</span><span>primary anatomy</span></div>
     </NodeShell>
   )
 }

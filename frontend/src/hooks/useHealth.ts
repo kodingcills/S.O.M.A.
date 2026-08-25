@@ -5,13 +5,18 @@ import type { HealthResponse } from '../types'
 export function useHealth(): HealthResponse | null {
   const [health, setHealth] = useState<HealthResponse | null>(null)
   useEffect(() => {
-    const id = setInterval(async () => {
+    let cancelled = false
+    const poll = async () => {
       try {
         const r = await fetch(`${import.meta.env.VITE_API_URL}/health`)
-        setHealth(await r.json())
+        if (!r.ok) return
+        const next = await r.json() as HealthResponse
+        if (!cancelled) setHealth(next)
       } catch { /* ignore — top bar shows stale values */ }
-    }, 1000)
-    return () => clearInterval(id)
+    }
+    void poll()
+    const id = setInterval(poll, 1000)
+    return () => { cancelled = true; clearInterval(id) }
   }, [])
   return health
 }

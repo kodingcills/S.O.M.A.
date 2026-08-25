@@ -1,63 +1,62 @@
-// VERBATIM from docs/specs/INTERFACE.md "COLOR SYSTEM".
-// Single source of truth. Never hardcode hex in components.
+// SOMA research-interface color tokens.
+// Components should communicate meaning with text and shape as well as color.
 
-// Background
-export const CANVAS_BG       = '#0A0E1A'
-export const SURFACE_BG      = '#0F1629'
-export const PANEL_BORDER    = '#1E2D4A'
-export const SURFACE_HOVER   = '#162035'
+// Background and surfaces
+export const APP_BG           = '#F3F3F0'
+export const CANVAS_BG        = '#F8F8F6'
+export const SURFACE_BG       = '#FFFFFF'
+export const PANEL_BORDER     = '#E2E2DE'
+export const BORDER_SUBTLE    = '#ECECE8'
+export const SURFACE_HOVER    = '#F2F2EF'
+export const SURFACE_SELECTED = '#F0F2FA'
 
 // Text
-export const TEXT_PRIMARY    = '#E8EFF8'
-export const TEXT_SECONDARY  = '#7A9CC4'
-export const TEXT_MONO       = '#5AC8FA'
-export const TEXT_ERROR      = '#FF3B30'
+export const TEXT_PRIMARY    = '#20201E'
+export const TEXT_SECONDARY  = '#686863'
+export const TEXT_TERTIARY   = '#979791'
+export const TEXT_MONO       = '#3E4C70'
+export const TEXT_ERROR      = '#A64A44'
 
-// Agent type colors
-export const COLOR_EXPLORATION = '#007AFF'  // blue
-export const COLOR_CAPABILITY  = '#AF52DE'  // purple
-export const COLOR_WORLDMODEL  = '#34C759'  // green
-export const COLOR_SIMULATION  = '#5AC8FA'  // light blue
-export const COLOR_ROOT        = '#FFFFFF'
+// Semantic accents
+export const COLOR_EXPLORATION = '#5572A6'
+export const COLOR_CAPABILITY  = '#75669A'
+export const COLOR_WORLDMODEL  = '#5E7E70'
+export const COLOR_SIMULATION  = '#64808A'
+export const COLOR_ROOT        = '#777773'
+export const COLOR_SELECTION   = '#5368A5'
 
 // Status colors
-export const STATUS_SPAWNING  = '#FFD60A'   // yellow pulse
-export const STATUS_COMPLETED = '#34C759'   // green
-export const STATUS_FAILED    = '#FF3B30'   // red
+export const STATUS_SPAWNING  = '#B68135'
+export const STATUS_COMPLETED = '#557967'
+export const STATUS_FAILED    = '#A64A44'
 
-// HSL HEATMAP FORMULA — do not change
-// errorToColor(0.0) → hsl(120, 85%, 45%) green
-// errorToColor(0.5) → hsl(60,  85%, 45%) yellow
-// errorToColor(1.0) → hsl(0,   85%, 45%) red
-// If 0.5 appears brown: RGB interpolation is being used instead of HSL.
+// Sequential uncertainty scale. Risk/failure red is intentionally reserved.
 export function errorToColor(error: number): string {
-  const e   = Math.max(0, Math.min(1, error))
-  const hue = 120 * (1 - e)
-  return `hsl(${hue}, 85%, 45%)`
+  const e = Math.max(0, Math.min(1, error))
+  const lightness = 92 - e * 45
+  const saturation = 22 + e * 24
+  return `hsl(218, ${saturation}%, ${lightness}%)`
 }
 
-// Brighter on hover
 export function errorToColorHover(error: number): string {
-  const e   = Math.max(0, Math.min(1, error))
-  const hue = 120 * (1 - e)
-  return `hsl(${hue}, 85%, 65%)`
+  const e = Math.max(0, Math.min(1, error))
+  const lightness = 86 - e * 42
+  return `hsl(218, 42%, ${lightness}%)`
 }
 
-// Map agent_id prefix to type color
 export function agentColor(agentId: string): string {
   if (agentId.startsWith('exp_')) return COLOR_EXPLORATION
   if (agentId.startsWith('cap_')) return COLOR_CAPABILITY
-  if (agentId === 'root')         return COLOR_ROOT
-  if (agentId.startsWith('wm_'))  return COLOR_WORLDMODEL
-  return TEXT_SECONDARY
+  if (agentId === 'root') return COLOR_ROOT
+  if (agentId.startsWith('wm_')) return COLOR_WORLDMODEL
+  return COLOR_SIMULATION
 }
 
-// Human-readable region names
 export const REGION_LABELS: Record<string, string> = {
-  upper_left:              'Upper Left',
-  upper_right:             'Upper Right',
-  lower_left:              'Lower Left',
-  lower_right:             'Lower Right',
-  tool_tissue_boundary:    'Tool Zone',
-  surgical_target_vicinity:'Target Zone',
+  upper_left:               'Upper left',
+  upper_right:              'Upper right',
+  lower_left:               'Lower left',
+  lower_right:              'Lower right',
+  tool_tissue_boundary:     'Tool–tissue boundary',
+  surgical_target_vicinity: 'Surgical target vicinity',
 }

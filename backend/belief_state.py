@@ -81,6 +81,9 @@ class BeliefState:
     confidence_map: np.ndarray = field(
         default_factory=lambda: np.ones((16, 16), dtype=np.float32)
     )
+    # Real per-region JSD (Simulus) overrides geometric region_to_slice,
+    # which needs SurRoL EE/target positions this substrate doesn't have.
+    regional_override: dict[str, float] | None = None
 
     # Metadata.
     world_model_version: int = 0
@@ -147,8 +150,26 @@ class BeliefState:
         ).astype(np.float32)
         self.confidence_map = 1.0 - self.prediction_error_map
 
+    def set_jsd_error_map(self, jsd_map: np.ndarray) -> None:
+        """Simulus substrate: EMA toward a real per-cell JSD map.
+
+        Same alpha/decay semantics as update_prediction_error; the incoming
+        map is already an error magnitude (not a squared residual), so it is
+        blended directly instead of being squared.
+        """
+        assert jsd_map.shape == (16, 16), (
+            f"expected (16, 16), got {jsd_map.shape}"
+        )
+        clipped = np.clip(jsd_map.astype(np.float32), 0.0, 1.0)
+        self.prediction_error_map = (
+            _EMA_ALPHA * clipped + (1 - _EMA_ALPHA) * self.prediction_error_map
+        ).astype(np.float32)
+        self.confidence_map = 1.0 - self.prediction_error_map
+
     def get_regional_errors(self) -> dict[str, float]:
         """Mean error per region — exactly the 6 keys the orchestrator expects."""
+        if self.regional_override is not None:
+            return {name: float(self.regional_override[name]) for name in _REGION_ORDER}
         m = self.prediction_error_map
         return {
             name: float(m[rs, cs].mean())

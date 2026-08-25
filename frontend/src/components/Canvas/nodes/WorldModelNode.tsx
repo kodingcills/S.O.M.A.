@@ -1,20 +1,14 @@
-// WorldModelNode — minimal version for Task 2.2 (label + version text).
-// 32×32 heatmap thumbnail + error value lands in a later task.
-import { NodeProps } from '@xyflow/react'
-import { NodeShell } from './NodeShell'
-import { COLOR_WORLDMODEL, TEXT_SECONDARY } from '../../../utils/colors'
+import type { NodeProps } from '@xyflow/react'
 import type { SomaNode } from '../../../utils/buildCanvasState'
+import { COLOR_WORLDMODEL } from '../../../utils/colors'
+import { NodeShell } from './NodeShell'
 
-export function WorldModelNode({ data }: NodeProps<SomaNode>) {
+export function WorldModelNode({ data, selected }: NodeProps<SomaNode>) {
   return (
-    <NodeShell color={COLOR_WORLDMODEL} label={data.label}
-               status={data.status} timestamp={data.timestamp}>
-      <div style={{ fontSize: 9, color: TEXT_SECONDARY,
-                    whiteSpace: 'nowrap', overflow: 'hidden',
-                    textOverflow: 'ellipsis' }}>
-        {data.agent_id}
-      </div>
-      <div style={{ fontSize: 9, color: TEXT_SECONDARY }}>thumbnail — later task</div>
+    <NodeShell color={COLOR_WORLDMODEL} symbol="◇" label="World model" agentId={data.agent_id} status={data.status} timestamp={data.timestamp} selected={selected}>
+      <div className="node-title">{data.title}</div>
+      <div className="node-outcome"><span>loss</span><strong>{data.fine_tune_loss?.toFixed(4) ?? '—'}</strong></div>
+      <div className="node-meta"><span>generation {data.generation}</span></div>
     </NodeShell>
   )
 }

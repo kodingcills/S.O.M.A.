@@ -1,222 +1,167 @@
-// SOMA App shell — per INTERFACE.md "APP SHELL".
-// Views are NEVER unmounted on switch: display:none pattern preserves
-// React Flow internal position state (canvas would re-layout otherwise).
-import { useCallback, useMemo, useState } from 'react'
-import '@xyflow/react/dist/style.css' // REACT FLOW VERSION INVARIANT — exactly once in App.tsx
+import { useCallback, useState } from 'react'
+import '@xyflow/react/dist/style.css'
+import { CanvasView } from './components/Canvas'
+import { CompareView } from './components/CompareView'
+import { DetailView } from './components/DetailView'
+import { ModelsView } from './components/ModelsView'
+import { RunsView } from './components/RunsView'
+import { SimulationWorkspace } from './components/SimulationWorkspace'
+import { useDetail } from './hooks/useDetail'
 import { useEventLog } from './hooks/useEventLog'
 import { useHealth } from './hooks/useHealth'
-import { useDetail } from './hooks/useDetail'
-import type { HealthResponse } from './types'
-import {
-  CANVAS_BG, SURFACE_BG, PANEL_BORDER,
-  TEXT_PRIMARY, TEXT_SECONDARY,
-  COLOR_WORLDMODEL, COLOR_EXPLORATION, STATUS_SPAWNING,
-  errorToColor,
-} from './utils/colors'
-import { CanvasView } from './components/Canvas'
-import { DetailView } from './components/DetailView'
-import { CompareView } from './components/CompareView'
+import type { EventLogEntry, HealthResponse } from './types'
 
-type View = 'canvas' | 'detail' | 'compare'
+export type View = 'graph' | 'runs' | 'compare' | 'models'
 
-const MONO = "'JetBrains Mono', ui-monospace, Menlo, monospace"
+const NAV: { id: View; label: string; icon: string }[] = [
+  { id: 'graph', label: 'Graph', icon: '⌘' },
+  { id: 'runs', label: 'Runs', icon: '▤' },
+  { id: 'compare', label: 'Compare', icon: '⇄' },
+  { id: 'models', label: 'Models', icon: '◇' },
+]
+
+function initialView(): View {
+  const requested = new URLSearchParams(window.location.search).get('view')
+  if (requested === 'runs' || requested === 'compare' || requested === 'models') return requested
+  return 'graph'
+}
 
 export default function App() {
-  const events  = useEventLog()
-  const health  = useHealth()
-  const [view, setView]         = useState<View>(() => {
-    // QA hook: ?view=detail|compare deep-links a view for screenshot runs.
-    const v = new URLSearchParams(window.location.search).get('view')
-    return v === 'detail' || v === 'compare' ? v : 'canvas'
-  })
+  const events = useEventLog()
+  const health = useHealth()
+  const [view, setView] = useState<View>(initialView)
   const [activeNode, setActiveNode] = useState<string | null>(null)
+  const [simulationOpen, setSimulationOpen] = useState(false)
 
-  // Derive active sim_id from active node.
-  // Agent nodes (exp_/cap_/wm_/sim_) execute on primary-anatomy envs; the
-  // backend registry only exposes 'primary'/'comparison', so polling
-  // /detail/{exp_x} would 404 forever — map them to 'primary'.
-  const activeSimId = useMemo(() => {
-    if (view !== 'detail') return null
-    // Deep-linked detail (?view=detail) has no node yet — stream primary.
-    if (!activeNode) return 'primary'
-    if (activeNode === 'root' || /^(exp_|cap_|wm_|sim_)/.test(activeNode)) {
-      return 'primary'
-    }
-    return activeNode
-  }, [activeNode, view])
+  const detail = useDetail(activeNode !== null || view === 'models' ? 'primary' : null)
 
-  const detail = useDetail(activeSimId)
-
-  const handleNodeClick = useCallback((nodeId: string) => {
+  const selectNode = useCallback((nodeId: string) => setActiveNode(nodeId), [])
+  const jumpToNode = useCallback((nodeId: string) => {
     setActiveNode(nodeId)
-    setView('detail')
+    setView('graph')
   }, [])
 
+  const generation = 1 + events.filter(e => e.event_type === 'capability_unlocked').length
+  const firstSnapshot = events.find(e => e.event_type === 'belief_snapshot')
+  const firstError = typeof firstSnapshot?.payload.global_mean_error === 'number'
+    ? firstSnapshot.payload.global_mean_error
+    : null
+  const improvement = firstError && health
+    ? ((firstError - health.global_error) / firstError) * 100
+    : null
+
   return (
-    <div style={{ width: '100vw', height: '100vh', background: CANVAS_BG,
-                  display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      <TopBar
-        health={health}
-        view={view}
-        onViewChange={setView}
-        activeNode={activeNode}
-        onBack={() => { setView('canvas'); setActiveNode(null) }}
-      />
-      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
-        {/* display:none visibility pattern — do NOT unmount views */}
-        <div style={{ position: 'absolute', inset: 0,
-                      display: view === 'canvas' ? 'block' : 'none' }}>
-          <CanvasView events={events} onNodeClick={handleNodeClick} />
-        </div>
-        <div style={{ position: 'absolute', inset: 0,
-                      display: view === 'detail' ? 'block' : 'none' }}>
-          <DetailView events={events} detail={detail} activeNode={activeNode ?? ''} />
-        </div>
-        <div style={{ position: 'absolute', inset: 0,
-                      display: view === 'compare' ? 'block' : 'none' }}>
-          <CompareView />
-        </div>
+    <div className="app-shell">
+      <TopBar health={health} />
+
+      <div className="app-body">
+        <Sidebar view={view} onChange={(next) => { setView(next); setSimulationOpen(false) }} />
+
+        <main className="workspace" aria-label="SOMA workspace">
+          <section className="view-layer" style={{ display: view === 'graph' ? 'block' : 'none' }} aria-hidden={view !== 'graph'}>
+            <div className={`graph-layout ${activeNode ? 'has-selection' : ''}`}>
+              <div className="graph-surface">
+                <CanvasView events={events} selectedNodeId={activeNode} onNodeClick={selectNode} />
+                {health?.status === 'training' && <TrainingNotice health={health} />}
+              </div>
+              <aside className="inspector-shell" aria-label="Node inspector">
+                <DetailView
+                  events={events}
+                  detail={detail}
+                  activeNode={activeNode}
+                  onClose={() => setActiveNode(null)}
+                  onOpenSimulation={() => setSimulationOpen(true)}
+                  onOpenModels={() => setView('models')}
+                />
+              </aside>
+            </div>
+          </section>
+
+          <section className="view-layer" style={{ display: view === 'runs' ? 'block' : 'none' }} aria-hidden={view !== 'runs'}>
+            <RunsView events={events} health={health} onSelectNode={jumpToNode} />
+          </section>
+
+          <section className="view-layer" style={{ display: view === 'compare' ? 'block' : 'none' }} aria-hidden={view !== 'compare'}>
+            <CompareView events={events} health={health} active={view === 'compare'} />
+          </section>
+
+          <section className="view-layer" style={{ display: view === 'models' ? 'block' : 'none' }} aria-hidden={view !== 'models'}>
+            <ModelsView events={events} detail={detail} onSelectNode={jumpToNode} />
+          </section>
+
+          {simulationOpen && activeNode && (
+            <SimulationWorkspace nodeId={activeNode} events={events} detail={detail} onClose={() => setSimulationOpen(false)} />
+          )}
+        </main>
       </div>
-      {health?.status === 'training' && <TrainingOverlay health={health} />}
+
+      <footer className="statusbar" aria-label="Session status">
+        <span>generation <span className="mono">{generation}</span></span>
+        <span><span className="mono">{events.length}</span> events</span>
+        <span><span className="mono">{health?.active_agents ?? 0}</span> active</span>
+        <span className="right">
+          model error {improvement !== null && Number.isFinite(improvement)
+            ? <><span aria-hidden="true">↓</span> <span className="mono">{Math.max(0, improvement).toFixed(1)}%</span></>
+            : <span className="mono">—</span>}
+        </span>
+      </footer>
     </div>
   )
 }
 
-// ── Top Bar ─────────────────────────────────────────────────────────────
-// 48px, sticky top-0, z-100, SURFACE_BG+CC backdrop-blur, JetBrains Mono 11px.
-interface TopBarProps {
-  health:      HealthResponse | null
-  view:        View
-  onViewChange: (v: View) => void
-  activeNode:  string | null
-  onBack:      () => void
+function TopBar({ health }: { health: HealthResponse | null }) {
+  const status = health?.status ?? 'starting'
+  const statusText = status === 'ok' ? 'Running' : status === 'training' ? 'Training' : 'Connecting'
+  return (
+    <header className="topbar">
+      <div className="brand">
+        <span className="brand-mark">SOMA</span>
+        <span className="experiment">/ current runtime session</span>
+      </div>
+      <div className="topbar-meta" aria-label="Current model state">
+        <span>World model <strong className="mono">{String(health?.world_model_version ?? '—').padStart(2, '0')}</strong></span>
+        <span>Error <strong className="mono">{health ? health.global_error.toFixed(3) : '—'}</strong></span>
+        <span><strong className="mono">{health?.active_agents ?? '—'}</strong> agents active</span>
+        <span className="status-inline"><i className={`status-dot ${status === 'ok' ? 'running' : status}`} aria-hidden="true" />{statusText}</span>
+      </div>
+    </header>
+  )
 }
 
-function TopBar({ health, view, onViewChange, activeNode, onBack }: TopBarProps) {
-  const training = health?.status === 'training'
-
+function Sidebar({ view, onChange }: { view: View; onChange: (view: View) => void }) {
   return (
-    <div style={{
-      height: 48, minHeight: 48,
-      display: 'flex', alignItems: 'center',
-      padding: '0 16px', gap: 16,
-      background: `${SURFACE_BG}CC`,
-      backdropFilter: 'blur(8px)',
-      WebkitBackdropFilter: 'blur(8px)',
-      borderBottom: `1px solid ${PANEL_BORDER}`,
-      fontFamily: MONO, fontSize: 11,
-      color: TEXT_PRIMARY,
-      position: 'sticky', top: 0, zIndex: 100,
-    }}>
-      {/* Title */}
-      <span style={{ letterSpacing: '0.08em', whiteSpace: 'nowrap' }}>
-        SOMA <span style={{ color: TEXT_SECONDARY }}>/ Self-Organizing Model Architecture</span>
-      </span>
-
-      {/* Stat chips — replaced by pulsing amber indicator while training */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1 }}>
-        {training ? (
-          <span style={{ color: STATUS_SPAWNING, animation: 'pulseAmber 2000ms ease-in-out infinite' }}>
-            ● TRAINING…
-          </span>
-        ) : (
-          <>
-            <Chip label="WM VERSION" value={`v${health?.world_model_version ?? 0}`}
-                  color={COLOR_WORLDMODEL} />
-            <Chip label="GLOBAL ERROR"
-                  value={(health?.global_error ?? 0).toFixed(3)}
-                  color={errorToColor(health?.global_error ?? 0)} />
-            <Chip label="ACTIVE AGENTS" value={String(health?.active_agents ?? 0)}
-                  color={COLOR_EXPLORATION} />
-          </>
-        )}
+    <nav className="sidebar" aria-label="Primary navigation">
+      <div className="nav-label">Workspace</div>
+      {NAV.map(item => (
+        <button
+          key={item.id}
+          className={`nav-item ${view === item.id ? 'selected' : ''}`}
+          onClick={() => onChange(item.id)}
+          aria-current={view === item.id ? 'page' : undefined}
+          title={item.label}
+        >
+          <span className="nav-icon" aria-hidden="true">{item.icon}</span>
+          <span className="nav-text">{item.label}</span>
+        </button>
+      ))}
+      <div className="sidebar-context">
+        Live event log<br />
+        <span className="mono">primary / comparison</span>
       </div>
+    </nav>
+  )
+}
 
-      {/* Back button (detail view) */}
-      {view === 'detail' && (
-        <>
-          <span style={{ color: TEXT_SECONDARY, whiteSpace: 'nowrap' }}>
-            NODE {activeNode}
-          </span>
-          <button onClick={onBack} style={btnStyle}>
-            ← CANVAS
-          </button>
-        </>
-      )}
-
-      {/* View switch buttons */}
-      <div style={{ display: 'flex', gap: 6 }}>
-        {(['canvas', 'detail', 'compare'] as View[]).map(v => (
-          <button key={v}
-                  onClick={() => onViewChange(v)}
-                  style={{
-                    ...btnStyle,
-                    ...(view === v
-                      ? { borderColor: TEXT_PRIMARY, color: TEXT_PRIMARY }
-                      : {}),
-                  }}>
-            {v.toUpperCase()}
-          </button>
-        ))}
-      </div>
+function TrainingNotice({ health }: { health: HealthResponse }) {
+  const progress = Math.round((health.training_progress ?? 0) * 100)
+  return (
+    <div className="training-notice" role="status">
+      Initial model training in progress · <span className="mono">{progress}%</span>
+      <div className="training-progress" aria-hidden="true"><span style={{ width: `${progress}%` }} /></div>
     </div>
   )
 }
 
-function Chip({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6, whiteSpace: 'nowrap' }}>
-      <span style={{ color: TEXT_SECONDARY }}>{label}</span>
-      <span style={{ color }}>{value}</span>
-    </span>
-  )
-}
-
-const btnStyle: React.CSSProperties = {
-  fontFamily: MONO, fontSize: 10,
-  background: 'transparent',
-  color: TEXT_SECONDARY,
-  border: `1px solid ${PANEL_BORDER}`,
-  borderRadius: 4,
-  padding: '4px 8px',
-  cursor: 'pointer',
-  whiteSpace: 'nowrap',
-}
-
-// ── Training Overlay ────────────────────────────────────────────────────
-// Full-screen during status==='training'. Semi-transparent — does not block events.
-function TrainingOverlay({ health }: { health: HealthResponse }) {
-  const progress = health.training_progress ?? 0
-  return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 200,
-      background: 'rgba(10,14,26,0.92)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      pointerEvents: 'none',
-      fontFamily: MONO,
-    }}>
-      <div style={{
-        width: 420, border: `1px solid ${PANEL_BORDER}`, borderRadius: 8,
-        background: SURFACE_BG, padding: '24px 28px',
-      }}>
-        <div style={{ color: TEXT_PRIMARY, fontSize: 13, marginBottom: 18, textAlign: 'center' }}>
-          SOMA initializing...
-        </div>
-        <div style={{
-          height: 10, width: '100%', borderRadius: 5,
-          border: `1px solid ${PANEL_BORDER}`, overflow: 'hidden',
-        }}>
-          <div style={{
-            height: '100%', width: `${Math.round(progress * 100)}%`,
-            background: COLOR_WORLDMODEL, transition: 'width 300ms ease-out',
-          }} />
-        </div>
-        <div style={{ marginTop: 12, fontSize: 11, color: TEXT_SECONDARY, textAlign: 'center' }}>
-          Training prediction network — {Math.round(progress * 100)}%
-          <br />
-          ~60 min remaining on first run. Subsequent runs load in &lt;2 minutes.
-        </div>
-      </div>
-    </div>
-  )
+export function nodeEvents(events: EventLogEntry[], nodeId: string): EventLogEntry[] {
+  return events.filter(event => event.agent_id === nodeId || event.parent_id === nodeId)
 }
