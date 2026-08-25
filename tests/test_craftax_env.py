@@ -1,4 +1,5 @@
 """tests/test_craftax_env.py — SomaCraftaxEnv behavior (jax on cpu)."""
+import jax
 import numpy as np
 import pytest
 
@@ -85,6 +86,93 @@ def test_to_model_obs_preprocessing(env):
     for tensor in model_obs.values():
         assert isinstance(tensor, torch.Tensor)
         assert tensor.shape[0] == 1  # batch dim added by processor pipeline
+
+
+def test_snapshot_returns_live_state_and_key(env):
+    # Given: a live Craftax episode.
+    env.reset(seed=42)
+
+    # When: the functional state/key pair is snapshotted.
+    state, key = env.snapshot()
+
+    # Then: no copies obscure the exact live references.
+    assert state is env._state
+    assert key is env._key
+
+
+def test_snapshot_survives_live_step_rebind(env):
+    # Given: a snapshot and byte copies of its pre-step leaves.
+    env.reset(seed=42)
+    state, key = env.snapshot()
+    state_structure = jax.tree_util.tree_structure(state)
+    state_leaves = [
+        np.asarray(leaf).copy() for leaf in jax.tree_util.tree_leaves(state)
+    ]
+    key_before = np.asarray(key).copy()
+
+    # When: the live environment advances and rebinds its state and key.
+    env.step(0)
+
+    # Then: the snapshot remains the unchanged pre-step pair.
+    assert jax.tree_util.tree_structure(state) == state_structure
+    for actual, expected in zip(
+        jax.tree_util.tree_leaves(state), state_leaves, strict=True
+    ):
+        assert np.array_equal(np.asarray(actual), expected)
+    assert np.array_equal(np.asarray(key), key_before)
+
+
+def test_fork_purity_live_state_key_unchanged(env):
+    # Given: copies of every live state/key leaf.
+    env.reset(seed=42)
+    state, key = env._state, env._key
+    before_leaves, before_structure = jax.tree_util.tree_flatten((state, key))
+    before_copies = [np.asarray(leaf).copy() for leaf in before_leaves]
+
+    # When: counterfactual rewards are evaluated.
+    env.fork_step_rewards(state, key, [3, 17])
+
+    # Then: every live state/key leaf is byte-identical.
+    after_leaves, after_structure = jax.tree_util.tree_flatten(
+        (env._state, env._key)
+    )
+    assert after_structure == before_structure
+    for actual, expected in zip(after_leaves, before_copies, strict=True):
+        assert np.array_equal(np.asarray(actual), expected)
+
+
+def test_common_random_numbers_single_split(env):
+    # Given: a live snapshot and independently derived shared transition key.
+    env.reset(seed=42)
+    state, key = env._state, env._key
+    _, transition_key = jax.random.split(key)
+    actions = [3, 17]
+    expected = {
+        action: float(
+            env._env.step(transition_key, state, action, env._params)[2]
+        )
+        for action in actions
+    }
+
+    # When: both counterfactual actions are forked.
+    rewards = env.fork_step_rewards(state, key, actions)
+
+    # Then: both use exactly the one independently split transition key.
+    assert rewards == expected
+
+
+def test_fork_rewards_are_float_extrinsic(env):
+    # Given: two actions from a live functional state/key pair.
+    env.reset(seed=42)
+    state, key = env._state, env._key
+
+    # When: their one-step raw environment rewards are evaluated.
+    rewards = env.fork_step_rewards(state, key, [3, 17])
+
+    # Then: the API exposes only action-indexed Python floats.
+    assert set(rewards) == {3, 17}
+    assert all(type(action) is int for action in rewards)
+    assert all(type(reward) is float for reward in rewards.values())
 
 
 def test_t11_each_integer_matches_raw_no_autoreset_craftax_semantics(env):

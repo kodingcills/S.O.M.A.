@@ -12,6 +12,7 @@ Extras over the pinned chain (recorded in the reproduction manifest):
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
 from typing import Any
 
 import jax
@@ -100,6 +101,24 @@ class SomaCraftaxEnv:
         self.last_reward = float(_reward_raw)
         self.episode_step += 1
         return self.observation(), self.last_reward, self._done
+
+    def snapshot(self) -> tuple[Any, Any]:
+        """Return live state/key references; functional steps only rebind them."""
+        return self._state, self._key
+
+    def fork_step_rewards(
+        self, state: Any, key: Any, actions: Iterable[int]
+    ) -> dict[int, float]:
+        """Evaluate pure §3 CRN extrinsic forks with one shared key split."""
+        _, transition_key = jax.random.split(key)
+        return {
+            int(action): float(
+                self._env.step(
+                    transition_key, state, int(action), self._params
+                )[2]
+            )
+            for action in actions
+        }
 
     @property
     def done(self) -> bool:
