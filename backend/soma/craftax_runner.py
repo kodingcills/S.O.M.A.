@@ -38,14 +38,29 @@ async def run_craftax_loop(
         stamped = await asyncio.to_thread(driver.evaluate_stamped_candidates)
         chosen = max(stamped, key=lambda candidate: MPCAgent._score(candidate.output))
         jsd_mean = float(np.mean([candidate.output.J_ua for candidate in stamped]))
+        pre_state, pre_key = await asyncio.to_thread(driver.env.snapshot)
         step = await asyncio.to_thread(
             driver.step_with_action, int(chosen.output.action_idx)
         )
         episode_return += step.reward
 
+        audit_fields: dict[str, float | bool] = {}
         if step.step % n_audit_every == 0:
-            record = audit_decision_point(stamped, chosen, step)
-            state_machine.record(record.predicted_reward_expectation, step.reward)
+            record = await asyncio.to_thread(
+                audit_decision_point,
+                stamped,
+                chosen,
+                step,
+                driver.env,
+                pre_state,
+                pre_key,
+                jsd_mean=jsd_mean,
+            )
+            state_machine.record_harm(record.harmful)
+            audit_fields = {
+                "regret": record.regret,
+                "harmful": record.harmful,
+            }
 
         if state_machine.should_transition_to_gap():
             info = state_machine.advance_phase()
@@ -66,6 +81,7 @@ async def run_craftax_loop(
             action=int(step.action),
             reward=float(step.reward),
             done=bool(step.done),
+            **audit_fields,
         )
 
         if step.done:

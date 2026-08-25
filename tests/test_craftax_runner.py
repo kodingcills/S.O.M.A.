@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 import inspect
-from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -12,79 +11,13 @@ from backend.craftax_driver import CraftaxDriver, DriverStep, PreActionPredictio
 from backend.mpc_agent import MPCAgent
 from backend.simulus.instrumentation import InstrumentedActionOutput, SimulusInstrumented
 from backend.soma.state_machine import SomaStateMachine
-
-
-class LoopFinished(Exception):
-    pass
-
-class FakeInstrumented:
-    pass
-
-class FakeDriver:
-    def __init__(
-        self,
-        scripted: list[tuple[list[PreActionPrediction], DriverStep]],
-        cancel_on_evaluate: bool = False,
-    ) -> None:
-        self._scripted = list(scripted)
-        self._current: tuple[list[PreActionPrediction], DriverStep] | None = None
-        self._generation = 0
-        self._cancel_on_evaluate = cancel_on_evaluate
-        self.action_calls: list[int] = []
-        self.reset_seeds: list[int | None] = []
-        achievements = np.array([True, False, True, True], dtype=bool)
-        self.env = SimpleNamespace(achievements=lambda: achievements.copy())
-
-    @property
-    def episode_generation(self) -> int:
-        return self._generation
-
-    def evaluate_stamped_candidates(self) -> list[PreActionPrediction]:
-        if self._cancel_on_evaluate:
-            raise asyncio.CancelledError
-        if not self._scripted:
-            raise LoopFinished
-        self._current = self._scripted.pop(0)
-        return self._current[0]
-
-    def step_with_action(self, action: int) -> DriverStep:
-        assert self._current is not None
-        candidates, step = self._current
-        expected = max(candidates, key=lambda item: MPCAgent._score(item.output))
-        assert action == int(expected.output.action_idx)
-        self.action_calls.append(action)
-        self._current = None
-        return step
-
-    def reset(self, seed: int | None = None) -> None:
-        self.reset_seeds.append(seed)
-        self._generation += 1
-
-
-class RecordingStateMachine:
-    def __init__(self) -> None:
-        self.inner = SomaStateMachine()
-        self.records: list[tuple[float, float]] = []
-        self.transitions = 0
-
-    @property
-    def n_z_u(self) -> int:
-        return self.inner.n_z_u
-
-    @property
-    def n_harmful(self) -> int:
-        return self.inner.n_harmful
-
-    def record(self, predicted: float, reward: float) -> bool:
-        self.records.append((predicted, reward))
-        return self.inner.record(predicted, reward)
-
-    def should_transition_to_gap(self) -> bool:
-        return self.inner.should_transition_to_gap()
-
-    def advance_phase(self):
-        self.transitions += 1
-        return self.inner.advance_phase()
+from tests.craftax_runner_fakes import (
+    AuditRecorder,
+    FakeDriver,
+    FakeInstrumented,
+    LoopFinished,
+    RecordingStateMachine,
+)
 
 
 @pytest.fixture
@@ -99,6 +32,13 @@ def written_events(monkeypatch: pytest.MonkeyPatch) -> list[tuple[str, dict[str,
 
     monkeypatch.setattr(runner, "write_event", record_event)
     return written
+
+
+@pytest.fixture(autouse=True)
+def audit_recorder(monkeypatch: pytest.MonkeyPatch) -> AuditRecorder:
+    recorder = AuditRecorder()
+    monkeypatch.setattr(runner, "audit_decision_point", recorder)
+    return recorder
 
 
 def _candidates(step: int, jsd_base: float, generation: int = 1) -> list[PreActionPrediction]:
@@ -193,7 +133,65 @@ async def test_audits_decision_point_every_n_steps() -> None:
 
     await _run_until_script_finishes(driver, state_machine, n_audit_every=2)
 
-    assert len(state_machine.records) == 2
+    assert len(state_machine.harm_calls) == 2
+
+
+async def test_runner_snapshots_before_step_with_action(audit_recorder) -> None:
+    # Given
+    driver = FakeDriver(_script(1))
+
+    # When
+    await _run_until_script_finishes(driver, RecordingStateMachine(), n_audit_every=1)
+
+    # Then
+    assert driver.call_order.index("snapshot") < driver.call_order.index("step_with_action")
+    audit_call = audit_recorder.calls[0]
+    assert audit_call.craftax_state is driver.env.state_marker
+    assert audit_call.key is driver.env.key_marker
+
+
+async def test_event_gains_regret_harmful_only_on_audit_steps(
+    written_events,
+) -> None:
+    # Given
+    driver = FakeDriver(_script(3))
+
+    # When
+    await _run_until_script_finishes(driver, RecordingStateMachine(), n_audit_every=2)
+
+    # Then
+    steps = [payload for kind, payload in written_events if kind == "craftax_step"]
+    assert "regret" not in steps[0] and "harmful" not in steps[0]
+    assert isinstance(steps[1]["regret"], float)
+    assert isinstance(steps[1]["harmful"], bool)
+    assert "regret" not in steps[2] and "harmful" not in steps[2]
+
+
+async def test_runner_calls_record_harm_with_record_harmful(audit_recorder) -> None:
+    # Given
+    driver = FakeDriver(_script(2))
+    state_machine = RecordingStateMachine()
+
+    # When
+    await _run_until_script_finishes(driver, state_machine, n_audit_every=1)
+
+    # Then
+    assert state_machine.harm_calls == [call.record.harmful for call in audit_recorder.calls]
+    assert "state_machine.record(" not in inspect.getsource(runner.run_craftax_loop)
+
+
+async def test_runner_passes_jsd_mean_kwarg(audit_recorder) -> None:
+    # Given
+    candidates = _candidates(1, 0.2)
+    driver = FakeDriver([(candidates, DriverStep(1, 17, 0.0, False, 0, {}))])
+
+    # When
+    await _run_until_script_finishes(driver, RecordingStateMachine(), n_audit_every=1)
+
+    # Then
+    assert audit_recorder.calls[0].jsd_mean == pytest.approx(
+        np.mean([candidate.output.J_ua for candidate in candidates])
+    )
 
 
 async def test_gap_transition_emits_graph_node_added_once_then_resumes(
