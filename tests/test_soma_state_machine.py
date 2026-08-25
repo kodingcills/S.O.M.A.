@@ -2,58 +2,50 @@ import inspect
 
 import pytest
 
-from backend.soma.state_machine import (
-    HARM_DELTA_THRESHOLD,
-    MIN_AUDITS_FOR_GAP,
-    PhaseNodeInfo,
-    SomaStateMachine,
-)
+from backend.soma.state_machine import MIN_AUDITS_FOR_GAP, PhaseNodeInfo, SomaStateMachine
 
 
-def test_record_flags_harm_when_delta_exceeds_threshold() -> None:
+def test_record_harm_increments_n_z_u_always() -> None:
     machine = SomaStateMachine()
 
-    assert machine.record(1.0, 1.6) is True
-    assert machine.n_z_u == 1
+    machine.record_harm(False)
+    machine.record_harm(True)
+
+    assert machine.n_z_u == 2
+
+
+def test_record_harm_counts_n_harmful_only_when_true() -> None:
+    machine = SomaStateMachine()
+
+    machine.record_harm(False)
+    assert machine.n_harmful == 0
+
+    machine.record_harm(True)
     assert machine.n_harmful == 1
 
 
-def test_record_no_harm_within_threshold() -> None:
+def test_record_harm_returns_harmful_flag() -> None:
     machine = SomaStateMachine()
 
-    assert machine.record(1.0, 1.5) is False
-    assert machine.n_z_u == 1
-    assert machine.n_harmful == 0
+    assert machine.record_harm(False) is False
+    assert machine.record_harm(True) is True
 
 
-def test_should_transition_false_below_min_audits_even_with_harm() -> None:
+def test_gap_requires_min_audits_and_one_harmful() -> None:
     machine = SomaStateMachine()
-    machine.record(0.0, HARM_DELTA_THRESHOLD + 0.1)
+    machine.record_harm(True)
 
     assert machine.should_transition_to_gap() is False
 
-
-def test_should_transition_false_with_min_audits_but_zero_harmful() -> None:
-    machine = SomaStateMachine()
-    for _ in range(MIN_AUDITS_FOR_GAP):
-        machine.record(1.0, 1.0)
-
-    assert machine.should_transition_to_gap() is False
-
-
-def test_should_transition_true_at_thresholds() -> None:
-    machine = SomaStateMachine()
-    machine.record(0.0, HARM_DELTA_THRESHOLD + 0.1)
     for _ in range(MIN_AUDITS_FOR_GAP - 1):
-        machine.record(1.0, 1.0)
-
+        machine.record_harm(False)
     assert machine.should_transition_to_gap() is True
 
 
-def test_advance_phase_returns_immutable_info_resets_counters_increments_phase() -> None:
+def test_advance_phase_resets_counters() -> None:
     machine = SomaStateMachine()
-    machine.record(0.0, 1.0)
-    machine.record(1.0, 1.0)
+    machine.record_harm(True)
+    machine.record_harm(False)
 
     info = machine.advance_phase()
 
@@ -64,7 +56,7 @@ def test_advance_phase_returns_immutable_info_resets_counters_increments_phase()
         setattr(info, "phase", "detect")
 
 
-def test_module_imports_no_event_log() -> None:
+def test_no_delta_threshold_constant() -> None:
     source = inspect.getsource(__import__("backend.soma.state_machine", fromlist=["SomaStateMachine"]))
 
-    assert "event_log" not in source
+    assert "HARM_DELTA_THRESHOLD" not in source

@@ -3,7 +3,6 @@
 from dataclasses import dataclass
 from typing import Final
 
-HARM_DELTA_THRESHOLD: Final = 0.5
 MIN_AUDITS_FOR_GAP: Final = 3
 PHASES: Final = ("detect", "gap")
 
@@ -19,10 +18,10 @@ class PhaseNodeInfo:
 
 
 class SomaStateMachine:
-    """Count audits and provisional harm signals across phase transitions.
+    """Count audited harm labels across phase transitions.
 
-    The harm label is a provisional real-signal proxy pending the §3 Q_P
-    oracle pipeline.
+    Harm labels come from the upstream §3 simulator-fork regret oracle
+    (regret > REGRET_THRESHOLD computed in ``backend.soma.audit``).
     """
 
     def __init__(self, phase_index: int = 0) -> None:
@@ -39,13 +38,12 @@ class SomaStateMachine:
     def n_harmful(self) -> int:
         return self._n_harmful
 
-    def record(self, predicted_reward_expectation: float, realized_reward: float) -> bool:
-        """Record one audit and return whether its harm proxy fired."""
-        harm = abs(realized_reward - predicted_reward_expectation) > HARM_DELTA_THRESHOLD
+    def record_harm(self, harmful: bool) -> bool:
+        """Count one audited decision point; n_harmful tracks the §3 Q_P oracle label."""
         self._n_z_u += 1
-        if harm:
+        if harmful:
             self._n_harmful += 1
-        return harm
+        return harmful
 
     def should_transition_to_gap(self) -> bool:
         """Return whether enough audits include at least one harmful result."""
