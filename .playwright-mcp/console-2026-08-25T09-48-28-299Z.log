@@ -1,0 +1,840 @@
+[     119ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/chunk-BCXODTBQ.js?v=710e0334:21548
+[     207ms] [WARNING] WebSocket connection to 'ws://localhost:8000/ws/events' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/src/hooks/useEventLog.ts?t=1787645385352:75
+[     225ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5173/favicon.ico:0
+[     469ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[     470ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[     482ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[     482ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[     571ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[     571ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    1242ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    1242ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    2216ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    2217ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    3228ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    3228ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    4232ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    4232ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5231ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5231ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    6212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    6212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    7212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    7212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    8213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    8213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    9213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    9213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   10213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   10213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   11212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   11212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   12212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   12212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   13211ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   13211ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   14211ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   14211ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   15089ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   15089ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   15101ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   15101ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   15224ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   15224ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   15402ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   15402ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   15697ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   15697ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   15997ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   15997ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   16231ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   16231ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   16318ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   16318ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   16596ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   16596ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   16896ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   16896ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   17196ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   17196ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   17237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   17237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   17497ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   17497ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   17796ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   17797ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   18096ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   18096ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   18237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   18237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   18416ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   18416ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   18695ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   18695ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   18996ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   18996ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   19237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   19237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   19296ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   19296ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   19597ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   19597ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   19896ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   19896ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   20197ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   20197ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   20214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   20215ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   20495ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   20495ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   20797ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   20797ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   21101ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   21101ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   21214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   21214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   21395ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   21395ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   21696ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   21696ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   22004ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   22004ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   22214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   22214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   22296ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   22296ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   22596ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   22597ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   22914ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   22914ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   23196ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   23196ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   23214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   23214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   23496ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   23496ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   23760ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   23760ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   23810ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   23810ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   24096ms] [WARNING] using deprecated parameters for the initialization function; pass a single object instead @ http://localhost:9090/re_viewer.js:4717
+[   24101ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   24101ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   24213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   24213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   24342ms] [WARNING] found 0 values for "notebook" query. Expected one or none. Defaulting to "false". @ http://localhost:9090/:446
+[   24342ms] [WARNING] found 0 values for "persist" query. Expected one or none. Defaulting to "true". @ http://localhost:9090/:446
+[   24410ms] [INFO]  INFO eframe::web::web_runner: event handlers installed.
+ @ http://localhost:9090/re_viewer.js:1714
+[   24481ms] [WARNING]  WARN eframe::web::app_runner: Unhandled egui viewport command: SetTheme(SystemDefault) - not implemented in web backend
+ @ http://localhost:9090/re_viewer.js:3925
+[   24481ms] [WARNING]  WARN eframe::web::app_runner: Unhandled egui viewport command: SetTheme(SystemDefault) - not implemented in web backend
+ @ http://localhost:9090/re_viewer.js:3925
+[   24501ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   24501ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   24707ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   24707ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   25005ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   25005ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   25214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   25214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   25294ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   25294ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   25598ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   25598ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   25896ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   25896ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   26197ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   26197ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   26213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   26213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   26496ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   26496ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   26795ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   26795ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   27109ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   27109ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   27213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   27213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   27396ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   27396ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   27695ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   27695ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   28018ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   28018ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   28213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   28213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   28295ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   28295ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   28596ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   28596ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   28895ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   28895ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   29208ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   29208ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   29212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   29212ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   29496ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   29496ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   29795ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   29795ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   30119ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   30119ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   30214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   30214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   30395ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   30395ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   30696ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   30696ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   30996ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   30997ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   31223ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   31223ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   31308ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   31308ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   31596ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   31596ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   31897ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   31897ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   32215ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   32215ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   32220ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   32220ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   32495ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   32495ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   32796ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   32796ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   33097ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   33097ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   33237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   33237ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   33417ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   33417ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   33695ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   33696ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   33995ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   33995ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   34213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   34213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   34296ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   34296ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   34599ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   34599ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   34895ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   34895ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   35195ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   35195ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   35213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   35213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   35507ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   35508ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   35796ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   35796ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   36096ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   36096ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   36213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   36213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   36396ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   36396ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   36695ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   36695ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   36997ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   36997ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   37213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   37213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   37295ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   37295ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   37609ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   37609ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   37896ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   37896ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   38196ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   38196ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   38215ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   38215ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   38520ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   38520ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   38795ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   38795ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   39096ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   39096ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   39213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   39213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   39395ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   39395ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   39707ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   39707ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   39997ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   39997ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   40214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   40214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   40296ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   40296ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   40615ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   40615ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   40895ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   40895ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   41195ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   41195ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   41213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   41213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   41499ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   41499ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   41802ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   41803ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   42097ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   42097ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   42213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   42214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   42396ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   42396ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   42716ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   42716ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   42996ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   42996ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   43213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   43214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   43297ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   43297ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   43598ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   43598ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   43905ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   43905ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   44199ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   44199ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   44215ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   44216ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   44497ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   44497ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   44796ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   44796ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   45096ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   45096ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   45227ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   45227ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   45404ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   45404ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   45696ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   45696ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   45996ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   45996ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   46233ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   46233ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   46307ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   46307ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   46600ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   46600ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   46895ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   46896ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   47195ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   47195ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   47214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   47214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   47496ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   47496ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   47801ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   47801ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   48095ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   48095ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   48213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   48213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   48395ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   48395ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   48710ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   48711ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   48996ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   48996ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   49213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   49213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   49295ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   49295ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   49596ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   49596ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   49901ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   49901ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   50195ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   50195ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   50214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   50214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   50498ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   50498ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   50809ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   50809ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   51096ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   51096ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   51214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   51214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   51395ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   51395ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   51696ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   51696ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   52006ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   52006ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   52217ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   52217ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   52296ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   52297ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   52596ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   52596ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   52921ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   52921ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   53196ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   53196ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   53213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   53213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   53496ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   53496ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   53796ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   53797ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   54118ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   54118ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   54213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   54213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   54395ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   54395ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   54696ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   54696ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   54997ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   54997ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   55214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   55214ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   55302ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   55302ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   55597ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   55597ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   55919ms] [WARNING]  WARN eframe::web::app_runner: Unhandled egui viewport command: RequestUserAttention(Informational) - not implemented in web backend
+ @ http://localhost:9090/re_viewer.js:3925
+[   55919ms] [WARNING]  WARN eframe::web::app_runner: Unhandled egui viewport command: RequestUserAttention(Informational) - not implemented in web backend
+ @ http://localhost:9090/re_viewer.js:3925
+[   55952ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   55952ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   56222ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   56222ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   56227ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   56227ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   56498ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   56499ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   56803ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   56803ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   57097ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   57097ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   57227ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   57228ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   57398ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   57398ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   57707ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   57707ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   57998ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   57998ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   58213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   58213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   58297ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   58297ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   58595ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   58595ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   58909ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   58909ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   59197ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   59197ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   59213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   59213ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   59497ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   59497ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   59797ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   59797ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   60098ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   60099ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0
+[   60215ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   60215ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5173/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[   60398ms] [ERROR] Access to fetch at 'http://localhost:8000/detail/primary' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5173/:0
+[   60398ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8000/detail/primary:0

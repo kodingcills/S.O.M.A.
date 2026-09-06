@@ -1,0 +1,69 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // Ox Alpha Free — 1 M-token context, reasoning, zero data retention.
+  // Free during the OpenCode preview period (check opencode.ai for status).
+  // Can also be selected in the OpenCode model picker without this config entry.
+  // OpenRouter ID: stealth/ox-alpha  |  OpenCode Zen ID: x-preview-f-free
+  "model": "opencode/x-preview-f-free",
+
+  // Oh My OpenCode provides: Sisyphus, Oracle, Librarian, Explore, Atlas,
+  // Prometheus, Metis, Momus — 11 agents total with category-based routing,
+  // /ralph-loop, /ulw-loop, /start-work, /init-deep, ultrawork mode,
+  // and built-in MCPs (Context7, Exa web search, grep_app, codegraph).
+  // Install: bunx oh-my-opencode install
+  "plugin": ["oh-my-opencode"],
+
+  // Files injected into every session alongside /AGENTS.md.
+  // ARCHITECTURE.md: 9 named invariants + all integration contracts.
+  // QUICK_REFERENCE.md: every constant, command, debug one-liner.
+  //
+  // Task-specific specs (SIMULATION.md, WORLD_MODEL.md, ORCHESTRATION.md,
+  // INTERFACE.md) are passed manually in each task prompt to preserve
+  // context budget. With Ox Alpha's 1 M-token window this is less critical
+  // than with smaller models, but still avoids injecting irrelevant spec
+  // sections for every task.
+  "instructions": [
+    "docs/specs/ARCHITECTURE.md",
+    "docs/specs/QUICK_REFERENCE.md"
+  ],
+
+  // Context compaction. auto: compact when context fills.
+  // reserved: tokens kept free for the model's next response.
+  // At 1 M-token context, compaction is rarely needed — but long ralph-loop
+  // and ulw-loop sessions accumulate large histories.
+  "compaction": {
+    "auto": true,
+    "reserved": 8000
+  },
+
+  // Provider timeout. Initial training runs 30–90 min on MPS.
+  // Data collection runs 15–20 min. Without a long timeout, OpenCode
+  // terminates sessions during training before the model is saved.
+  // 7200000 ms = 2 hours.
+  "provider": {
+    "opencode": {
+      "options": {
+        "timeout": 7200000,
+        "chunkTimeout": 60000
+      }
+    }
+  },
+
+  // Permissions.
+  // edit + bash allow: autonomous loops (/ralph-loop, /ulw-loop) must
+  // write files and run tests without human approval each step.
+  // git push ask: prevents accidental remote pushes during development.
+  // pip deny: all Python dependencies go through uv to preserve the lockfile.
+  "permission": {
+    "edit": "allow",
+    "bash": {
+      "*":        "allow",
+      "git push": "ask",
+      "rm -rf *": "deny",
+      "sudo *":   "ask",
+      "pip *":    "deny"
+    },
+    "webfetch": "ask"
+  }
+}

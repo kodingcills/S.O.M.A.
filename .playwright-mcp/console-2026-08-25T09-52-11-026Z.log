@@ -1,0 +1,11 @@
+[     148ms] [WARNING] using deprecated parameters for the initialization function; pass a single object instead @ http://localhost:9090/re_viewer.js:4717
+[     253ms] [WARNING] found 0 values for "notebook" query. Expected one or none. Defaulting to "false". @ http://localhost:9090/?url=rerun%2Bhttp://localhost:9876/proxy:446
+[     253ms] [WARNING] found 0 values for "persist" query. Expected one or none. Defaulting to "true". @ http://localhost:9090/?url=rerun%2Bhttp://localhost:9876/proxy:446
+[     304ms] [INFO]  INFO eframe::web::web_runner: event handlers installed.
+ @ http://localhost:9090/re_viewer.js:1714
+[     372ms] [WARNING]  WARN eframe::web::app_runner: Unhandled egui viewport command: SetTheme(SystemDefault) - not implemented in web backend
+ @ http://localhost:9090/re_viewer.js:3925
+[     372ms] [WARNING]  WARN eframe::web::app_runner: Unhandled egui viewport command: SetTheme(SystemDefault) - not implemented in web backend
+ @ http://localhost:9090/re_viewer.js:3925
+[     598ms] [WARNING]  WARN eframe::web::app_runner: Unhandled egui viewport command: RequestUserAttention(Informational) - not implemented in web backend
+ @ http://localhost:9090/re_viewer.js:3925

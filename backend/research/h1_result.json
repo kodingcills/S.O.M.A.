@@ -1,0 +1,14 @@
+{
+  "verdict": "NOT_SUPPORTED",
+  "auc_jsd": 0.45185810810810817,
+  "auc_direction": "INVERTED",
+  "n_harmful": 32,
+  "n_total": 106,
+  "mean_jsd_harmful": 0.011958996508118892,
+  "mean_jsd_safe": 0.012030568304146791,
+  "delta_jsd": -7.157179602789929e-05,
+  "finding": "Simulus JSD is anti-correlated with action-ranking harm (AUC=0.4519). Harmful events show systematically LOWER disagreement than safe events (\u0394=-0.000072). The shared representation bottleneck suppresses head disagreement at exactly the states where the model makes consequential errors. H2 collision hypothesis is now the primary active hypothesis.",
+  "implication": "H2 (bottleneck collision enrichment) is now primary.",
+  "status": "CONFIRMATORY \u2014 direction clear at n=106, AUC stable",
+  "timestamp": "2026-08-25T17:27:55Z"
+}

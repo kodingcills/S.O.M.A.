@@ -1,0 +1,52 @@
+{
+    "os": "macOS-26.5.1-arm64-arm-64bit",
+    "python": "3.11.8",
+    "heartbeatAt": "2026-08-25T11:31:39.184637",
+    "startedAt": "2026-08-25T11:31:39.149062",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "tests/",
+        "-q"
+    ],
+    "state": "running",
+    "program": "/Users/tofuinparis/Projects/S.O.M.A./.venv/bin/pytest",
+    "codePathLocal": ".venv/bin/pytest",
+    "codePath": ".venv/bin/pytest",
+    "git": {
+        "remote": "git@github.com:kodingcills/S.O.M.A..git",
+        "commit": "5049d3eb8a2dba7f3a703278bf82b2d1adf26c4b"
+    },
+    "email": "tmccormick1104@gmail.com",
+    "root": "/Users/tofuinparis/Projects/S.O.M.A.",
+    "host": "Tiffanys-MacBook-Pro-3395.local",
+    "username": "tofuinparis",
+    "executable": "/Users/tofuinparis/Projects/S.O.M.A./.venv/bin/python3",
+    "cpu_count": 14,
+    "cpu_count_logical": 14,
+    "cpu_freq": {
+        "current": 4,
+        "min": 1,
+        "max": 4
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4,
+            "min": 1,
+            "max": 4
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 460.4317207336426,
+            "used": 11.706584930419922
+        }
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 24.0
+    }
+}

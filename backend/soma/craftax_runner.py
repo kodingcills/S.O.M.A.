@@ -18,6 +18,7 @@ from backend.event_log import write_event
 from backend.mpc_agent import MPCAgent
 from backend.simulus.instrumentation import SimulusInstrumented
 from backend.soma.audit import audit_decision_point
+from backend.soma.collision import CollisionAnalyzer, CollisionResult
 from backend.soma.state_machine import SomaStateMachine
 
 RUNNER_SEED: Final = 42
@@ -29,8 +30,9 @@ async def run_craftax_loop(
     state_machine: SomaStateMachine,
     n_audit_every: int = 10,
 ) -> None:
-    """Continuously evaluate, execute, audit, and report Craftax episodes."""
-    del instrumented
+    collision_analyzer = CollisionAnalyzer(instrumented)
+    missed_results = []
+    null_results = []
     await asyncio.to_thread(driver.reset, RUNNER_SEED)
     episode_return = 0.0
 
@@ -44,7 +46,7 @@ async def run_craftax_loop(
         )
         episode_return += step.reward
 
-        audit_fields: dict[str, float | bool] = {}
+        audit_fields = {}
         if step.step % n_audit_every == 0:
             record = await asyncio.to_thread(
                 audit_decision_point,
@@ -57,6 +59,71 @@ async def run_craftax_loop(
                 jsd_mean=jsd_mean,
             )
             state_machine.record_harm(record.harmful)
+
+            jsd_missed = record.harmful and record.jsd_mean < 0.015
+
+            b_ua = collision_analyzer.extract_b_ua(chosen.output)
+
+            if b_ua is None:
+                for s in stamped:
+                    extracted = collision_analyzer.extract_b_ua(s.output)
+                    if extracted is not None:
+                        b_ua = extracted
+                        chosen = s
+                        break
+
+            collision_result = CollisionResult(False, 0.0, None, 0.0)
+            if b_ua is not None:
+                collision_analyzer.add_to_database(
+                    b_ua,
+                    record.chosen_action_idx,
+                    max(record.q_p_values.values()),
+                )
+
+                collision_result = collision_analyzer.is_collision_candidate(
+                    b_missed=b_ua,
+                    a_missed_optimal=record.chosen_action_idx,
+                )
+
+                payload = {
+                    "collision_candidate": collision_result.is_candidate,
+                    "min_distance": collision_result.min_distance,
+                    "jsd_missed": jsd_missed,
+                }
+            else:
+                payload = {}
+
+            if jsd_missed:
+                missed_results.append(collision_result)
+            else:
+                null_results.append(collision_result)
+
+            if len(missed_results) % 5 == 0 and len(missed_results) >= 5:
+                enrichment = collision_analyzer.compute_enrichment(
+                    missed_results, null_results
+                )
+                import json
+
+                from pathlib import Path
+
+                Path("backend/research").mkdir(exist_ok=True)
+                Path("backend/research/h2_result.json").write_text(
+                    json.dumps(enrichment, indent=2)
+                )
+                write_event(
+                    "graph_node_added",
+                    payload=json.dumps(
+                        {
+                            "phase": "h2_update",
+                            "label": f"H2: {enrichment['verdict']} "
+                            f"(n_missed={len(missed_results)})",
+                            "enrichment_ratio": enrichment["enrichment_ratio"],
+                            "verdict": enrichment["verdict"],
+                            "finding": enrichment["finding"],
+                        }
+                    ),
+                )
+
             audit_fields = {
                 "regret": record.regret,
                 "harmful": record.harmful,

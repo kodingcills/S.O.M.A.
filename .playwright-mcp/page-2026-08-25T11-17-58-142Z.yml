@@ -1,0 +1,717 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SOMA
+      - generic [ref=e7]: / current runtime session
+    - generic "Current model state" [ref=e8]:
+      - generic [ref=e9]:
+        - text: World model
+        - strong [ref=e10]: "05"
+      - generic [ref=e11]:
+        - text: Error
+        - strong [ref=e12]: "0.000"
+      - generic [ref=e13]:
+        - strong [ref=e14]: "0"
+        - text: agents active
+      - generic [ref=e15]: Running
+  - generic [ref=e17]:
+    - navigation "Primary navigation" [ref=e18]:
+      - generic [ref=e19]: Workspace
+      - button "Graph" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: ⌘
+      - button "Runs" [ref=e23] [cursor=pointer]:
+        - generic [ref=e24]: ▤
+      - button "Compare" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: ⇄
+      - button "Models" [ref=e29] [cursor=pointer]:
+        - generic [ref=e30]: ◇
+      - generic [ref=e32]: Live event logprimary / comparison
+    - main "SOMA workspace" [ref=e33]:
+      - generic [ref=e35]:
+        - application [ref=e37]:
+          - generic [ref=e39]:
+            - generic:
+              - generic:
+                - img:
+                  - group "Edge from root to cap_2" [ref=e74] [cursor=pointer]:
+                    - generic [ref=e77]: DOF 2
+                - img:
+                  - group "Edge from root to cap_3" [ref=e79] [cursor=pointer]:
+                    - generic [ref=e82]: DOF 3
+                - img:
+                  - group "Edge from root to cap_4" [ref=e84] [cursor=pointer]:
+                    - generic [ref=e87]: DOF 4
+                - img:
+                  - group "Edge from root to cap_5" [ref=e89] [cursor=pointer]:
+                    - generic [ref=e92]: DOF 5
+                - img:
+                  - group "Edge from root to cap_6" [ref=e94] [cursor=pointer]:
+                    - generic [ref=e97]: DOF 6
+                - img:
+                  - group "Edge from root to exp_fded40" [ref=e99] [cursor=pointer]:
+                    - generic [ref=e102]: Tool–tissue boundary
+                - img:
+                  - group "Edge from root to exp_57ddc6" [ref=e104] [cursor=pointer]:
+                    - generic [ref=e107]: Lower left
+                - img:
+                  - group "Edge from root to exp_5836cd" [ref=e109] [cursor=pointer]:
+                    - generic [ref=e112]: Upper left
+                - img:
+                  - group "Edge from root to exp_b0762b" [ref=e114] [cursor=pointer]:
+                    - generic [ref=e117]: Surgical target vicinity
+              - generic:
+                - group [ref=e119] [cursor=pointer]:
+                  - article "Seed root, Completed" [ref=e120]:
+                    - generic [ref=e122]:
+                      - generic [ref=e123]:
+                        - generic [ref=e124]: ○
+                        - text: Seed
+                      - generic [ref=e125]: "#000"
+                    - generic [ref=e126]:
+                      - generic [ref=e127]: Initial system state
+                      - generic [ref=e128]:
+                        - generic [ref=e129]: capability
+                        - strong [ref=e130]: DOF 1
+                      - generic [ref=e131]:
+                        - generic [ref=e132]: learning origin
+                        - generic [ref=e133]: primary anatomy
+                    - generic [ref=e134]: Completed
+                - group [ref=e138] [cursor=pointer]:
+                  - article "Capability cap_2, Completed" [ref=e139]:
+                    - generic [ref=e141]:
+                      - generic [ref=e142]:
+                        - generic [ref=e143]: ◆
+                        - text: Capability
+                      - generic [ref=e144]: "#2"
+                    - generic [ref=e145]:
+                      - generic [ref=e146]: DOF 2 unlocked
+                      - generic [ref=e147]:
+                        - generic [ref=e148]: capability
+                        - strong [ref=e149]: DOF 1 → 2
+                      - generic [ref=e150]:
+                        - generic [ref=e151]: generation 1
+                        - generic [ref=e152]: 1000 samples
+                    - generic [ref=e153]: Completed
+                - group [ref=e157] [cursor=pointer]:
+                  - article "Capability cap_3, Completed" [ref=e158]:
+                    - generic [ref=e160]:
+                      - generic [ref=e161]:
+                        - generic [ref=e162]: ◆
+                        - text: Capability
+                      - generic [ref=e163]: "#3"
+                    - generic [ref=e164]:
+                      - generic [ref=e165]: DOF 3 unlocked
+                      - generic [ref=e166]:
+                        - generic [ref=e167]: capability
+                        - strong [ref=e168]: DOF 2 → 3
+                      - generic [ref=e169]:
+                        - generic [ref=e170]: generation 1
+                        - generic [ref=e171]: 1000 samples
+                    - generic [ref=e172]: Completed
+                - group [ref=e176] [cursor=pointer]:
+                  - article "Capability cap_4, Completed" [ref=e177]:
+                    - generic [ref=e179]:
+                      - generic [ref=e180]:
+                        - generic [ref=e181]: ◆
+                        - text: Capability
+                      - generic [ref=e182]: "#4"
+                    - generic [ref=e183]:
+                      - generic [ref=e184]: DOF 4 unlocked
+                      - generic [ref=e185]:
+                        - generic [ref=e186]: capability
+                        - strong [ref=e187]: DOF 3 → 4
+                      - generic [ref=e188]:
+                        - generic [ref=e189]: generation 1
+                        - generic [ref=e190]: 1000 samples
+                    - generic [ref=e191]: Completed
+                - group [ref=e195] [cursor=pointer]:
+                  - article "Capability cap_5, Completed" [ref=e196]:
+                    - generic [ref=e198]:
+                      - generic [ref=e199]:
+                        - generic [ref=e200]: ◆
+                        - text: Capability
+                      - generic [ref=e201]: "#5"
+                    - generic [ref=e202]:
+                      - generic [ref=e203]: DOF 5 unlocked
+                      - generic [ref=e204]:
+                        - generic [ref=e205]: capability
+                        - strong [ref=e206]: DOF 4 → 5
+                      - generic [ref=e207]:
+                        - generic [ref=e208]: generation 1
+                        - generic [ref=e209]: 1000 samples
+                    - generic [ref=e210]: Completed
+                - group [ref=e214] [cursor=pointer]:
+                  - article "Capability cap_6, Completed" [ref=e215]:
+                    - generic [ref=e217]:
+                      - generic [ref=e218]:
+                        - generic [ref=e219]: ◆
+                        - text: Capability
+                      - generic [ref=e220]: "#6"
+                    - generic [ref=e221]:
+                      - generic [ref=e222]: DOF 6 unlocked
+                      - generic [ref=e223]:
+                        - generic [ref=e224]: capability
+                        - strong [ref=e225]: DOF 5 → 6
+                      - generic [ref=e226]:
+                        - generic [ref=e227]: generation 2
+                        - generic [ref=e228]: 1000 samples
+                    - generic [ref=e229]: Completed
+                - group [ref=e233] [cursor=pointer]:
+                  - article "Exploration exp_fded40, Completed" [ref=e234]:
+                    - generic [ref=e236]:
+                      - generic [ref=e237]:
+                        - generic [ref=e238]: ●
+                        - text: Exploration
+                      - generic [ref=e239]: "#fded40"
+                    - generic [ref=e240]:
+                      - generic [ref=e241]: Tool–tissue boundary exploration
+                      - generic [ref=e242]:
+                        - generic [ref=e243]: error
+                        - strong [ref=e244]:
+                          - text: "0.300"
+                          - emphasis [ref=e245]: →
+                          - text: "0.057"
+                        - generic [ref=e246]: ↓81%
+                      - generic [ref=e247]:
+                        - generic [ref=e248]: generation 2
+                        - generic [ref=e249]: 100 samples
+                    - generic [ref=e250]: Completed
+                - group [ref=e254] [cursor=pointer]:
+                  - article "Exploration exp_57ddc6, Failed" [ref=e255]:
+                    - generic [ref=e257]:
+                      - generic [ref=e258]:
+                        - generic [ref=e259]: ●
+                        - text: Exploration
+                      - generic [ref=e260]: "#57ddc6"
+                    - generic [ref=e261]:
+                      - generic [ref=e262]: Lower left exploration
+                      - generic [ref=e263]: Not connected to physics server.
+                      - generic [ref=e264]:
+                        - generic [ref=e265]: generation 2
+                        - generic [ref=e266]: collecting evidence
+                    - generic [ref=e267]: Failed
+                - group [ref=e271] [cursor=pointer]:
+                  - article "Exploration exp_5836cd, Failed" [ref=e272]:
+                    - generic [ref=e274]:
+                      - generic [ref=e275]:
+                        - generic [ref=e276]: ●
+                        - text: Exploration
+                      - generic [ref=e277]: "#5836cd"
+                    - generic [ref=e278]:
+                      - generic [ref=e279]: Upper left exploration
+                      - generic [ref=e280]: Not connected to physics server.
+                      - generic [ref=e281]:
+                        - generic [ref=e282]: generation 2
+                        - generic [ref=e283]: collecting evidence
+                    - generic [ref=e284]: Failed
+                - group [ref=e288] [cursor=pointer]:
+                  - article "Exploration exp_b0762b, Failed" [ref=e289]:
+                    - generic [ref=e291]:
+                      - generic [ref=e292]:
+                        - generic [ref=e293]: ●
+                        - text: Exploration
+                      - generic [ref=e294]: "#b0762b"
+                    - generic [ref=e295]:
+                      - generic [ref=e296]: Surgical target vicinity exploration
+                      - generic [ref=e297]: Not connected to physics server.
+                      - generic [ref=e298]:
+                        - generic [ref=e299]: generation 3
+                        - generic [ref=e300]: collecting evidence
+                    - generic [ref=e301]: Failed
+          - generic [ref=e40]:
+            - generic "Graph zoom controls" [ref=e41]:
+              - button "Zoom out" [ref=e42] [cursor=pointer]: −
+              - generic [ref=e43]: 87%
+              - button "Zoom in" [ref=e44] [cursor=pointer]: +
+              - button "Fit" [ref=e45] [cursor=pointer]
+            - generic "Filter graph nodes" [ref=e46]:
+              - button "All nodes" [ref=e47] [cursor=pointer]
+              - button "Exploration" [ref=e48] [cursor=pointer]
+              - button "Capabilities" [ref=e49] [cursor=pointer]
+              - button "Failed" [ref=e50] [cursor=pointer]
+              - button "Active" [ref=e51] [cursor=pointer]
+            - generic [ref=e52]:
+              - generic [ref=e53]: Search nodes
+              - generic [ref=e54]: ⌕
+              - textbox "Search nodes" [ref=e55]:
+                - /placeholder: Search nodes…
+          - generic [ref=e56]:
+            - generic [ref=e57]: Earlier
+            - generic [ref=e58]: →
+            - generic [ref=e59]: Newer
+          - img "Mini Map" [ref=e306]
+        - complementary "Node inspector" [ref=e64]:
+          - generic [ref=e65]:
+            - button "Close inspector" [ref=e317] [cursor=pointer]: ×
+            - generic [ref=e318]:
+              - generic [ref=e319]: ●
+              - generic [ref=e320]: Exploration
+              - generic [ref=e321]: "#fded40"
+            - heading "Tool–tissue boundary exploration" [level=2] [ref=e387]
+            - generic [ref=e323]:
+              - text: Completed
+              - generic [ref=e325]: · 8/24/2026, 1:23:03 PM
+            - generic "Prediction error 0.30020543932914734 to 0.056701472587883474" [ref=e388]:
+              - generic [ref=e389]:
+                - generic [ref=e390]: Before
+                - text: "0.300"
+              - generic [ref=e391]: →
+              - generic [ref=e392]:
+                - generic [ref=e393]: After
+                - text: "0.057"
+              - generic [ref=e394]: Prediction error ↓ 81.1%
+            - generic [ref=e326]:
+              - generic [ref=e327]:
+                - generic [ref=e328]: World model
+                - strong [ref=e329]: 1 → 2
+              - generic [ref=e330]:
+                - generic [ref=e331]: DOF
+                - strong [ref=e332]: 6 / 6
+              - generic [ref=e333]:
+                - generic [ref=e334]: Samples
+                - strong [ref=e335]: "100"
+              - generic [ref=e336]:
+                - generic [ref=e337]: Fine-tune loss
+                - strong [ref=e338]: "0.0454"
+            - generic [ref=e339]:
+              - heading "What happened" [level=3] [ref=e340]
+              - generic [ref=e341]:
+                - term [ref=e342]: Trigger
+                - definition [ref=e343]: Prediction error 0.300 was observed in Tool–tissue boundary.
+                - term [ref=e344]: Action
+                - definition [ref=e345]: The agent collected 100 state–action–next-state samples in a dedicated simulation.
+                - term [ref=e346]: Observation
+                - definition [ref=e347]: Post-update evaluation measured regional error 0.057.
+                - term [ref=e348]: Model update
+                - definition [ref=e349]: Regional prediction error changed by 81.1%.
+            - generic [ref=e350]:
+              - heading "Trace" [level=3] [ref=e351]
+              - generic [ref=e352]:
+                - generic [ref=e395]:
+                  - button "01:23:03 PM Agent spawned" [ref=e397] [cursor=pointer]:
+                    - time [ref=e398]: 01:23:03 PM
+                    - generic [ref=e399]: Agent spawned
+                  - paragraph [ref=e400]: Evaluating Tool–tissue boundary at prediction error 0.300.
+                - generic [ref=e401]:
+                  - button "01:23:04 PM Exploration step +359 ms" [ref=e403] [cursor=pointer]:
+                    - time [ref=e404]: 01:23:04 PM
+                    - generic [ref=e405]: Exploration step
+                    - generic [ref=e406]: +359 ms
+                  - paragraph [ref=e407]: "[no API key — random focused actions]"
+                - generic [ref=e408]:
+                  - button "01:23:04 PM Exploration step +21 ms" [ref=e410] [cursor=pointer]:
+                    - time [ref=e411]: 01:23:04 PM
+                    - generic [ref=e412]: Exploration step
+                    - generic [ref=e413]: +21 ms
+                  - paragraph [ref=e414]: Simulation step 0 completed.
+                - generic [ref=e415]:
+                  - button "01:23:04 PM Exploration step +72 ms" [ref=e417] [cursor=pointer]:
+                    - time [ref=e418]: 01:23:04 PM
+                    - generic [ref=e419]: Exploration step
+                    - generic [ref=e420]: +72 ms
+                  - paragraph [ref=e421]: "[no API key — random focused actions]"
+                - generic [ref=e422]:
+                  - button "01:23:04 PM Exploration step +131 ms" [ref=e424] [cursor=pointer]:
+                    - time [ref=e425]: 01:23:04 PM
+                    - generic [ref=e426]: Exploration step
+                    - generic [ref=e427]: +131 ms
+                  - paragraph [ref=e428]: "[no API key — random focused actions]"
+                - generic [ref=e429]:
+                  - button "01:23:04 PM Exploration step +12 ms" [ref=e431] [cursor=pointer]:
+                    - time [ref=e432]: 01:23:04 PM
+                    - generic [ref=e433]: Exploration step
+                    - generic [ref=e434]: +12 ms
+                  - paragraph [ref=e435]: Simulation step 10 completed.
+                - generic [ref=e436]:
+                  - button "01:23:04 PM Exploration step +46 ms" [ref=e438] [cursor=pointer]:
+                    - time [ref=e439]: 01:23:04 PM
+                    - generic [ref=e440]: Exploration step
+                    - generic [ref=e441]: +46 ms
+                  - paragraph [ref=e442]: "[no API key — random focused actions]"
+                - generic [ref=e443]:
+                  - button "01:23:04 PM Exploration step +54 ms" [ref=e445] [cursor=pointer]:
+                    - time [ref=e446]: 01:23:04 PM
+                    - generic [ref=e447]: Exploration step
+                    - generic [ref=e448]: +54 ms
+                  - paragraph [ref=e449]: "[no API key — random focused actions]"
+                - generic [ref=e450]:
+                  - button "01:23:04 PM Exploration step +6 ms" [ref=e452] [cursor=pointer]:
+                    - time [ref=e453]: 01:23:04 PM
+                    - generic [ref=e454]: Exploration step
+                    - generic [ref=e455]: +6 ms
+                  - paragraph [ref=e456]: Simulation step 20 completed.
+                - generic [ref=e457]:
+                  - button "01:23:04 PM Exploration step +57 ms" [ref=e459] [cursor=pointer]:
+                    - time [ref=e460]: 01:23:04 PM
+                    - generic [ref=e461]: Exploration step
+                    - generic [ref=e462]: +57 ms
+                  - paragraph [ref=e463]: "[no API key — random focused actions]"
+                - generic [ref=e464]:
+                  - button "01:23:04 PM Exploration step +44 ms" [ref=e466] [cursor=pointer]:
+                    - time [ref=e467]: 01:23:04 PM
+                    - generic [ref=e468]: Exploration step
+                    - generic [ref=e469]: +44 ms
+                  - paragraph [ref=e470]: "[no API key — random focused actions]"
+                - generic [ref=e471]:
+                  - button "01:23:04 PM Exploration step +9 ms" [ref=e473] [cursor=pointer]:
+                    - time [ref=e474]: 01:23:04 PM
+                    - generic [ref=e475]: Exploration step
+                    - generic [ref=e476]: +9 ms
+                  - paragraph [ref=e477]: Simulation step 30 completed.
+                - generic [ref=e478]:
+                  - button "01:23:04 PM Exploration step +44 ms" [ref=e480] [cursor=pointer]:
+                    - time [ref=e481]: 01:23:04 PM
+                    - generic [ref=e482]: Exploration step
+                    - generic [ref=e483]: +44 ms
+                  - paragraph [ref=e484]: "[no API key — random focused actions]"
+                - generic [ref=e485]:
+                  - button "01:23:04 PM Exploration step +49 ms" [ref=e487] [cursor=pointer]:
+                    - time [ref=e488]: 01:23:04 PM
+                    - generic [ref=e489]: Exploration step
+                    - generic [ref=e490]: +49 ms
+                  - paragraph [ref=e491]: "[no API key — random focused actions]"
+                - generic [ref=e492]:
+                  - button "01:23:04 PM Exploration step +7 ms" [ref=e494] [cursor=pointer]:
+                    - time [ref=e495]: 01:23:04 PM
+                    - generic [ref=e496]: Exploration step
+                    - generic [ref=e497]: +7 ms
+                  - paragraph [ref=e498]: Simulation step 40 completed.
+                - generic [ref=e499]:
+                  - button "01:23:04 PM Exploration step +45 ms" [ref=e501] [cursor=pointer]:
+                    - time [ref=e502]: 01:23:04 PM
+                    - generic [ref=e503]: Exploration step
+                    - generic [ref=e504]: +45 ms
+                  - paragraph [ref=e505]: "[no API key — random focused actions]"
+                - generic [ref=e506]:
+                  - button "01:23:04 PM Exploration step +58 ms" [ref=e508] [cursor=pointer]:
+                    - time [ref=e509]: 01:23:04 PM
+                    - generic [ref=e510]: Exploration step
+                    - generic [ref=e511]: +58 ms
+                  - paragraph [ref=e512]: "[no API key — random focused actions]"
+                - generic [ref=e513]:
+                  - button "01:23:04 PM Exploration step +4 ms" [ref=e515] [cursor=pointer]:
+                    - time [ref=e516]: 01:23:04 PM
+                    - generic [ref=e517]: Exploration step
+                    - generic [ref=e518]: +4 ms
+                  - paragraph [ref=e519]: Simulation step 50 completed.
+                - generic [ref=e520]:
+                  - button "01:23:04 PM Exploration step +63 ms" [ref=e522] [cursor=pointer]:
+                    - time [ref=e523]: 01:23:04 PM
+                    - generic [ref=e524]: Exploration step
+                    - generic [ref=e525]: +63 ms
+                  - paragraph [ref=e526]: "[no API key — random focused actions]"
+                - generic [ref=e527]:
+                  - button "01:23:05 PM Exploration step +53 ms" [ref=e529] [cursor=pointer]:
+                    - time [ref=e530]: 01:23:05 PM
+                    - generic [ref=e531]: Exploration step
+                    - generic [ref=e532]: +53 ms
+                  - paragraph [ref=e533]: "[no API key — random focused actions]"
+                - generic [ref=e534]:
+                  - button "01:23:05 PM Exploration step +10 ms" [ref=e536] [cursor=pointer]:
+                    - time [ref=e537]: 01:23:05 PM
+                    - generic [ref=e538]: Exploration step
+                    - generic [ref=e539]: +10 ms
+                  - paragraph [ref=e540]: Simulation step 60 completed.
+                - generic [ref=e541]:
+                  - button "01:23:05 PM Exploration step +62 ms" [ref=e543] [cursor=pointer]:
+                    - time [ref=e544]: 01:23:05 PM
+                    - generic [ref=e545]: Exploration step
+                    - generic [ref=e546]: +62 ms
+                  - paragraph [ref=e547]: "[no API key — random focused actions]"
+                - generic [ref=e548]:
+                  - button "01:23:05 PM Exploration step +43 ms" [ref=e550] [cursor=pointer]:
+                    - time [ref=e551]: 01:23:05 PM
+                    - generic [ref=e552]: Exploration step
+                    - generic [ref=e553]: +43 ms
+                  - paragraph [ref=e554]: "[no API key — random focused actions]"
+                - generic [ref=e555]:
+                  - button "01:23:05 PM Exploration step +12 ms" [ref=e557] [cursor=pointer]:
+                    - time [ref=e558]: 01:23:05 PM
+                    - generic [ref=e559]: Exploration step
+                    - generic [ref=e560]: +12 ms
+                  - paragraph [ref=e561]: Simulation step 70 completed.
+                - generic [ref=e562]:
+                  - button "01:23:05 PM Exploration step +62 ms" [ref=e564] [cursor=pointer]:
+                    - time [ref=e565]: 01:23:05 PM
+                    - generic [ref=e566]: Exploration step
+                    - generic [ref=e567]: +62 ms
+                  - paragraph [ref=e568]: "[no API key — random focused actions]"
+                - generic [ref=e569]:
+                  - button "01:23:05 PM Exploration step +56 ms" [ref=e571] [cursor=pointer]:
+                    - time [ref=e572]: 01:23:05 PM
+                    - generic [ref=e573]: Exploration step
+                    - generic [ref=e574]: +56 ms
+                  - paragraph [ref=e575]: "[no API key — random focused actions]"
+                - generic [ref=e576]:
+                  - button "01:23:05 PM Exploration step +4 ms" [ref=e578] [cursor=pointer]:
+                    - time [ref=e579]: 01:23:05 PM
+                    - generic [ref=e580]: Exploration step
+                    - generic [ref=e581]: +4 ms
+                  - paragraph [ref=e582]: Simulation step 80 completed.
+                - generic [ref=e583]:
+                  - button "01:23:05 PM Exploration step +53 ms" [ref=e585] [cursor=pointer]:
+                    - time [ref=e586]: 01:23:05 PM
+                    - generic [ref=e587]: Exploration step
+                    - generic [ref=e588]: +53 ms
+                  - paragraph [ref=e589]: "[no API key — random focused actions]"
+                - generic [ref=e590]:
+                  - button "01:23:05 PM Exploration step +50 ms" [ref=e592] [cursor=pointer]:
+                    - time [ref=e593]: 01:23:05 PM
+                    - generic [ref=e594]: Exploration step
+                    - generic [ref=e595]: +50 ms
+                  - paragraph [ref=e596]: "[no API key — random focused actions]"
+                - generic [ref=e597]:
+                  - button "01:23:05 PM Exploration step +9 ms" [ref=e599] [cursor=pointer]:
+                    - time [ref=e600]: 01:23:05 PM
+                    - generic [ref=e601]: Exploration step
+                    - generic [ref=e602]: +9 ms
+                  - paragraph [ref=e603]: Simulation step 90 completed.
+                - generic [ref=e604]:
+                  - button "01:23:05 PM Exploration step +50 ms" [ref=e606] [cursor=pointer]:
+                    - time [ref=e607]: 01:23:05 PM
+                    - generic [ref=e608]: Exploration step
+                    - generic [ref=e609]: +50 ms
+                  - paragraph [ref=e610]: "[no API key — random focused actions]"
+                - generic [ref=e611]:
+                  - button "01:23:06 PM Evaluation complete +704 ms" [ref=e613] [cursor=pointer]:
+                    - time [ref=e614]: 01:23:06 PM
+                    - generic [ref=e615]: Evaluation complete
+                    - generic [ref=e616]: +704 ms
+                  - paragraph [ref=e617]: Prediction error changed 0.300 → 0.057 after 100 samples.
+            - generic [ref=e373]:
+              - heading "Evidence" [level=3] [ref=e374]
+              - generic [ref=e375]:
+                - img "Live primary simulation evidence" [ref=e376]
+                - generic [ref=e377]: Live primary simulation
+              - button "Simulation" [ref=e378] [cursor=pointer]:
+                - generic [ref=e380]: →
+              - button "World-model state" [ref=e381] [cursor=pointer]:
+                - generic [ref=e383]: →
+              - generic [ref=e384] [cursor=pointer]:
+                - generic [ref=e385]: Recorded trajectory
+                - generic [ref=e386]: unavailable
+      - region "Simulation evidence for exp_fded40" [ref=e618]:
+        - generic [ref=e619]:
+          - heading "Simulation evidence" [level=2] [ref=e620]
+          - generic [ref=e621]: exp_fded40
+          - generic [ref=e622]: Live primary environment
+          - button "Close" [ref=e623] [cursor=pointer]
+        - generic [ref=e624]:
+          - generic [ref=e625]:
+            - generic [ref=e626]:
+              - iframe [active] [ref=e628]:
+                - textbox [ref=f1e5]
+              - generic [ref=e629]:
+                - generic [ref=e630]: STEP 72
+                - generic [ref=e631]: REWARD 0.448
+                - generic [ref=e632]: DOF 6
+                - generic [ref=e633]: ● Live
+            - generic "Simulation controls" [ref=e634]:
+              - generic [ref=e635]: Live
+              - button "Play / pause" [disabled] [ref=e637]
+              - button "Timeline scrubber" [disabled] [ref=e638]
+              - button "Reset" [ref=e639] [cursor=pointer]
+              - generic [ref=e640]:
+                - checkbox "Prediction-error overlay" [ref=e641]
+                - text: Prediction-error overlay
+              - generic [ref=e642]: Replay unavailable
+          - complementary [ref=e643]:
+            - heading "Event-aligned trace" [level=3] [ref=e644]
+            - paragraph [ref=e645]: Trace events are timestamp-aligned with the live session. Frame seeking requires recorded simulation frames, which the current API does not provide.
+            - generic [ref=e646]:
+              - generic [ref=e647]:
+                - button "01:23:03 PM Agent spawned" [ref=e649] [cursor=pointer]:
+                  - time [ref=e650]: 01:23:03 PM
+                  - generic [ref=e651]: Agent spawned
+                - paragraph [ref=e652]: Evaluating Tool–tissue boundary at prediction error 0.300.
+              - generic [ref=e653]:
+                - button "01:23:04 PM Exploration step +359 ms" [ref=e655] [cursor=pointer]:
+                  - time [ref=e656]: 01:23:04 PM
+                  - generic [ref=e657]: Exploration step
+                  - generic [ref=e658]: +359 ms
+                - paragraph [ref=e659]: "[no API key — random focused actions]"
+              - generic [ref=e660]:
+                - button "01:23:04 PM Exploration step +21 ms" [ref=e662] [cursor=pointer]:
+                  - time [ref=e663]: 01:23:04 PM
+                  - generic [ref=e664]: Exploration step
+                  - generic [ref=e665]: +21 ms
+                - paragraph [ref=e666]: Simulation step 0 completed.
+              - generic [ref=e667]:
+                - button "01:23:04 PM Exploration step +72 ms" [ref=e669] [cursor=pointer]:
+                  - time [ref=e670]: 01:23:04 PM
+                  - generic [ref=e671]: Exploration step
+                  - generic [ref=e672]: +72 ms
+                - paragraph [ref=e673]: "[no API key — random focused actions]"
+              - generic [ref=e674]:
+                - button "01:23:04 PM Exploration step +131 ms" [ref=e676] [cursor=pointer]:
+                  - time [ref=e677]: 01:23:04 PM
+                  - generic [ref=e678]: Exploration step
+                  - generic [ref=e679]: +131 ms
+                - paragraph [ref=e680]: "[no API key — random focused actions]"
+              - generic [ref=e681]:
+                - button "01:23:04 PM Exploration step +12 ms" [ref=e683] [cursor=pointer]:
+                  - time [ref=e684]: 01:23:04 PM
+                  - generic [ref=e685]: Exploration step
+                  - generic [ref=e686]: +12 ms
+                - paragraph [ref=e687]: Simulation step 10 completed.
+              - generic [ref=e688]:
+                - button "01:23:04 PM Exploration step +46 ms" [ref=e690] [cursor=pointer]:
+                  - time [ref=e691]: 01:23:04 PM
+                  - generic [ref=e692]: Exploration step
+                  - generic [ref=e693]: +46 ms
+                - paragraph [ref=e694]: "[no API key — random focused actions]"
+              - generic [ref=e695]:
+                - button "01:23:04 PM Exploration step +54 ms" [ref=e697] [cursor=pointer]:
+                  - time [ref=e698]: 01:23:04 PM
+                  - generic [ref=e699]: Exploration step
+                  - generic [ref=e700]: +54 ms
+                - paragraph [ref=e701]: "[no API key — random focused actions]"
+              - generic [ref=e702]:
+                - button "01:23:04 PM Exploration step +6 ms" [ref=e704] [cursor=pointer]:
+                  - time [ref=e705]: 01:23:04 PM
+                  - generic [ref=e706]: Exploration step
+                  - generic [ref=e707]: +6 ms
+                - paragraph [ref=e708]: Simulation step 20 completed.
+              - generic [ref=e709]:
+                - button "01:23:04 PM Exploration step +57 ms" [ref=e711] [cursor=pointer]:
+                  - time [ref=e712]: 01:23:04 PM
+                  - generic [ref=e713]: Exploration step
+                  - generic [ref=e714]: +57 ms
+                - paragraph [ref=e715]: "[no API key — random focused actions]"
+              - generic [ref=e716]:
+                - button "01:23:04 PM Exploration step +44 ms" [ref=e718] [cursor=pointer]:
+                  - time [ref=e719]: 01:23:04 PM
+                  - generic [ref=e720]: Exploration step
+                  - generic [ref=e721]: +44 ms
+                - paragraph [ref=e722]: "[no API key — random focused actions]"
+              - generic [ref=e723]:
+                - button "01:23:04 PM Exploration step +9 ms" [ref=e725] [cursor=pointer]:
+                  - time [ref=e726]: 01:23:04 PM
+                  - generic [ref=e727]: Exploration step
+                  - generic [ref=e728]: +9 ms
+                - paragraph [ref=e729]: Simulation step 30 completed.
+              - generic [ref=e730]:
+                - button "01:23:04 PM Exploration step +44 ms" [ref=e732] [cursor=pointer]:
+                  - time [ref=e733]: 01:23:04 PM
+                  - generic [ref=e734]: Exploration step
+                  - generic [ref=e735]: +44 ms
+                - paragraph [ref=e736]: "[no API key — random focused actions]"
+              - generic [ref=e737]:
+                - button "01:23:04 PM Exploration step +49 ms" [ref=e739] [cursor=pointer]:
+                  - time [ref=e740]: 01:23:04 PM
+                  - generic [ref=e741]: Exploration step
+                  - generic [ref=e742]: +49 ms
+                - paragraph [ref=e743]: "[no API key — random focused actions]"
+              - generic [ref=e744]:
+                - button "01:23:04 PM Exploration step +7 ms" [ref=e746] [cursor=pointer]:
+                  - time [ref=e747]: 01:23:04 PM
+                  - generic [ref=e748]: Exploration step
+                  - generic [ref=e749]: +7 ms
+                - paragraph [ref=e750]: Simulation step 40 completed.
+              - generic [ref=e751]:
+                - button "01:23:04 PM Exploration step +45 ms" [ref=e753] [cursor=pointer]:
+                  - time [ref=e754]: 01:23:04 PM
+                  - generic [ref=e755]: Exploration step
+                  - generic [ref=e756]: +45 ms
+                - paragraph [ref=e757]: "[no API key — random focused actions]"
+              - generic [ref=e758]:
+                - button "01:23:04 PM Exploration step +58 ms" [ref=e760] [cursor=pointer]:
+                  - time [ref=e761]: 01:23:04 PM
+                  - generic [ref=e762]: Exploration step
+                  - generic [ref=e763]: +58 ms
+                - paragraph [ref=e764]: "[no API key — random focused actions]"
+              - generic [ref=e765]:
+                - button "01:23:04 PM Exploration step +4 ms" [ref=e767] [cursor=pointer]:
+                  - time [ref=e768]: 01:23:04 PM
+                  - generic [ref=e769]: Exploration step
+                  - generic [ref=e770]: +4 ms
+                - paragraph [ref=e771]: Simulation step 50 completed.
+              - generic [ref=e772]:
+                - button "01:23:04 PM Exploration step +63 ms" [ref=e774] [cursor=pointer]:
+                  - time [ref=e775]: 01:23:04 PM
+                  - generic [ref=e776]: Exploration step
+                  - generic [ref=e777]: +63 ms
+                - paragraph [ref=e778]: "[no API key — random focused actions]"
+              - generic [ref=e779]:
+                - button "01:23:05 PM Exploration step +53 ms" [ref=e781] [cursor=pointer]:
+                  - time [ref=e782]: 01:23:05 PM
+                  - generic [ref=e783]: Exploration step
+                  - generic [ref=e784]: +53 ms
+                - paragraph [ref=e785]: "[no API key — random focused actions]"
+              - generic [ref=e786]:
+                - button "01:23:05 PM Exploration step +10 ms" [ref=e788] [cursor=pointer]:
+                  - time [ref=e789]: 01:23:05 PM
+                  - generic [ref=e790]: Exploration step
+                  - generic [ref=e791]: +10 ms
+                - paragraph [ref=e792]: Simulation step 60 completed.
+              - generic [ref=e793]:
+                - button "01:23:05 PM Exploration step +62 ms" [ref=e795] [cursor=pointer]:
+                  - time [ref=e796]: 01:23:05 PM
+                  - generic [ref=e797]: Exploration step
+                  - generic [ref=e798]: +62 ms
+                - paragraph [ref=e799]: "[no API key — random focused actions]"
+              - generic [ref=e800]:
+                - button "01:23:05 PM Exploration step +43 ms" [ref=e802] [cursor=pointer]:
+                  - time [ref=e803]: 01:23:05 PM
+                  - generic [ref=e804]: Exploration step
+                  - generic [ref=e805]: +43 ms
+                - paragraph [ref=e806]: "[no API key — random focused actions]"
+              - generic [ref=e807]:
+                - button "01:23:05 PM Exploration step +12 ms" [ref=e809] [cursor=pointer]:
+                  - time [ref=e810]: 01:23:05 PM
+                  - generic [ref=e811]: Exploration step
+                  - generic [ref=e812]: +12 ms
+                - paragraph [ref=e813]: Simulation step 70 completed.
+              - generic [ref=e814]:
+                - button "01:23:05 PM Exploration step +62 ms" [ref=e816] [cursor=pointer]:
+                  - time [ref=e817]: 01:23:05 PM
+                  - generic [ref=e818]: Exploration step
+                  - generic [ref=e819]: +62 ms
+                - paragraph [ref=e820]: "[no API key — random focused actions]"
+              - generic [ref=e821]:
+                - button "01:23:05 PM Exploration step +56 ms" [ref=e823] [cursor=pointer]:
+                  - time [ref=e824]: 01:23:05 PM
+                  - generic [ref=e825]: Exploration step
+                  - generic [ref=e826]: +56 ms
+                - paragraph [ref=e827]: "[no API key — random focused actions]"
+              - generic [ref=e828]:
+                - button "01:23:05 PM Exploration step +4 ms" [ref=e830] [cursor=pointer]:
+                  - time [ref=e831]: 01:23:05 PM
+                  - generic [ref=e832]: Exploration step
+                  - generic [ref=e833]: +4 ms
+                - paragraph [ref=e834]: Simulation step 80 completed.
+              - generic [ref=e835]:
+                - button "01:23:05 PM Exploration step +53 ms" [ref=e837] [cursor=pointer]:
+                  - time [ref=e838]: 01:23:05 PM
+                  - generic [ref=e839]: Exploration step
+                  - generic [ref=e840]: +53 ms
+                - paragraph [ref=e841]: "[no API key — random focused actions]"
+              - generic [ref=e842]:
+                - button "01:23:05 PM Exploration step +50 ms" [ref=e844] [cursor=pointer]:
+                  - time [ref=e845]: 01:23:05 PM
+                  - generic [ref=e846]: Exploration step
+                  - generic [ref=e847]: +50 ms
+                - paragraph [ref=e848]: "[no API key — random focused actions]"
+              - generic [ref=e849]:
+                - button "01:23:05 PM Exploration step +9 ms" [ref=e851] [cursor=pointer]:
+                  - time [ref=e852]: 01:23:05 PM
+                  - generic [ref=e853]: Exploration step
+                  - generic [ref=e854]: +9 ms
+                - paragraph [ref=e855]: Simulation step 90 completed.
+              - generic [ref=e856]:
+                - button "01:23:05 PM Exploration step +50 ms" [ref=e858] [cursor=pointer]:
+                  - time [ref=e859]: 01:23:05 PM
+                  - generic [ref=e860]: Exploration step
+                  - generic [ref=e861]: +50 ms
+                - paragraph [ref=e862]: "[no API key — random focused actions]"
+              - generic [ref=e863]:
+                - button "01:23:06 PM Evaluation complete +704 ms" [ref=e865] [cursor=pointer]:
+                  - time [ref=e866]: 01:23:06 PM
+                  - generic [ref=e867]: Evaluation complete
+                  - generic [ref=e868]: +704 ms
+                - paragraph [ref=e869]: Prediction error changed 0.300 → 0.057 after 100 samples.
+  - contentinfo "Session status" [ref=e69]:
+    - generic [ref=e70]: generation 15
+    - generic [ref=e71]: 1000 events
+    - generic [ref=e72]: 0 active
+    - generic [ref=e73]: model error —

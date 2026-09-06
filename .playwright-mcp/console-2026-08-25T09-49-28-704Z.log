@@ -1,0 +1,421 @@
+[     105ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:5174/node_modules/.vite/deps/chunk-BCXODTBQ.js?v=710e0334:21548
+[     144ms] [WARNING] WebSocket connection to 'ws://localhost:8001/ws/events' failed: WebSocket is closed before the connection is established. @ http://localhost:5174/src/hooks/useEventLog.ts:75
+[     160ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5174/favicon.ico:0
+[     242ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[     242ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[     311ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[     311ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[     374ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[     374ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    1147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    1147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    2146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    2146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    3146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    3146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    3674ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    3675ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    3683ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    3684ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    3980ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    3980ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    4146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    4146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    4289ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    4289ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    4455ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    4455ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    4586ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    4586ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    4881ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    4881ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    4922ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    4922ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    5147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    5199ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    5199ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    5280ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5280ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5491ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    5492ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    5648ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5649ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5781ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    5781ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    5956ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    5956ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    6084ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    6084ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    6146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    6146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    6263ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    6263ms] [WARNING] The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width. @ http://localhost:5174/node_modules/.vite/deps/recharts.js?v=710e0334:5419
+[    6382ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    6382ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    6701ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    6701ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    6981ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    6981ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    7160ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    7160ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    7280ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    7280ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    7581ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    7581ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    7892ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    7892ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    8161ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    8161ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    8182ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    8182ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    8482ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    8482ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    8781ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    8781ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    9080ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    9080ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    9167ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    9167ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[    9381ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    9381ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    9683ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    9683ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[    9985ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[    9985ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   10169ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   10169ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   10283ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   10283ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   10581ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   10582ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   10900ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   10900ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   11147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   11147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   11181ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   11181ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   11481ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   11481ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   11780ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   11780ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   12088ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   12088ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   12148ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   12148ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   12382ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   12382ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   12681ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   12681ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   12981ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   12981ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   13146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   13147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   13280ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   13280ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   13581ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   13581ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   13881ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   13881ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   14149ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   14149ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   14181ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   14181ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   14482ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   14482ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   14782ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   14782ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   15095ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   15095ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   15147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   15147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   15380ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   15380ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   15681ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   15681ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   15980ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   15980ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   16146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   16146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   16286ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   16286ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   16587ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   16587ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   16881ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   16881ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   17149ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   17149ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   17198ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   17198ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   17481ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   17481ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   17781ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   17781ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   18080ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   18080ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   18147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   18147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   18382ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   18382ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   18681ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   18681ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   18982ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   18982ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   19146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   19146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   19296ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   19296ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   19580ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   19580ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   19881ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   19881ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   20146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   20147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   20202ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   20202ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   20480ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   20480ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   20781ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   20781ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   21080ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   21080ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   21147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   21147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   21384ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   21384ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   21681ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   21681ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   21983ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   21983ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   22147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   22147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   22290ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   22290ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   22580ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   22580ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   22880ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   22880ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   23146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   23146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   23181ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   23181ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   23481ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   23482ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   23782ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   23782ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   24081ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   24081ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   24146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   24146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   24390ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   24390ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   24682ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   24682ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   24981ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   24981ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   25146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   25146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   25301ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   25301ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   25580ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   25580ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   25880ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   25880ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   26148ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   26148ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   26182ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   26182ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   26490ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   26490ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   26781ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   26781ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   27081ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   27081ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   27146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   27146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   27405ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   27405ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   27680ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   27680ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   27980ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   27980ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   28147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   28147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   28281ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   28281ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   28585ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   28585ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   28884ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   28884ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   29147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   29148ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   29181ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   29181ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   29509ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   29509ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   29780ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   29781ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   30080ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   30080ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   30146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   30146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   30381ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   30381ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   30700ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   30700ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   30980ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   30980ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   31153ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   31153ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   31281ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   31281ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   31580ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   31580ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   31883ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   31883ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   32152ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   32152ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   32180ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   32181ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   32484ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   32484ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   32787ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   32787ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   33082ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   33082ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   33151ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   33151ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   33381ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   33381ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   33697ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   33697ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   33981ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   33981ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   34152ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   34152ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   34280ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   34280ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   34581ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   34581ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   34886ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   34886ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   35146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   35146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   35181ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   35181ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   35489ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   35489ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   35789ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   35790ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   36083ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   36083ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   36146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   36146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   36380ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   36380ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   36683ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   36683ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   37009ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   37009ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   37147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   37147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   37298ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   37299ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   37581ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   37581ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   37887ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   37887ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   38146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   38146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   38182ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   38182ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   38481ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   38481ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   38780ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   38780ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   39080ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   39080ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   39170ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   39170ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   39383ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   39383ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   39681ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   39681ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   40000ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   40001ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   40147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   40147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   40281ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   40281ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   40581ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   40581ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   40881ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   40881ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   41146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   41146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   41180ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   41180ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   41481ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   41481ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   41781ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   41781ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   42103ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   42103ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   42146ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   42146ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0
+[   42380ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   42380ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   42682ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   42682ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   42981ms] [ERROR] Access to fetch at 'http://localhost:8001/detail/primary' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   42981ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/detail/primary:0
+[   43147ms] [ERROR] Access to fetch at 'http://localhost:8001/health' from origin 'http://localhost:5174' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://localhost:5174/:0
+[   43147ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://localhost:8001/health:0

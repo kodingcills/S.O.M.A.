@@ -1,0 +1,64 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SOMA
+      - generic [ref=e7]: / current runtime session
+    - generic "Current model state" [ref=e8]:
+      - generic [ref=e9]:
+        - text: World model
+        - strong [ref=e10]: 0—
+      - generic [ref=e11]:
+        - text: Error
+        - strong [ref=e12]: —
+      - generic [ref=e13]:
+        - strong [ref=e14]: —
+        - text: agents active
+      - generic [ref=e15]: Connecting
+  - generic [ref=e17]:
+    - navigation "Primary navigation" [ref=e18]:
+      - button "Graph" [ref=e19] [cursor=pointer]:
+        - generic [ref=e20]: ⌘
+      - button "Runs" [ref=e21] [cursor=pointer]:
+        - generic [ref=e22]: ▤
+      - button "Compare" [ref=e23] [cursor=pointer]:
+        - generic [ref=e24]: ⇄
+      - button "Models" [ref=e25] [cursor=pointer]:
+        - generic [ref=e26]: ◇
+    - main "SOMA workspace" [ref=e27]:
+      - generic [ref=e29]:
+        - application [ref=e31]:
+          - generic [ref=e34]:
+            - generic "Graph zoom controls" [ref=e35]:
+              - button "Zoom out" [ref=e36] [cursor=pointer]: −
+              - generic [ref=e37]: 82%
+              - button "Zoom in" [ref=e38] [cursor=pointer]: +
+              - button "Fit" [ref=e39] [cursor=pointer]
+            - generic "Filter graph nodes" [ref=e40]:
+              - button "All nodes" [ref=e41] [cursor=pointer]
+              - button "Exploration" [ref=e42] [cursor=pointer]
+              - button "Capabilities" [ref=e43] [cursor=pointer]
+              - button "Failed" [ref=e44] [cursor=pointer]
+              - button "Active" [ref=e45] [cursor=pointer]
+            - generic [ref=e46]:
+              - generic [ref=e47]: Search nodes
+              - generic [ref=e48]: ⌕
+              - textbox "Search nodes" [ref=e49]:
+                - /placeholder: Search nodes…
+          - generic [ref=e50]:
+            - generic [ref=e51]: Earlier
+            - generic [ref=e52]: →
+            - generic [ref=e53]: Newer
+          - generic [ref=e54]:
+            - strong [ref=e55]: No learning events yet.
+            - text: The graph will grow when SOMA encounters prediction error and initiates exploration.
+            - generic [ref=e56]: Waiting for first observation…
+        - complementary "Node inspector" [ref=e58]:
+          - generic [ref=e60]:
+            - generic [ref=e61]: ↗
+            - strong [ref=e62]: Select a learning event
+            - text: Inspect its trigger, execution trace, model delta, and supporting evidence.
+  - contentinfo "Session status" [ref=e63]:
+    - generic [ref=e64]: generation 1
+    - generic [ref=e65]: 0 events
+    - generic [ref=e66]: 0 active
+    - generic [ref=e67]: model error —

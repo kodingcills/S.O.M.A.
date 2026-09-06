@@ -1,0 +1,314 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: SOMA
+      - generic [ref=e7]: / current runtime session
+    - generic "Current model state" [ref=e8]:
+      - generic [ref=e9]:
+        - text: World model
+        - strong [ref=e10]: "05"
+      - generic [ref=e11]:
+        - text: Error
+        - strong [ref=e12]: "0.000"
+      - generic [ref=e13]:
+        - strong [ref=e14]: "0"
+        - text: agents active
+      - generic [ref=e15]: Running
+  - generic [ref=e17]:
+    - navigation "Primary navigation" [ref=e18]:
+      - generic [ref=e19]: Workspace
+      - button "Graph" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: ⌘
+      - button "Runs" [ref=e23] [cursor=pointer]:
+        - generic [ref=e24]: ▤
+      - button "Compare" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: ⇄
+      - button "Models" [ref=e29] [cursor=pointer]:
+        - generic [ref=e30]: ◇
+      - generic [ref=e32]: Live event logprimary / comparison
+    - main "SOMA workspace" [ref=e33]:
+      - generic [ref=e35]:
+        - application [ref=e37]:
+          - generic [ref=e39]:
+            - generic:
+              - generic:
+                - img:
+                  - group "Edge from root to cap_2" [ref=e74] [cursor=pointer]:
+                    - generic [ref=e77]: DOF 2
+                - img:
+                  - group "Edge from root to cap_3" [ref=e79] [cursor=pointer]:
+                    - generic [ref=e82]: DOF 3
+                - img:
+                  - group "Edge from root to cap_4" [ref=e84] [cursor=pointer]:
+                    - generic [ref=e87]: DOF 4
+                - img:
+                  - group "Edge from root to cap_5" [ref=e89] [cursor=pointer]:
+                    - generic [ref=e92]: DOF 5
+                - img:
+                  - group "Edge from root to cap_6" [ref=e94] [cursor=pointer]:
+                    - generic [ref=e97]: DOF 6
+                - img:
+                  - group "Edge from root to exp_fded40" [ref=e99] [cursor=pointer]:
+                    - generic [ref=e102]: Tool–tissue boundary
+                - img:
+                  - group "Edge from root to exp_57ddc6" [ref=e104] [cursor=pointer]:
+                    - generic [ref=e107]: Lower left
+                - img:
+                  - group "Edge from root to exp_5836cd" [ref=e109] [cursor=pointer]:
+                    - generic [ref=e112]: Upper left
+                - img:
+                  - group "Edge from root to exp_b0762b" [ref=e114] [cursor=pointer]:
+                    - generic [ref=e117]: Surgical target vicinity
+              - generic:
+                - group [ref=e119] [cursor=pointer]:
+                  - article "Seed root, Completed" [ref=e120]:
+                    - generic [ref=e122]:
+                      - generic [ref=e123]:
+                        - generic [ref=e124]: ○
+                        - text: Seed
+                      - generic [ref=e125]: "#000"
+                    - generic [ref=e126]:
+                      - generic [ref=e127]: Initial system state
+                      - generic [ref=e128]:
+                        - generic [ref=e129]: capability
+                        - strong [ref=e130]: DOF 1
+                      - generic [ref=e131]:
+                        - generic [ref=e132]: learning origin
+                        - generic [ref=e133]: primary anatomy
+                    - generic [ref=e134]: Completed
+                - group [ref=e138] [cursor=pointer]:
+                  - article "Capability cap_2, Completed" [ref=e139]:
+                    - generic [ref=e141]:
+                      - generic [ref=e142]:
+                        - generic [ref=e143]: ◆
+                        - text: Capability
+                      - generic [ref=e144]: "#2"
+                    - generic [ref=e145]:
+                      - generic [ref=e146]: DOF 2 unlocked
+                      - generic [ref=e147]:
+                        - generic [ref=e148]: capability
+                        - strong [ref=e149]: DOF 1 → 2
+                      - generic [ref=e150]:
+                        - generic [ref=e151]: generation 1
+                        - generic [ref=e152]: 1000 samples
+                    - generic [ref=e153]: Completed
+                - group [ref=e157] [cursor=pointer]:
+                  - article "Capability cap_3, Completed" [ref=e158]:
+                    - generic [ref=e160]:
+                      - generic [ref=e161]:
+                        - generic [ref=e162]: ◆
+                        - text: Capability
+                      - generic [ref=e163]: "#3"
+                    - generic [ref=e164]:
+                      - generic [ref=e165]: DOF 3 unlocked
+                      - generic [ref=e166]:
+                        - generic [ref=e167]: capability
+                        - strong [ref=e168]: DOF 2 → 3
+                      - generic [ref=e169]:
+                        - generic [ref=e170]: generation 1
+                        - generic [ref=e171]: 1000 samples
+                    - generic [ref=e172]: Completed
+                - group [ref=e176] [cursor=pointer]:
+                  - article "Capability cap_4, Completed" [ref=e177]:
+                    - generic [ref=e179]:
+                      - generic [ref=e180]:
+                        - generic [ref=e181]: ◆
+                        - text: Capability
+                      - generic [ref=e182]: "#4"
+                    - generic [ref=e183]:
+                      - generic [ref=e184]: DOF 4 unlocked
+                      - generic [ref=e185]:
+                        - generic [ref=e186]: capability
+                        - strong [ref=e187]: DOF 3 → 4
+                      - generic [ref=e188]:
+                        - generic [ref=e189]: generation 1
+                        - generic [ref=e190]: 1000 samples
+                    - generic [ref=e191]: Completed
+                - group [ref=e195] [cursor=pointer]:
+                  - article "Capability cap_5, Completed" [ref=e196]:
+                    - generic [ref=e198]:
+                      - generic [ref=e199]:
+                        - generic [ref=e200]: ◆
+                        - text: Capability
+                      - generic [ref=e201]: "#5"
+                    - generic [ref=e202]:
+                      - generic [ref=e203]: DOF 5 unlocked
+                      - generic [ref=e204]:
+                        - generic [ref=e205]: capability
+                        - strong [ref=e206]: DOF 4 → 5
+                      - generic [ref=e207]:
+                        - generic [ref=e208]: generation 1
+                        - generic [ref=e209]: 1000 samples
+                    - generic [ref=e210]: Completed
+                - group [active] [ref=e214] [cursor=pointer]:
+                  - article "Capability cap_6, Completed" [ref=e215]:
+                    - generic [ref=e217]:
+                      - generic [ref=e218]:
+                        - generic [ref=e219]: ◆
+                        - text: Capability
+                      - generic [ref=e220]: "#6"
+                    - generic [ref=e221]:
+                      - generic [ref=e222]: DOF 6 unlocked
+                      - generic [ref=e223]:
+                        - generic [ref=e224]: capability
+                        - strong [ref=e225]: DOF 5 → 6
+                      - generic [ref=e226]:
+                        - generic [ref=e227]: generation 2
+                        - generic [ref=e228]: 1000 samples
+                    - generic [ref=e229]: Completed
+                - group [ref=e233] [cursor=pointer]:
+                  - article "Exploration exp_fded40, Completed" [ref=e234]:
+                    - generic [ref=e236]:
+                      - generic [ref=e237]:
+                        - generic [ref=e238]: ●
+                        - text: Exploration
+                      - generic [ref=e239]: "#fded40"
+                    - generic [ref=e240]:
+                      - generic [ref=e241]: Tool–tissue boundary exploration
+                      - generic [ref=e242]:
+                        - generic [ref=e243]: error
+                        - strong [ref=e244]:
+                          - text: "0.300"
+                          - emphasis [ref=e245]: →
+                          - text: "0.057"
+                        - generic [ref=e246]: ↓81%
+                      - generic [ref=e247]:
+                        - generic [ref=e248]: generation 2
+                        - generic [ref=e249]: 100 samples
+                    - generic [ref=e250]: Completed
+                - group [ref=e254] [cursor=pointer]:
+                  - article "Exploration exp_57ddc6, Failed" [ref=e255]:
+                    - generic [ref=e257]:
+                      - generic [ref=e258]:
+                        - generic [ref=e259]: ●
+                        - text: Exploration
+                      - generic [ref=e260]: "#57ddc6"
+                    - generic [ref=e261]:
+                      - generic [ref=e262]: Lower left exploration
+                      - generic [ref=e263]: Not connected to physics server.
+                      - generic [ref=e264]:
+                        - generic [ref=e265]: generation 2
+                        - generic [ref=e266]: collecting evidence
+                    - generic [ref=e267]: Failed
+                - group [ref=e271] [cursor=pointer]:
+                  - article "Exploration exp_5836cd, Failed" [ref=e272]:
+                    - generic [ref=e274]:
+                      - generic [ref=e275]:
+                        - generic [ref=e276]: ●
+                        - text: Exploration
+                      - generic [ref=e277]: "#5836cd"
+                    - generic [ref=e278]:
+                      - generic [ref=e279]: Upper left exploration
+                      - generic [ref=e280]: Not connected to physics server.
+                      - generic [ref=e281]:
+                        - generic [ref=e282]: generation 2
+                        - generic [ref=e283]: collecting evidence
+                    - generic [ref=e284]: Failed
+                - group [ref=e288] [cursor=pointer]:
+                  - article "Exploration exp_b0762b, Failed" [ref=e289]:
+                    - generic [ref=e291]:
+                      - generic [ref=e292]:
+                        - generic [ref=e293]: ●
+                        - text: Exploration
+                      - generic [ref=e294]: "#b0762b"
+                    - generic [ref=e295]:
+                      - generic [ref=e296]: Surgical target vicinity exploration
+                      - generic [ref=e297]: Not connected to physics server.
+                      - generic [ref=e298]:
+                        - generic [ref=e299]: generation 3
+                        - generic [ref=e300]: collecting evidence
+                    - generic [ref=e301]: Failed
+          - generic [ref=e40]:
+            - generic "Graph zoom controls" [ref=e41]:
+              - button "Zoom out" [ref=e42] [cursor=pointer]: −
+              - generic [ref=e43]: 87%
+              - button "Zoom in" [ref=e44] [cursor=pointer]: +
+              - button "Fit" [ref=e45] [cursor=pointer]
+            - generic "Filter graph nodes" [ref=e46]:
+              - button "All nodes" [ref=e47] [cursor=pointer]
+              - button "Exploration" [ref=e48] [cursor=pointer]
+              - button "Capabilities" [ref=e49] [cursor=pointer]
+              - button "Failed" [ref=e50] [cursor=pointer]
+              - button "Active" [ref=e51] [cursor=pointer]
+            - generic [ref=e52]:
+              - generic [ref=e53]: Search nodes
+              - generic [ref=e54]: ⌕
+              - textbox "Search nodes" [ref=e55]:
+                - /placeholder: Search nodes…
+          - generic [ref=e56]:
+            - generic [ref=e57]: Earlier
+            - generic [ref=e58]: →
+            - generic [ref=e59]: Newer
+          - img "Mini Map" [ref=e306]
+        - complementary "Node inspector" [ref=e64]:
+          - generic [ref=e65]:
+            - button "Close inspector" [ref=e317] [cursor=pointer]: ×
+            - generic [ref=e318]:
+              - generic [ref=e319]: ◆
+              - generic [ref=e320]: Capability
+              - generic [ref=e321]: "#6"
+            - heading "DOF 6 unlocked" [level=2] [ref=e322]
+            - generic [ref=e323]:
+              - text: Completed
+              - generic [ref=e325]: · 8/24/2026, 1:22:40 PM
+            - generic [ref=e326]:
+              - generic [ref=e327]:
+                - generic [ref=e328]: World model
+                - strong [ref=e329]: 4 → 5
+              - generic [ref=e330]:
+                - generic [ref=e331]: DOF
+                - strong [ref=e332]: 6 / 6
+              - generic [ref=e333]:
+                - generic [ref=e334]: Samples
+                - strong [ref=e335]: "1000"
+              - generic [ref=e336]:
+                - generic [ref=e337]: Fine-tune loss
+                - strong [ref=e338]: "0.0000"
+            - generic [ref=e339]:
+              - heading "What happened" [level=3] [ref=e340]
+              - generic [ref=e341]:
+                - term [ref=e342]: Trigger
+                - definition [ref=e343]: Global error 0.000 crossed the 0.030 unlock threshold.
+                - term [ref=e344]: Action
+                - definition [ref=e345]: Collected 1000 focused samples for the new degree of freedom.
+                - term [ref=e346]: Observation
+                - definition [ref=e347]: Active capability changed from DOF 5 to 6.
+                - term [ref=e348]: Model update
+                - definition [ref=e349]: World-model fine-tuning completed with loss 0.0000.
+            - generic [ref=e350]:
+              - heading "Trace" [level=3] [ref=e351]
+              - generic [ref=e352]:
+                - generic [ref=e353]:
+                  - button "01:22:40 PM Agent spawned" [ref=e355] [cursor=pointer]:
+                    - time [ref=e356]: 01:22:40 PM
+                    - generic [ref=e357]: Agent spawned
+                  - paragraph [ref=e358]: Execution initialized.
+                - generic [ref=e359]:
+                  - button "01:22:40 PM Capability unlocked +2 ms" [ref=e361] [cursor=pointer]:
+                    - time [ref=e362]: 01:22:40 PM
+                    - generic [ref=e363]: Capability unlocked
+                    - generic [ref=e364]: +2 ms
+                  - paragraph [ref=e365]: DOF 5 → 6.
+                - generic [ref=e366]:
+                  - button "01:22:47 PM Evaluation complete +6.89 s" [ref=e368] [cursor=pointer]:
+                    - time [ref=e369]: 01:22:47 PM
+                    - generic [ref=e370]: Evaluation complete
+                    - generic [ref=e371]: +6.89 s
+                  - paragraph [ref=e372]: Adaptation completed with 1000 samples.
+            - generic [ref=e373]:
+              - heading "Evidence" [level=3] [ref=e374]
+              - generic [ref=e375]:
+                - img "Live primary simulation evidence" [ref=e376]
+                - generic [ref=e377]: Live primary simulation
+              - button "Simulation" [ref=e378] [cursor=pointer]:
+                - generic [ref=e380]: →
+              - button "World-model state" [ref=e381] [cursor=pointer]:
+                - generic [ref=e383]: →
+              - generic [ref=e384] [cursor=pointer]:
+                - generic [ref=e385]: Recorded trajectory
+                - generic [ref=e386]: unavailable
+  - contentinfo "Session status" [ref=e69]:
+    - generic [ref=e70]: generation 15
+    - generic [ref=e71]: 1000 events
+    - generic [ref=e72]: 0 active
+    - generic [ref=e73]: model error —
